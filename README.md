@@ -56,7 +56,7 @@ TensorFlow Lite Flutter plugin provides a flexible and fast solution for accessi
 
 ### Android
 
-1. Place the script [install.sh](https://github.com/am15h/tflite_flutter_plugin/blob/master/install.sh) (Linux/Mac) or [install.bat](https://github.com/am15h/tflite_flutter_plugin/blob/master/install.bat) (Windows) at the root of your project.
+1. Place the script [install.sh](https://github.com/tensorflow/flutter-tflite/blob/main/install.sh) (Linux/Mac) or [install.bat](https://github.com/tensorflow/flutter-tflite/blob/main/install.bat) (Windows) at the root of your project.
 
 2. Execute `sh install.sh` (Linux) / `install.bat` (Windows) at the root of your project to automatically download and place binaries at appropriate folders.
 
@@ -64,11 +64,11 @@ TensorFlow Lite Flutter plugin provides a flexible and fast solution for accessi
 
 3. Use **`sh install.sh -d`** (Linux) or **`install.bat -d`** (Windows) instead if you wish to use these `GpuDelegateV2` and `NnApiDelegate`.
 
-These scripts install pre-built binaries based on latest stable tensorflow release. For info about using other tensorflow versions follow [instructions in wiki](https://github.com/am15h/tflite_flutter_plugin/wiki/). 
+These scripts install pre-built binaries based on latest stable tensorflow release. For info about using other tensorflow versions follow [instructions in wiki](https://github.com/tensorflow/flutter-tflite/wiki/). 
 
 ### iOS
 
-1. Download [`TensorFlowLiteC.framework`](https://github.com/am15h/tflite_flutter_plugin/releases/download/v0.5.0/TensorFlowLiteC.framework.zip). For building a custom version of tensorflow, follow [instructions in wiki](https://github.com/am15h/tflite_flutter_plugin/wiki/). 
+1. Download [`TensorFlowLiteC.framework`](https://github.com/tensorflow/flutter-tflite/releases/download/v0.5.0/TensorFlowLiteC.framework.zip). For building a custom version of tensorflow, follow [instructions in wiki](https://github.com/tensorflow/flutter-tflite/wiki/). 
 2. Place the `TensorFlowLiteC.framework` in the pub-cache folder of this package.
 
  Pub-Cache folder location: [(ref)](https://dart.dev/tools/pub/cmd/pub-get#the-system-package-cache)
@@ -78,20 +78,11 @@ These scripts install pre-built binaries based on latest stable tensorflow relea
 
 ### Desktop
 
-Follow instructions in [this guide](https://github.com/am15h/tflite_flutter_plugin/wiki/Building-Desktop-binaries-with-XNNPack-Delegate) to build and use desktop binaries.
+Follow instructions in [this guide](https://github.com/tensorflow/flutter-tflite/wiki/Building-Desktop-binaries-with-XNNPack-Delegate) to build and use desktop binaries.
 
 ## TFLite Flutter Helper Library
 
-A dedicated library with simple architecture for processing and manipulating input and output of TFLite Models. API design and documentation is identical to the TensorFlow Lite Android Support Library. Strongly recommended to be used with `tflite_flutter_plugin`. [Learn more](https://github.com/am15h/tflite_flutter_helper). 
-
-## Examples
-
-|Title|Code|Demo|Blog|
-|-----|----|----|----|
-|Text Classification App| [Code](https://github.com/am15h/tflite_flutter_plugin/tree/master/example)|<img src="https://github.com/am15h/tflite_flutter_plugin/raw/master/example/demo.gif" width=120/> |[Blog/Tutorial](https://medium.com/@am15hg/text-classification-using-tensorflow-lite-plugin-for-flutter-3b92f6655982)| 
-|Image Classification App| [Code](https://github.com/am15h/tflite_flutter_helper/tree/master/example/image_classification)|<img src="https://github.com/am15h/tflite_flutter_helper/raw/master/example/image_classification/demo.gif" width=120/> |-|
-|Object Detection App| [Code](https://github.com/am15h/object_detection_flutter)|<img src="https://github.com/am15h/object_detection_flutter/raw/master/object_detection_demo.gif" width=120/> |[Blog/Tutorial](https://medium.com/@am15hg/real-time-object-detection-using-new-tensorflow-lite-flutter-support-ea41263e801d)|
-|Reinforcement Learning App| [Code](https://github.com/windmaple/planestrike-flutter)|<img src="https://github.com/windmaple/planestrike-flutter/raw/main/demo.gif" width=120/> |[Blog/Tutorial](https://windmaple.medium.com/playing-a-board-game-on-device-using-tensorflow-lite-and-fluter-a7c865b9aefc)| 
+The TFLite Flutter Helper plugin has been been deprecated and will not received any future support. An alternative is currently being worked on via the [flutter-mediapipe](https://github.com/google/flutter-mediapipe) plugin. You can find more information about MediaPipe through the [official documentation](https://developers.google.com/mediapipe).
 
 ## Import
 
@@ -214,9 +205,9 @@ interpreter.close();
         options: interpreterOptions);
     ```
 
-Refer [Tests](https://github.com/am15h/tflite_flutter_plugin/blob/master/example/integration_test/tflite_flutter_test.dart) to see more example code for each method.
+Refer [Tests](https://github.com/tensorflow/flutter-tflite/blob/main/example/integration_test/tflite_flutter_test.dart) to see more example code for each method.
 
 ## Credits
 
-* Tian LIN, Jared Duke, Andrew Selle, YoungSeok Yoon, Shuangfeng Li from the TensorFlow Lite Team for their invaluable guidance.
+* Amish Garg, Tian LIN, Jared Duke, Andrew Selle, YoungSeok Yoon, Shuangfeng Li from the TensorFlow Lite Team for their invaluable guidance.
 * Authors of [dart-lang/tflite_native](https://github.com/dart-lang/tflite_native).
