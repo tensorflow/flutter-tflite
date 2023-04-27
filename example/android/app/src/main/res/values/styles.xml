@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
     ~ Copyright 2023 The TensorFlow Authors. All Rights Reserved.
     ~
@@ -13,7 +14,6 @@
     ~ See the License for the specific language governing permissions and
     ~ limitations under the License.
 -->
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <!-- Show a splash screen on the activity. Automatically removed when
