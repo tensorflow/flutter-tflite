@@ -43,7 +43,7 @@ TensorFlow Lite Flutter plugin provides a flexible and fast solution for accessi
 
 ## Key Features
 
-* Multi-platform Support for Android, iOS, Windows, Mac, Linux.
+* Multi-platform Support for Android and iOS
 * Flexibility to use any TFLite Model.
 * Acceleration using multi-threading.
 * Similar structure as TensorFlow Lite Java API.
@@ -59,14 +59,7 @@ Copy the folders from https://github.com/tensorflow/flutter-tflite/tree/main/rel
 
 ### iOS
 
-TODO: Need to get new TensorFlowLiteC.framework.zip file placed.
-1. Download [`TensorFlowLiteC.framework`](https://github.com/tensorflow/flutter-tflite/releases/download/v0.5.0/TensorFlowLiteC.framework.zip). For building a custom version of tensorflow, follow [instructions in wiki](https://github.com/tensorflow/flutter-tflite/wiki/). 
-2. Place the `TensorFlowLiteC.framework` in the pub-cache folder of this package.
-
- Pub-Cache folder location: [(ref)](https://dart.dev/tools/pub/cmd/pub-get#the-system-package-cache)
-
- - `~/.pub-cache/hosted/pub.dartlang.org/tflite_flutter-<plugin-version>/ios/` (Linux/ Mac) 
- - `%LOCALAPPDATA%\Pub\Cache\hosted\pub.dartlang.org\tflite_flutter-<plugin-version>\ios\` (Windows)
+ TODO: Sample now works, info soon
 
 
 ## TFLite Flutter Helper Library
@@ -75,7 +68,7 @@ The helper library has been deprecated. New development underway for a replaceme
 
 ## Import
 
-    import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_flutter/tflite_flutter.dart';
 
 ## Usage instructions
 
@@ -139,7 +132,5 @@ Refer to the documentation for info on creating interpreter from buffer or file.
 ```dart
 interpreter.close();
 ```
-
-### Improve performance using delegate support
 
 Refer [Tests](https://github.com/tensorflow/flutter-tflite/blob/main/example/integration_test/tflite_flutter_test.dart) to see more example code for each method.
