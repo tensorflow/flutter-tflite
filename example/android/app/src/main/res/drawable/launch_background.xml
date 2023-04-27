@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
     ~ Copyright 2023 The TensorFlow Authors. All Rights Reserved.
     ~
@@ -13,7 +14,6 @@
     ~ See the License for the specific language governing permissions and
     ~ limitations under the License.
 -->
-<?xml version="1.0" encoding="utf-8"?>
 <!-- Modify this file to customize your launch splash screen -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@android:color/white" />
