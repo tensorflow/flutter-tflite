@@ -93,7 +93,7 @@ Refer to the documentation for info on creating interpreter from buffer or file.
     Use `void run(Object input, Object output)`.
     ```dart
     // For ex: if input tensor shape [1,5] and type is float32
-    var input = [[1.23, 6.54, 7.81. 3.21, 2.22]];
+    var input = [[1.23, 6.54, 7.81, 3.21, 2.22]];
 
     // if output tensor shape [1,2] and type is float32
     var output = List.filled(1*2, 0).reshape([1,2]);
