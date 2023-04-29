@@ -68,7 +68,9 @@ The helper library has been deprecated. New development underway for a replaceme
 
 ## Import
 
+```dart
 import 'package:tflite_flutter/tflite_flutter.dart';
+```
 
 ## Usage instructions
 
