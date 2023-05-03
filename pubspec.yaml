@@ -29,6 +29,7 @@ dependencies:
   path: ^1.6.2
   quiver: ^3.0.0
   ffi: ^2.0.1
+  image: ^4.0.16
 
 dev_dependencies:
   flutter_test:
