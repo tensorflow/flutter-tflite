@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 import 'dart:ffi';
 import 'dart:typed_data';
 
@@ -23,7 +23,6 @@ import 'package:tflite_flutter/src/util/byte_conversion_utils.dart';
 
 import 'bindings/tensor.dart';
 import 'bindings/types.dart';
-
 import 'ffi/helper.dart';
 import 'quanitzation_params.dart';
 import 'util/list_shape_extension.dart';
@@ -159,9 +158,15 @@ class Tensor {
     checkState(isNotNull(ptr), message: 'unallocated');
     final externalTypedData = ptr.asTypedList(size);
     externalTypedData.setRange(0, bytes.length, bytes);
-    checkState(tfLiteTensorCopyFromBuffer(_tensor, ptr.cast(), bytes.length) ==
-        TfLiteStatus.ok);
-    calloc.free(ptr);
+    try {
+      checkState(
+          tfLiteTensorCopyFromBuffer(_tensor, ptr.cast(), bytes.length) ==
+              TfLiteStatus.ok);
+    } catch (_) {
+      rethrow;
+    } finally {
+      calloc.free(ptr);
+    }
   }
 
   Object copyTo(Object dst) {
