@@ -61,6 +61,7 @@ Copy the folders from https://github.com/tensorflow/flutter-tflite/tree/main/rel
 
  TODO: Sample now works, info soon
 
+Note: TFLite may not work in the iOS simulator. It's recommended that you test with a physical device.
 
 ## TFLite Flutter Helper Library
 
