@@ -21,7 +21,7 @@ import 'dlib.dart';
 
 /// Version information for the TensorFlowLite library.
 final Pointer<Utf8> Function() tfLiteVersion = tflitelib
-    .lookup<NativeFunction<_TfLiteVersion_native_t>>('TfLiteVersion')
+    .lookup<NativeFunction<_TfLiteVersionNativeT>>('TfLiteVersion')
     .asFunction();
 
-typedef _TfLiteVersion_native_t = Pointer<Utf8> Function();
+typedef _TfLiteVersionNativeT = Pointer<Utf8> Function();

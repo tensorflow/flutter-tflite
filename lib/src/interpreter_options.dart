@@ -13,16 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 import 'dart:ffi';
 import 'dart:io';
 
 import 'package:quiver/check.dart';
 import '../tflite_flutter.dart';
 import 'bindings/interpreter_options.dart';
-
-import 'bindings/types.dart';
-import 'delegate.dart';
 
 /// TensorFlowLite interpreter options.
 class InterpreterOptions {

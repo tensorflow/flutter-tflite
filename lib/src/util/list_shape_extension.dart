@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 extension ListShape on List {
   /// Reshape list to a another [shape]
   ///
@@ -148,7 +148,7 @@ extension ListShape on List {
     var list = this as dynamic;
     var shape = <int>[];
     while (list is List) {
-      shape.add((list as List).length);
+      shape.add(list.length);
       list = list.elementAt(0);
     }
     return shape;

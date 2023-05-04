@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 // iOS metal delegate
 
 import 'dart:ffi';
@@ -33,20 +33,20 @@ import '../types.dart';
 /// When `options` is set to `nullptr`, then default options are used.
 Pointer<TfLiteDelegate> Function(Pointer<TfLiteGpuDelegateOptionsV2> options)
     tfLiteGpuDelegateV2Create = tflitelib
-        .lookup<NativeFunction<_TfLiteGpuDelegateV2Create_native_t>>(
+        .lookup<NativeFunction<_TfLiteGpuDelegateV2CreateNativeT>>(
             'TfLiteGpuDelegateV2Create')
         .asFunction();
 
-typedef _TfLiteGpuDelegateV2Create_native_t = Pointer<TfLiteDelegate> Function(
+typedef _TfLiteGpuDelegateV2CreateNativeT = Pointer<TfLiteDelegate> Function(
     Pointer<TfLiteGpuDelegateOptionsV2> options);
 
 /// Destroys a delegate created with `TfLiteGpuDelegateV2Create` call.
 void Function(Pointer<TfLiteDelegate>) tfLiteGpuDelegateV2Delete = tflitelib
-    .lookup<NativeFunction<_TFLGpuDelegateV2Delete_native_t>>(
+    .lookup<NativeFunction<_TFLGpuDelegateV2DeleteNativeT>>(
         'TfLiteGpuDelegateV2Delete')
     .asFunction();
 
-typedef _TFLGpuDelegateV2Delete_native_t = Void Function(
+typedef _TFLGpuDelegateV2DeleteNativeT = Void Function(
     Pointer<TfLiteDelegate> delegate);
 
 /// Creates TfLiteGpuDelegateV2 with default options
@@ -54,9 +54,9 @@ TfLiteGpuDelegateOptionsV2 Function() tfLiteGpuDelegateOptionsV2Default =
     tflitelib
         .lookup<
                 NativeFunction<
-                    _TfLiteTfLiteGpuDelegateOptionsV2Default_native_t>>(
+                    _TfLiteTfLiteGpuDelegateOptionsV2DefaultNativeT>>(
             'TfLiteGpuDelegateOptionsV2Default')
         .asFunction();
 
-typedef _TfLiteTfLiteGpuDelegateOptionsV2Default_native_t
+typedef _TfLiteTfLiteGpuDelegateOptionsV2DefaultNativeT
     = TfLiteGpuDelegateOptionsV2 Function();
