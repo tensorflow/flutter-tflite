@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 import 'dart:typed_data';
 import 'list_shape_extension.dart';
 import 'package:tflite_flutter/src/bindings/types.dart';
