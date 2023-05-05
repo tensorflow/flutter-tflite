@@ -31,9 +31,9 @@ dependencies:
   ffi: ^2.0.1
 
 dev_dependencies:
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
-  pedantic: ^1.0.0
   test: ^1.6.4
 
 # For information on the generic Dart part of this file, see the

@@ -122,7 +122,7 @@ class TfLiteXNNPackDelegateOptions extends Struct {
 
   static Pointer<TfLiteXNNPackDelegateOptions> allocate(int numThreads) {
     final result = calloc<TfLiteXNNPackDelegateOptions>();
-    result.ref..numThreads = numThreads;
+    result.ref.numThreads = numThreads;
     return result;
   }
 }

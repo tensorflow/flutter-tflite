@@ -106,7 +106,7 @@ class Tensor {
 
   /// Returns the number of dimensions of a multi-dimensional array, otherwise 0.
   static int computeNumDimensions(Object? o) {
-    if (o == null || !(o is List)) {
+    if (o == null || o is! List) {
       return 0;
     }
     if (o.isEmpty) {
