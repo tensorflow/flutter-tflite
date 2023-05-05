@@ -59,7 +59,7 @@ Copy the folders from https://github.com/tensorflow/flutter-tflite/tree/main/rel
 
 ### iOS
 
-1. Download [`TensorFlowLiteC.framework`](https://github.com/tensorflow/flutter-tflite/releases/download/ios/TensorFlowLiteC.framework.zip).
+1. Download [`TensorFlowLiteC.framework`](https://github.com/tensorflow/flutter-tflite/raw/main/releases/download/ios/TensorFlowLiteC.framework.zip).
 2. Place the `TensorFlowLiteC.framework` in the pub-cache folder of this package.
 
  Pub-Cache folder location: [(ref)](https://dart.dev/tools/pub/cmd/pub-get#the-system-package-cache)
