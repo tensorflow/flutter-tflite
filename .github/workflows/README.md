@@ -1,0 +1,5 @@
+# GitHub Actions guidelines:
+
+- When using a third-party action (one not hosted in a Google-managed org), a fixed version of the action MUST be used by [specifying a specific commit](https://help.github.com/en/github/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsuses), rather than a branch like "main", or a tagged release, which can be overwritten by any maintainer of the action.
+- Docker and [GitHub runner](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources) images should always be run at a fixed version rather than "latest".
+- If an action is granted additional GitHub access (by being passed the GITHUB_TOKEN variable), all main development branches (typically, "main") must use [branch protection](https://help.github.com/en/github/administering-a-repository/about-protected-branches) with "Require pull request reviews before merging" enabled and/or "Restrict who can push to matching branches" limited to repository admins.
