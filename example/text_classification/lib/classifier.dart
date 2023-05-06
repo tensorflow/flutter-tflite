@@ -43,7 +43,10 @@ class Classifier {
 
   void _loadModel() async {
     // Creating the interpreter using Interpreter.fromAsset
-    _interpreter = await Interpreter.fromAsset(_modelFile);
+    final gpuDelegateV2 = GpuDelegateV2();
+    final options = InterpreterOptions()..addDelegate(gpuDelegateV2);
+    _interpreter =
+        await Interpreter.fromAsset(_modelFile, options: options);
     print('Interpreter loaded successfully');
   }
 
