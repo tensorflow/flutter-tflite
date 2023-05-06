@@ -55,7 +55,7 @@ TensorFlow Lite Flutter plugin provides a flexible and fast solution for accessi
 
 ### Android
 
-Define the dependency within your app's `build.gradle` as follows:
+Define the dependency within your project's `android/app/build.gradle` as follows:
 
 ```gradle
 dependencies {
