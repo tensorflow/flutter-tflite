@@ -55,7 +55,19 @@ TensorFlow Lite Flutter plugin provides a flexible and fast solution for accessi
 
 ### Android
 
-Copy the folders from https://github.com/tensorflow/flutter-tflite/tree/main/releases/download/android into your project's /android/app/src/main/jniLibs directory.
+Define the dependency within your app's `build.gradle` as follows:
+
+```gradle
+dependencies {
+    implementation 'org.tensorflow:tensorflow-lite:2.12.0'
+}
+```
+
+If are using GPU delegates, in addition to the above, also add a dependency on
+
+```gradle
+implementation 'org.tensorflow:tensorflow-lite-gpu:2.12.0'
+```
 
 ### iOS
 
