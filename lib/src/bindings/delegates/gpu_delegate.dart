@@ -32,7 +32,7 @@ import '../types.dart';
 ///
 /// When `options` is set to `nullptr`, then default options are used.
 Pointer<TfLiteDelegate> Function(Pointer<TfLiteGpuDelegateOptionsV2> options)
-    tfLiteGpuDelegateV2Create = tflitelib
+    tfLiteGpuDelegateV2Create = tflitelibgpu
         .lookup<NativeFunction<_TfLiteGpuDelegateV2CreateNativeT>>(
             'TfLiteGpuDelegateV2Create')
         .asFunction();
@@ -41,7 +41,7 @@ typedef _TfLiteGpuDelegateV2CreateNativeT = Pointer<TfLiteDelegate> Function(
     Pointer<TfLiteGpuDelegateOptionsV2> options);
 
 /// Destroys a delegate created with `TfLiteGpuDelegateV2Create` call.
-void Function(Pointer<TfLiteDelegate>) tfLiteGpuDelegateV2Delete = tflitelib
+void Function(Pointer<TfLiteDelegate>) tfLiteGpuDelegateV2Delete = tflitelibgpu
     .lookup<NativeFunction<_TFLGpuDelegateV2DeleteNativeT>>(
         'TfLiteGpuDelegateV2Delete')
     .asFunction();
@@ -51,7 +51,7 @@ typedef _TFLGpuDelegateV2DeleteNativeT = Void Function(
 
 /// Creates TfLiteGpuDelegateV2 with default options
 TfLiteGpuDelegateOptionsV2 Function() tfLiteGpuDelegateOptionsV2Default =
-    tflitelib
+    tflitelibgpu
         .lookup<
                 NativeFunction<
                     _TfLiteTfLiteGpuDelegateOptionsV2DefaultNativeT>>(
