@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import 'package:flutter/services.dart';
 
+import 'dart:io';
+
+import 'package:flutter/services.dart';
 // Import tflite_flutter
 import 'package:tflite_flutter/tflite_flutter.dart';
 
@@ -42,8 +44,25 @@ class Classifier {
   }
 
   void _loadModel() async {
+    // Enable delegates
+    final options = InterpreterOptions();
+
+    if (Platform.isAndroid) {
+      options.addDelegate(XNNPackDelegate());
+    }
+
+    // doesn't work on emulator
+    // if (Platform.isAndroid) {
+    //   options.addDelegate(GpuDelegateV2());
+    // }
+
+    if (Platform.isIOS) {
+      options.addDelegate(GpuDelegate());
+    }
+
     // Creating the interpreter using Interpreter.fromAsset
-    _interpreter = await Interpreter.fromAsset(_modelFile);
+    _interpreter = await Interpreter.fromAsset(_modelFile, options: options);
+
     print('Interpreter loaded successfully');
   }
 

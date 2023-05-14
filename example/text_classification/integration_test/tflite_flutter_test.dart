@@ -170,7 +170,7 @@ void main() {
       });
 
       test('type', () {
-        expect(tensors[0].type, tfl.TfLiteType.uint8);
+        expect(tensors[0].type, tfl.TfLiteType.kTfLiteUInt8);
       });
 
       test('shape', () {
@@ -234,12 +234,12 @@ void main() {
             List.filled(1, List.filled(8, List.filled(8, [1.23, 6.54, 7.81])));
         var output = List.filled(1 * 8 * 8 * 3, 0.0).reshape([1, 8, 8, 3]);
         var inputBytes = tfl.ByteConversionUtils.convertObjectToBytes(
-            four, tfl.TfLiteType.float32);
+            four, tfl.TfLiteType.kTfLiteFloat32);
         var outputBytes = tfl.ByteConversionUtils.convertObjectToBytes(
-            output, tfl.TfLiteType.float32);
+            output, tfl.TfLiteType.kTfLiteFloat32);
         interpreter.run(inputBytes, outputBytes);
         var outputList = tfl.ByteConversionUtils.convertBytesToObject(
-                outputBytes, tfl.TfLiteType.float32, [1, 8, 8, 3])
+                outputBytes, tfl.TfLiteType.kTfLiteFloat32, [1, 8, 8, 3])
             as List<List<List<List<double>>>>;
         expect(outputList[0][0][0][0].toStringAsFixed(2), '3.69');
         interpreter.close();
@@ -252,10 +252,10 @@ void main() {
             List.filled(1, List.filled(8, List.filled(8, [1.23, 6.54, 7.81])));
         var output = List.filled(1 * 8 * 8 * 3, 0.0).reshape([1, 8, 8, 3]);
         var inputBuffer = tfl.ByteConversionUtils.convertObjectToBytes(
-                four, tfl.TfLiteType.float32)
+                four, tfl.TfLiteType.kTfLiteFloat32)
             .buffer;
         var outputBuffer = tfl.ByteConversionUtils.convertObjectToBytes(
-                output, tfl.TfLiteType.float32)
+                output, tfl.TfLiteType.kTfLiteFloat32)
             .buffer;
         interpreter.run(inputBuffer, outputBuffer);
         var outputElement =
@@ -271,15 +271,15 @@ void main() {
         );
         final inputTensors = interpreter.getInputTensors();
         expect(inputTensors.length, 4);
-        expect(inputTensors[0].type, tfl.TfLiteType.float32);
-        expect(inputTensors[1].type, tfl.TfLiteType.float32);
-        expect(inputTensors[2].type, tfl.TfLiteType.float32);
-        expect(inputTensors[3].type, tfl.TfLiteType.float32);
+        expect(inputTensors[0].type, tfl.TfLiteType.kTfLiteFloat32);
+        expect(inputTensors[1].type, tfl.TfLiteType.kTfLiteFloat32);
+        expect(inputTensors[2].type, tfl.TfLiteType.kTfLiteFloat32);
+        expect(inputTensors[3].type, tfl.TfLiteType.kTfLiteFloat32);
 
         final outputTensors = interpreter.getOutputTensors();
         expect(outputTensors.length, 2);
-        expect(outputTensors[0].type, tfl.TfLiteType.float32);
-        expect(outputTensors[1].type, tfl.TfLiteType.float32);
+        expect(outputTensors[0].type, tfl.TfLiteType.kTfLiteFloat32);
+        expect(outputTensors[1].type, tfl.TfLiteType.kTfLiteFloat32);
 
         var input0 = [1.23];
         var input1 = [2.43];
@@ -300,15 +300,15 @@ void main() {
             options: tfl.InterpreterOptions()..threads = 2);
         final inputTensors = interpreter.getInputTensors();
         expect(inputTensors.length, 4);
-        expect(inputTensors[0].type, tfl.TfLiteType.float32);
-        expect(inputTensors[1].type, tfl.TfLiteType.float32);
-        expect(inputTensors[2].type, tfl.TfLiteType.float32);
-        expect(inputTensors[3].type, tfl.TfLiteType.float32);
+        expect(inputTensors[0].type, tfl.TfLiteType.kTfLiteFloat32);
+        expect(inputTensors[1].type, tfl.TfLiteType.kTfLiteFloat32);
+        expect(inputTensors[2].type, tfl.TfLiteType.kTfLiteFloat32);
+        expect(inputTensors[3].type, tfl.TfLiteType.kTfLiteFloat32);
 
         final outputTensors = interpreter.getOutputTensors();
         expect(outputTensors.length, 2);
-        expect(outputTensors[0].type, tfl.TfLiteType.float32);
-        expect(outputTensors[1].type, tfl.TfLiteType.float32);
+        expect(outputTensors[0].type, tfl.TfLiteType.kTfLiteFloat32);
+        expect(outputTensors[1].type, tfl.TfLiteType.kTfLiteFloat32);
 
         var input0 = [1.23];
         var input1 = [2.43];
@@ -444,10 +444,10 @@ void main() {
       ];
       var i = 1;
       var str = 'str';
-      expect(tfl.Tensor.dataTypeOf(d), tfl.TfLiteType.float32);
-      expect(tfl.Tensor.dataTypeOf(dList), tfl.TfLiteType.float32);
-      expect(tfl.Tensor.dataTypeOf(i), tfl.TfLiteType.int32);
-      expect(tfl.Tensor.dataTypeOf(str), tfl.TfLiteType.string);
+      expect(tfl.Tensor.dataTypeOf(d), tfl.TfLiteType.kTfLiteFloat32);
+      expect(tfl.Tensor.dataTypeOf(dList), tfl.TfLiteType.kTfLiteFloat32);
+      expect(tfl.Tensor.dataTypeOf(i), tfl.TfLiteType.kTfLiteInt32);
+      expect(tfl.Tensor.dataTypeOf(str), tfl.TfLiteType.kTfLiteString);
     });
 
     test('dataTypeOf throws Argument error', () {
