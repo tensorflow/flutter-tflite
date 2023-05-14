@@ -47,7 +47,7 @@ class ByteConversionUtils {
         return buffer.asUint8List();
       } else {
         throw ArgumentError(
-            'The input element is ${o.runtimeType} while tensor data tfliteType is ${TfLiteType.kTfLiteFloat32}');
+            'The input element is $o while tensor data tfliteType is ${TfLiteType.kTfLiteFloat32}');
       }
     } else if (tfliteType == TfLiteType.kTfLiteInt32) {
       if (o is int) {
@@ -57,7 +57,7 @@ class ByteConversionUtils {
         return buffer.asUint8List();
       } else {
         throw ArgumentError(
-            'The input element is ${o.runtimeType} while tensor data tfliteType is ${TfLiteType.kTfLiteInt32}');
+            'The input element is $o while tensor data tfliteType is ${TfLiteType.kTfLiteInt32}');
       }
     } else if (tfliteType == TfLiteType.kTfLiteInt64) {
       if (o is int) {
@@ -67,7 +67,7 @@ class ByteConversionUtils {
         return buffer.asUint8List();
       } else {
         throw ArgumentError(
-            'The input element is ${o.runtimeType} while tensor data tfliteType is ${TfLiteType.kTfLiteInt32}');
+            'The input element is $o while tensor data tfliteType is ${TfLiteType.kTfLiteInt32}');
       }
     } else if (tfliteType == TfLiteType.kTfLiteInt16) {
       if (o is int) {
@@ -77,7 +77,7 @@ class ByteConversionUtils {
         return buffer.asUint8List();
       } else {
         throw ArgumentError(
-            'The input element is ${o.runtimeType} while tensor data tfliteType is ${TfLiteType.kTfLiteInt32}');
+            'The input element is $o while tensor data tfliteType is ${TfLiteType.kTfLiteInt32}');
       }
     } else if (tfliteType == TfLiteType.kTfLiteFloat16) {
       if (o is double) {
@@ -87,7 +87,7 @@ class ByteConversionUtils {
         return buffer.asUint8List().sublist(0, 2);
       } else {
         throw ArgumentError(
-            'The input element is ${o.runtimeType} while tensor data tfliteType is ${TfLiteType.kTfLiteFloat32}');
+            'The input element is $o while tensor data tfliteType is ${TfLiteType.kTfLiteFloat32}');
       }
     } else if (tfliteType == TfLiteType.kTfLiteInt8) {
       if (o is int) {
@@ -97,11 +97,20 @@ class ByteConversionUtils {
         return buffer.asUint8List();
       } else {
         throw ArgumentError(
-            'The input element is ${o.runtimeType} while tensor data tfliteType is ${TfLiteType.kTfLiteFloat32}');
+            'The input element is $o while tensor data tfliteType is ${TfLiteType.kTfLiteFloat32}');
+      }
+    } else if (tfliteType == TfLiteType.kTfLiteUInt8) {
+      if (o is int) {
+        var buffer = Uint8List(1).buffer;
+        var bdata = ByteData.view(buffer);
+        bdata.setUint8(0, o);
+        return buffer.asUint8List();
+      } else {
+        throw ArgumentError(
+            'The input element is $o while tensor data tfliteType is ${TfLiteType.kTfLiteFloat32}');
       }
     } else {
-      throw ArgumentError(
-          'The input data tfliteType ${o.runtimeType} is unsupported');
+      throw ArgumentError('The input data tfliteType $o is unsupported');
     }
   }
 
