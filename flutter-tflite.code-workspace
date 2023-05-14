@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "example/text_classification"
+		},
+		{
+			"path": "example/image_classification_mobilenet"
+		}
+	],
+	"settings": {}
+}
