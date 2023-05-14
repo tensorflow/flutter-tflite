@@ -17,9 +17,9 @@ import 'dart:ffi';
 
 import 'package:ffi/ffi.dart';
 import 'package:quiver/check.dart';
-import '../bindings/delegates/gpu_delegate.dart';
-import '../bindings/types.dart';
-import '../delegate.dart';
+import 'package:tflite_flutter/src/bindings/bindings.dart';
+import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
+import 'package:tflite_flutter/tflite_flutter.dart';
 
 /// GPU delegate for Android
 class GpuDelegateV2 implements Delegate {
@@ -37,15 +37,16 @@ class GpuDelegateV2 implements Delegate {
   factory GpuDelegateV2({GpuDelegateOptionsV2? options}) {
     if (options == null) {
       return GpuDelegateV2._(
-        tfLiteGpuDelegateV2Create(nullptr),
+        tfliteBindingGpu.TfLiteGpuDelegateV2Create(nullptr),
       );
     }
-    return GpuDelegateV2._(tfLiteGpuDelegateV2Create(options.base));
+    return GpuDelegateV2._(
+        tfliteBindingGpu.TfLiteGpuDelegateV2Create(options.base));
   }
   @override
   void delete() {
     checkState(!_deleted, message: 'TfLiteGpuDelegateV2 already deleted.');
-    tfLiteGpuDelegateV2Delete(_delegate);
+    tfliteBindingGpu.TfLiteGpuDelegateV2Delete(_delegate);
     _deleted = true;
   }
 }
@@ -106,28 +107,31 @@ class GpuDelegateOptionsV2 {
   /// it's set to 1 in TfLiteGpuDelegateOptionsV2Default().
   factory GpuDelegateOptionsV2({
     bool isPrecisionLossAllowed = false,
-    TfLiteGpuInferenceUsage inferencePreference =
-        TfLiteGpuInferenceUsage.fastSingleAnswer,
-    TfLiteGpuInferencePriority inferencePriority1 =
-        TfLiteGpuInferencePriority.maxPrecision,
-    TfLiteGpuInferencePriority inferencePriority2 =
-        TfLiteGpuInferencePriority.auto,
-    TfLiteGpuInferencePriority inferencePriority3 =
-        TfLiteGpuInferencePriority.auto,
-    List<TfLiteGpuExperimentalFlags> experimentalFlags = const [
-      TfLiteGpuExperimentalFlags.enableQuant
+    int inferencePreference = TfLiteGpuInferenceUsage
+        .TFLITE_GPU_INFERENCE_PREFERENCE_FAST_SINGLE_ANSWER,
+    int inferencePriority1 =
+        TfLiteGpuInferencePriority.TFLITE_GPU_INFERENCE_PRIORITY_MAX_PRECISION,
+    int inferencePriority2 =
+        TfLiteGpuInferencePriority.TFLITE_GPU_INFERENCE_PRIORITY_AUTO,
+    int inferencePriority3 =
+        TfLiteGpuInferencePriority.TFLITE_GPU_INFERENCE_PRIORITY_AUTO,
+    List<int> experimentalFlags = const [
+      TfLiteGpuExperimentalFlags.TFLITE_GPU_EXPERIMENTAL_FLAGS_ENABLE_QUANT
     ],
     int maxDelegatePartitions = 1,
   }) {
-    return GpuDelegateOptionsV2._(TfLiteGpuDelegateOptionsV2.allocate(
-      isPrecisionLossAllowed,
-      inferencePreference,
-      inferencePriority1,
-      inferencePriority2,
-      inferencePriority3,
-      _TfLiteGpuExperimentalFlagsUtil.getBitmask(experimentalFlags),
-      maxDelegatePartitions,
-    ));
+    final options = calloc<TfLiteGpuDelegateOptionsV2>();
+    options.ref
+      ..is_precision_loss_allowed = isPrecisionLossAllowed ? 1 : 0
+      ..inference_preference = inferencePreference
+      ..inference_priority1 = inferencePriority1
+      ..inference_priority2 = inferencePriority2
+      ..inference_priority3 = inferencePriority3
+      ..experimental_flags =
+          _TfLiteGpuExperimentalFlagsUtil.getBitmask(experimentalFlags)
+      ..max_delegated_partitions = maxDelegatePartitions;
+
+    return GpuDelegateOptionsV2._(options);
   }
 
   void delete() {
@@ -143,20 +147,21 @@ class _TfLiteGpuExperimentalFlagsUtil {
   static const int clOnly = 1 << 1;
   static const int glOnly = 1 << 2;
 
-  static int value(TfLiteGpuExperimentalFlags flag) {
+  static int value(int flag) {
     switch (flag) {
-      case TfLiteGpuExperimentalFlags.none:
-        return none;
-      case TfLiteGpuExperimentalFlags.enableQuant:
+      case TfLiteGpuExperimentalFlags
+            .TFLITE_GPU_EXPERIMENTAL_FLAGS_ENABLE_QUANT:
         return enableQuant;
-      case TfLiteGpuExperimentalFlags.clOnly:
+      case TfLiteGpuExperimentalFlags.TFLITE_GPU_EXPERIMENTAL_FLAGS_CL_ONLY:
         return clOnly;
-      case TfLiteGpuExperimentalFlags.glOnly:
+      case TfLiteGpuExperimentalFlags.TFLITE_GPU_EXPERIMENTAL_FLAGS_GL_ONLY:
         return glOnly;
+      default:
+        return none;
     }
   }
 
-  static int getBitmask(List<TfLiteGpuExperimentalFlags> flags) {
+  static int getBitmask(List<int> flags) {
     int bitmask = 0;
     for (final flag in flags) {
       bitmask |= value(flag);

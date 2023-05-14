@@ -1,18 +1,18 @@
-# 
+#
 # Copyright 2023 The TensorFlow Authors. All Rights Reserved.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #             http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# 
+#
 
 name: tflite_flutter
 description: TensorFlow Lite Flutter plugin provides an easy, flexible, and fast Dart API to integrate TFLite models in flutter apps across mobile and desktop platforms.
@@ -20,17 +20,18 @@ version: 0.9.5
 homepage: https://github.com/tensorflow/flutter-tflite
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=1.26.0-17.6.pre"
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   path: ^1.6.2
+  plugin_platform_interface: ^2.0.2
   quiver: ^3.0.0
   ffi: ^2.0.1
 
 dev_dependencies:
+  ffigen: ^8.0.1
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter

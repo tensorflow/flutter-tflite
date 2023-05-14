@@ -17,8 +17,9 @@ import 'dart:ffi';
 
 import 'package:ffi/ffi.dart';
 import 'package:quiver/check.dart';
-import '../bindings/delegates/xnnpack_delegate.dart';
-import '../bindings/types.dart';
+import 'package:tflite_flutter/src/bindings/bindings.dart';
+import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
+
 import '../delegate.dart';
 
 /// XNNPack Delegate
@@ -34,16 +35,17 @@ class XNNPackDelegate implements Delegate {
   factory XNNPackDelegate({XNNPackDelegateOptions? options}) {
     if (options == null) {
       return XNNPackDelegate._(
-        tfliteXNNPackDelegateCreate(nullptr),
+        tfliteBinding.TfLiteXNNPackDelegateCreate(nullptr),
       );
     }
-    return XNNPackDelegate._(tfliteXNNPackDelegateCreate(options.base));
+    return XNNPackDelegate._(
+        tfliteBinding.TfLiteXNNPackDelegateCreate(options.base));
   }
 
   @override
   void delete() {
     checkState(!_deleted, message: 'XNNPackDelegate already deleted.');
-    tfliteXNNPackDelegateDelete(_delegate);
+    tfliteBinding.TfLiteXNNPackDelegateDelete(_delegate);
     _deleted = true;
   }
 }
@@ -60,9 +62,10 @@ class XNNPackDelegateOptions {
   factory XNNPackDelegateOptions({
     int numThreads = 1,
   }) {
-    return XNNPackDelegateOptions._(TfLiteXNNPackDelegateOptions.allocate(
-      1,
-    ));
+    final options = calloc<TfLiteXNNPackDelegateOptions>();
+    options.ref.num_threads = numThreads;
+
+    return XNNPackDelegateOptions._(options);
   }
 
   void delete() {

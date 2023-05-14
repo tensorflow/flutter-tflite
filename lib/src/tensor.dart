@@ -19,15 +19,15 @@ import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
 import 'package:quiver/check.dart';
+import 'package:tflite_flutter/src/bindings/bindings.dart';
+import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
 import 'package:tflite_flutter/src/util/byte_conversion_utils.dart';
 
-import 'bindings/tensor.dart';
-import 'bindings/types.dart';
 import 'ffi/helper.dart';
 import 'quanitzation_params.dart';
 import 'util/list_shape_extension.dart';
 
-export 'bindings/types.dart' show TfLiteType;
+export 'bindings/tensorflow_lite_bindings_generated.dart' show TfLiteType;
 
 /// TensorFlowLite tensor.
 class Tensor {
@@ -38,35 +38,37 @@ class Tensor {
   }
 
   /// Name of the tensor element.
-  String get name => tfLiteTensorName(_tensor).toDartString();
+  String get name =>
+      tfliteBinding.TfLiteTensorName(_tensor).cast<Utf8>().toDartString();
 
   /// Data type of the tensor element.
-  TfLiteType get type => tfLiteTensorType(_tensor);
+  int get type => tfliteBinding.TfLiteTensorType(_tensor);
 
   /// Dimensions of the tensor.
   List<int> get shape => List.generate(
-      tfLiteTensorNumDims(_tensor), (i) => tfLiteTensorDim(_tensor, i));
+      tfliteBinding.TfLiteTensorNumDims(_tensor),
+      (i) => tfliteBinding.TfLiteTensorDim(_tensor, i));
 
   /// Underlying data buffer as bytes.
   Uint8List get data {
-    final data = cast<Uint8>(tfLiteTensorData(_tensor));
+    final data = cast<Uint8>(tfliteBinding.TfLiteTensorData(_tensor));
     return UnmodifiableUint8ListView(
-        data.asTypedList(tfLiteTensorByteSize(_tensor)));
+        data.asTypedList(tfliteBinding.TfLiteTensorByteSize(_tensor)));
   }
 
   /// Quantization Params associated with the model, [only Android]
   QuantizationParams get params {
-    final ref = tfLiteTensorQuantizationParams(_tensor);
-    return QuantizationParams(ref.scale, ref.zeroPoint);
+    final ref = tfliteBinding.TfLiteTensorQuantizationParams(_tensor);
+    return QuantizationParams(ref.scale, ref.zero_point);
   }
 
   /// Updates the underlying data buffer with new bytes.
   ///
   /// The size must match the size of the tensor.
   set data(Uint8List bytes) {
-    final tensorByteSize = tfLiteTensorByteSize(_tensor);
+    final tensorByteSize = tfliteBinding.TfLiteTensorByteSize(_tensor);
     checkArgument(tensorByteSize == bytes.length);
-    final data = cast<Uint8>(tfLiteTensorData(_tensor));
+    final data = cast<Uint8>(tfliteBinding.TfLiteTensorData(_tensor));
     checkState(isNotNull(data), message: 'Tensor data is null.');
     final externalTypedData = data.asTypedList(tensorByteSize);
     externalTypedData.setRange(0, tensorByteSize, bytes);
@@ -74,12 +76,12 @@ class Tensor {
 
   /// Returns number of dimensions
   int numDimensions() {
-    return tfLiteTensorNumDims(_tensor);
+    return tfliteBinding.TfLiteTensorNumDims(_tensor);
   }
 
   /// Returns the size, in bytes, of the tensor data.
   int numBytes() {
-    return tfLiteTensorByteSize(_tensor);
+    return tfliteBinding.TfLiteTensorByteSize(_tensor);
   }
 
   /// Returns the number of elements in a flattened (1-D) view of the tensor.
@@ -133,19 +135,19 @@ class Tensor {
   }
 
   /// Returns data type of given object
-  static TfLiteType dataTypeOf(Object o) {
+  static int dataTypeOf(Object o) {
     while (o is List) {
       o = o.elementAt(0);
     }
     Object c = o;
     if (c is double) {
-      return TfLiteType.float32;
+      return TfLiteType.kTfLiteFloat32;
     } else if (c is int) {
-      return TfLiteType.int32;
+      return TfLiteType.kTfLiteInt32;
     } else if (c is String) {
-      return TfLiteType.string;
+      return TfLiteType.kTfLiteString;
     } else if (c is bool) {
-      return TfLiteType.bool;
+      return TfLiteType.kTfLiteBool;
     }
     throw ArgumentError(
         'DataType error: cannot resolve DataType of ${o.runtimeType}');
@@ -159,9 +161,9 @@ class Tensor {
     final externalTypedData = ptr.asTypedList(size);
     externalTypedData.setRange(0, bytes.length, bytes);
     try {
-      checkState(
-          tfLiteTensorCopyFromBuffer(_tensor, ptr.cast(), bytes.length) ==
-              TfLiteStatus.ok);
+      checkState(tfliteBinding.TfLiteTensorCopyFromBuffer(
+              _tensor, ptr.cast(), bytes.length) ==
+          TfLiteStatus.kTfLiteOk);
     } catch (_) {
       rethrow;
     } finally {
@@ -170,12 +172,13 @@ class Tensor {
   }
 
   Object copyTo(Object dst) {
-    int size = tfLiteTensorByteSize(_tensor);
+    int size = tfliteBinding.TfLiteTensorByteSize(_tensor);
     final ptr = calloc<Uint8>(size);
     checkState(isNotNull(ptr), message: 'unallocated');
     final externalTypedData = ptr.asTypedList(size);
     checkState(
-        tfLiteTensorCopyToBuffer(_tensor, ptr.cast(), size) == TfLiteStatus.ok);
+        tfliteBinding.TfLiteTensorCopyToBuffer(_tensor, ptr.cast(), size) ==
+            TfLiteStatus.kTfLiteOk);
     // Clone the data, because once `free(ptr)`, `externalTypedData` will be
     // volatile
     final bytes = externalTypedData.sublist(0);

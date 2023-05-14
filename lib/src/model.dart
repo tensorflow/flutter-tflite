@@ -18,9 +18,9 @@ import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
 import 'package:quiver/check.dart';
+import 'package:tflite_flutter/src/bindings/bindings.dart';
+import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
 
-import 'bindings/model.dart';
-import 'bindings/types.dart';
 import 'ffi/helper.dart';
 
 /// TensorFlowLite model.
@@ -34,8 +34,8 @@ class Model {
 
   /// Loads model from a file or throws if unsuccessful.
   factory Model.fromFile(String path) {
-    final cpath = path.toNativeUtf8();
-    final model = tfLiteModelCreateFromFile(cpath);
+    final cpath = path.toNativeUtf8().cast<Char>();
+    final model = tfliteBinding.TfLiteModelCreateFromFile(cpath);
     calloc.free(cpath);
     checkArgument(isNotNull(model),
         message: 'Unable to create model from file');
@@ -48,7 +48,7 @@ class Model {
     final ptr = calloc<Uint8>(size);
     final externalTypedData = ptr.asTypedList(size);
     externalTypedData.setRange(0, buffer.length, buffer);
-    final model = tfLiteModelCreateFromBuffer(ptr.cast(), buffer.length);
+    final model = tfliteBinding.TfLiteModelCreate(ptr.cast(), buffer.length);
     checkArgument(isNotNull(model),
         message: 'Unable to create model from buffer');
     return Model._(model);
@@ -57,7 +57,7 @@ class Model {
   /// Destroys the model instance.
   void delete() {
     checkState(!_deleted, message: 'Model already deleted.');
-    tfLiteModelDelete(_model);
+    tfliteBinding.TfLiteModelDelete(_model);
     _deleted = true;
   }
 }

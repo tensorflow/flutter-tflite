@@ -17,9 +17,9 @@ import 'dart:ffi';
 
 import 'package:ffi/ffi.dart';
 import 'package:quiver/check.dart';
-import '../bindings/delegates/coreml_delegate.dart';
-import '../bindings/types.dart';
-import '../delegate.dart';
+import 'package:tflite_flutter/src/bindings/bindings.dart';
+import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
+import 'package:tflite_flutter/tflite_flutter.dart';
 
 /// CoreMl Delegate
 class CoreMlDelegate implements Delegate {
@@ -34,16 +34,17 @@ class CoreMlDelegate implements Delegate {
   factory CoreMlDelegate({CoreMlDelegateOptions? options}) {
     if (options == null) {
       return CoreMlDelegate._(
-        tfliteCoreMlDelegateCreate(nullptr),
+        tfliteBinding.TfLiteCoreMlDelegateCreate(nullptr),
       );
     }
-    return CoreMlDelegate._(tfliteCoreMlDelegateCreate(options.base));
+    return CoreMlDelegate._(
+        tfliteBinding.TfLiteCoreMlDelegateCreate(options.base));
   }
 
   @override
   void delete() {
     checkState(!_deleted, message: 'CoreMlDelegate already deleted.');
-    tfliteCoreMlDelegateDelete(_delegate);
+    tfliteBinding.TfLiteCoreMlDelegateDelete(_delegate);
     _deleted = true;
   }
 }
@@ -58,19 +59,21 @@ class CoreMlDelegateOptions {
   CoreMlDelegateOptions._(this._options);
 
   factory CoreMlDelegateOptions({
-    TfLiteCoreMlDelegateEnabledDevices enabledDevices =
-        TfLiteCoreMlDelegateEnabledDevices
-            .TfLiteCoreMlDelegateDevicesWithNeuralEngine,
+    int enabledDevices = TfLiteCoreMlDelegateEnabledDevices
+        .TfLiteCoreMlDelegateDevicesWithNeuralEngine,
     int coremlVersion = 0,
     int maxDelegatedPartitions = 0,
     int minNodesPerPartition = 2,
   }) {
-    return CoreMlDelegateOptions._(TfLiteCoreMlDelegateOptions.allocate(
-      enabledDevices,
-      coremlVersion,
-      maxDelegatedPartitions,
-      minNodesPerPartition,
-    ));
+    final options = calloc<TfLiteCoreMlDelegateOptions>();
+
+    options.ref
+      ..enabled_devices = enabledDevices
+      ..coreml_version = coremlVersion
+      ..max_delegated_partitions = maxDelegatedPartitions
+      ..min_nodes_per_partition = minNodesPerPartition;
+
+    return CoreMlDelegateOptions._(options);
   }
 
   void delete() {

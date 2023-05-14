@@ -18,8 +18,9 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:quiver/check.dart';
-import '../tflite_flutter.dart';
-import 'bindings/interpreter_options.dart';
+import 'package:tflite_flutter/src/bindings/bindings.dart';
+import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
+import 'package:tflite_flutter/tflite_flutter.dart';
 
 /// TensorFlowLite interpreter options.
 class InterpreterOptions {
@@ -32,24 +33,27 @@ class InterpreterOptions {
 
   /// Creates a new options instance.
   factory InterpreterOptions() =>
-      InterpreterOptions._(tfLiteInterpreterOptionsCreate());
+      InterpreterOptions._(tfliteBinding.TfLiteInterpreterOptionsCreate());
 
   /// Destroys the options instance.
   void delete() {
     checkState(!_deleted, message: 'InterpreterOptions already deleted.');
-    tfLiteInterpreterOptionsDelete(_options);
+    tfliteBinding.TfLiteInterpreterOptionsDelete(_options);
     _deleted = true;
   }
 
   /// Sets the number of CPU threads to use.
   set threads(int threads) =>
-      tfLiteInterpreterOptionsSetNumThreads(_options, threads);
+      tfliteBinding.TfLiteInterpreterOptionsSetNumThreads(_options, threads);
 
   /// TensorFlow version >= v2.2
   /// Set true to use NnApi Delegate for Android
   set useNnApiForAndroid(bool useNnApi) {
     if (Platform.isAndroid) {
-      tfLiteInterpreterOptionsSetUseNNAPI(_options, useNnApi ? 1 : 0);
+      tfliteBinding.TfLiteInterpreterOptionsSetUseNNAPI(
+        _options,
+        useNnApi,
+      );
     }
   }
 
@@ -62,7 +66,7 @@ class InterpreterOptions {
 
   /// Adds delegate to Interpreter Options
   void addDelegate(Delegate delegate) {
-    tfLiteInterpreterOptionsAddDelegate(_options, delegate.base);
+    tfliteBinding.TfLiteInterpreterOptionsAddDelegate(_options, delegate.base);
   }
 
 // Unimplemented:
