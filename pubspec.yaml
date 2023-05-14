@@ -48,8 +48,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.tfliteflutter.tflite_flutter_plugin
-        pluginClass: TfliteFlutterPlugin
+        ffiPlugin: true
       ios:
         ffiPlugin: true
       linux:
