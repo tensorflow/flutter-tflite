@@ -51,7 +51,7 @@ flutter:
         package: com.tfliteflutter.tflite_flutter_plugin
         pluginClass: TfliteFlutterPlugin
       ios:
-        pluginClass: TfliteFlutterPlugin
+        ffiPlugin: true
       linux:
         pluginClass: TfliteFlutterPlugin
 
