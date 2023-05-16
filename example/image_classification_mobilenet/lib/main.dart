@@ -42,8 +42,8 @@ class _HomeState extends State<Home> {
   late final Interpreter interpreter;
   late final List<String> labels;
 
-  List<int>? inputShape;
-  List<int>? outputShape;
+  Tensor? inputTensor;
+  Tensor? outputTensor;
 
   final imagePicker = ImagePicker();
   String? imagePath;
@@ -90,9 +90,9 @@ class _HomeState extends State<Home> {
     // Load model from assets
     interpreter = await Interpreter.fromAsset(modelPath, options: options);
     // Get tensor input shape [1, 224, 224, 3]
-    inputShape = interpreter.getInputTensors().first.shape;
+    inputTensor = interpreter.getInputTensors().first;
     // Get tensor output shape [1, 1001]
-    outputShape = interpreter.getOutputTensors().first.shape;
+    outputTensor = interpreter.getOutputTensors().first;
     setState(() {});
 
     log('Interpreter loaded successfully');
@@ -192,8 +192,12 @@ class _HomeState extends State<Home> {
                           children: [
                             const Row(),
                             // Show model information
-                            Text('Model input shape: $inputShape'),
-                            Text('Model output shape: $outputShape'),
+                            Text(
+                              'Input: (shape: ${inputTensor?.shape} type: ${inputTensor?.type})',
+                            ),
+                            Text(
+                              'Output: (shape: ${outputTensor?.shape} type: ${outputTensor?.type})',
+                            ),
                             const SizedBox(height: 8),
                             // Show picked image information
                             if (image != null) ...[

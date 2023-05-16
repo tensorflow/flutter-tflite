@@ -42,7 +42,9 @@ class Tensor {
       tfliteBinding.TfLiteTensorName(_tensor).cast<Utf8>().toDartString();
 
   /// Data type of the tensor element.
-  int get type => tfliteBinding.TfLiteTensorType(_tensor);
+  TensorType get type => TensorType.fromValue(
+        tfliteBinding.TfLiteTensorType(_tensor),
+      );
 
   /// Dimensions of the tensor.
   List<int> get shape => List.generate(
@@ -254,4 +256,55 @@ class Tensor {
   String toString() {
     return 'Tensor{_tensor: $_tensor, name: $name, type: $type, shape: $shape, data: ${data.length}}';
   }
+}
+
+enum TensorType {
+  noType(TfLiteType.kTfLiteNoType),
+  float32(TfLiteType.kTfLiteFloat32),
+  int32(TfLiteType.kTfLiteInt32),
+  uint8(TfLiteType.kTfLiteUInt8),
+  int64(TfLiteType.kTfLiteInt64),
+  string(TfLiteType.kTfLiteString),
+  boolean(TfLiteType.kTfLiteBool),
+  int16(TfLiteType.kTfLiteInt16),
+  complex64(TfLiteType.kTfLiteComplex64),
+  int8(TfLiteType.kTfLiteInt8),
+  float16(TfLiteType.kTfLiteFloat16),
+  float64(TfLiteType.kTfLiteFloat64),
+  complex128(TfLiteType.kTfLiteComplex128),
+  uint64(TfLiteType.kTfLiteUInt64),
+  resource(TfLiteType.kTfLiteResource),
+  variant(TfLiteType.kTfLiteVariant),
+  uint32(TfLiteType.kTfLiteUInt32),
+  uint16(TfLiteType.kTfLiteUInt16),
+  int4(TfLiteType.kTfLiteInt4);
+
+  const TensorType(this.value);
+
+  static TensorType fromValue(int tfLiteValue) => switch (tfLiteValue) {
+        TfLiteType.kTfLiteFloat32 => TensorType.float32,
+        TfLiteType.kTfLiteInt32 => TensorType.int32,
+        TfLiteType.kTfLiteUInt8 => TensorType.uint8,
+        TfLiteType.kTfLiteInt64 => TensorType.int64,
+        TfLiteType.kTfLiteString => TensorType.string,
+        TfLiteType.kTfLiteBool => TensorType.boolean,
+        TfLiteType.kTfLiteInt16 => TensorType.int16,
+        TfLiteType.kTfLiteComplex64 => TensorType.complex64,
+        TfLiteType.kTfLiteInt8 => TensorType.int8,
+        TfLiteType.kTfLiteFloat16 => TensorType.float16,
+        TfLiteType.kTfLiteFloat64 => TensorType.float64,
+        TfLiteType.kTfLiteComplex128 => TensorType.complex128,
+        TfLiteType.kTfLiteUInt64 => TensorType.uint64,
+        TfLiteType.kTfLiteResource => TensorType.resource,
+        TfLiteType.kTfLiteVariant => TensorType.variant,
+        TfLiteType.kTfLiteUInt32 => TensorType.uint32,
+        TfLiteType.kTfLiteUInt16 => TensorType.uint16,
+        TfLiteType.kTfLiteInt4 => TensorType.int4,
+        _ => TensorType.noType,
+      };
+
+  final int value;
+
+  @override
+  String toString() => name;
 }

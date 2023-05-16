@@ -234,12 +234,12 @@ void main() {
             List.filled(1, List.filled(8, List.filled(8, [1.23, 6.54, 7.81])));
         var output = List.filled(1 * 8 * 8 * 3, 0.0).reshape([1, 8, 8, 3]);
         var inputBytes = tfl.ByteConversionUtils.convertObjectToBytes(
-            four, tfl.TfLiteType.kTfLiteFloat32);
+            four, tfl.TensorType.float32);
         var outputBytes = tfl.ByteConversionUtils.convertObjectToBytes(
-            output, tfl.TfLiteType.kTfLiteFloat32);
+            output, tfl.TensorType.float32);
         interpreter.run(inputBytes, outputBytes);
         var outputList = tfl.ByteConversionUtils.convertBytesToObject(
-                outputBytes, tfl.TfLiteType.kTfLiteFloat32, [1, 8, 8, 3])
+                outputBytes, tfl.TensorType.float32, [1, 8, 8, 3])
             as List<List<List<List<double>>>>;
         expect(outputList[0][0][0][0].toStringAsFixed(2), '3.69');
         interpreter.close();
@@ -252,10 +252,10 @@ void main() {
             List.filled(1, List.filled(8, List.filled(8, [1.23, 6.54, 7.81])));
         var output = List.filled(1 * 8 * 8 * 3, 0.0).reshape([1, 8, 8, 3]);
         var inputBuffer = tfl.ByteConversionUtils.convertObjectToBytes(
-                four, tfl.TfLiteType.kTfLiteFloat32)
+                four, tfl.TensorType.float32)
             .buffer;
         var outputBuffer = tfl.ByteConversionUtils.convertObjectToBytes(
-                output, tfl.TfLiteType.kTfLiteFloat32)
+                output, tfl.TensorType.float32)
             .buffer;
         interpreter.run(inputBuffer, outputBuffer);
         var outputElement =

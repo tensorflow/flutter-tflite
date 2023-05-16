@@ -40,8 +40,8 @@ class _HomeState extends State<Home> {
   late final Interpreter interpreter;
   late final List<String> labels;
 
-  List<int>? inputShape;
-  List<int>? outputShape;
+  Tensor? inputTensor;
+  Tensor? outputTensor;
 
   String? imagePath;
   Uint8List? imageResult;
@@ -84,9 +84,9 @@ class _HomeState extends State<Home> {
     // Load model from assets
     interpreter = await Interpreter.fromAsset(modelPath, options: options);
     // Get tensor input shape [1, 50, 50, 3]
-    inputShape = interpreter.getInputTensors().first.shape;
+    inputTensor = interpreter.getInputTensors().first;
     // Get tensor output shape [1, 200, 200, 3]
-    outputShape = interpreter.getOutputTensors().first.shape;
+    outputTensor = interpreter.getOutputTensors().first;
     setState(() {});
 
     log('Interpreter loaded successfully');
@@ -108,11 +108,7 @@ class _HomeState extends State<Home> {
           image.width,
           (x) {
             final pixel = image.getPixel(x, y);
-            return [
-              pixel.r.toDouble(),
-              pixel.g.toDouble(),
-              pixel.b.toDouble(),
-            ];
+            return [pixel.r, pixel.g, pixel.b];
           },
         ),
       );
@@ -183,8 +179,11 @@ class _HomeState extends State<Home> {
                   if (imageResult != null)
                     Image.memory(imageResult!)
                   else
-                    const Text(
-                      'Select an image example for super resolution from 50x50 to 200x200',
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Select an image example for super resolution from 50x50 to 200x200',
+                      ),
                     ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -196,8 +195,12 @@ class _HomeState extends State<Home> {
                           children: [
                             const Row(),
                             // Show model information
-                            Text('Model input shape: $inputShape'),
-                            Text('Model output shape: $outputShape'),
+                            Text(
+                              'Input: (shape: ${inputTensor?.shape} type: ${inputTensor?.type})',
+                            ),
+                            Text(
+                              'Output: (shape: ${outputTensor?.shape} type: ${outputTensor?.type})',
+                            ),
                           ],
                         ),
                       ],

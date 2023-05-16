@@ -25,15 +25,3 @@ Pointer<T> cast<T extends NativeType>(Pointer<NativeType> ptr) =>
 
 /// Checks if a [Pointer] is not null.
 bool isNotNull(Pointer<dynamic> ptr) => ptr.address != nullptr.address;
-
-/// List<int> extension
-extension ListIntX on List<int> {
-  /// Get list bitmask
-  int get bitmask {
-    var bitmask = 0;
-    for (final flag in this) {
-      bitmask |= flag;
-    }
-    return bitmask;
-  }
-}
