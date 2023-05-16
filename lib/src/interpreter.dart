@@ -113,13 +113,12 @@ class Interpreter {
 
   /// Creates interpreter from a [assetName]
   ///
-  /// Place your `.tflite` file in the assets folder. Do not include the "assets/"
-  /// directory in assetName.
+  /// Place your `.tflite` file in your assets folder.
   ///
   /// Example:
   ///
   /// ```dart
-  /// final interpreter = await tfl.Interpreter.fromAsset('your_model.tflite');
+  /// final interpreter = await tfl.Interpreter.fromAsset('assets/your_model.tflite');
   /// ```
   static Future<Interpreter> fromAsset(String assetName,
       {InterpreterOptions? options}) async {
@@ -129,7 +128,7 @@ class Interpreter {
 
   /// Get byte buffer
   static Future<Uint8List> _getBuffer(String assetFileName) async {
-    ByteData rawAssetFile = await rootBundle.load('assets/$assetFileName');
+    ByteData rawAssetFile = await rootBundle.load(assetFileName);
     final rawBytes = rawAssetFile.buffer.asUint8List();
     return rawBytes;
   }

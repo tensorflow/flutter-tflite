@@ -36,7 +36,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  static const modelPath = 'mobilenet/mobilenet_v1_1.0_224_quant.tflite';
+  static const modelPath = 'assets/mobilenet/mobilenet_v1_1.0_224_quant.tflite';
   static const labelsPath = 'assets/mobilenet/labels.txt';
 
   late final Interpreter interpreter;

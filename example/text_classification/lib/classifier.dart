@@ -22,8 +22,8 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 
 class Classifier {
   // name of the model file
-  final _modelFile = 'text_classification.tflite';
-  final _vocabFile = 'text_classification_vocab.txt';
+  final _modelFile = 'assets/text_classification.tflite';
+  final _vocabFile = 'assets/text_classification_vocab.txt';
 
   // Maximum length of sentence
   final int _sentenceLen = 256;
@@ -67,7 +67,7 @@ class Classifier {
   }
 
   void _loadDictionary() async {
-    final vocab = await rootBundle.loadString('assets/$_vocabFile');
+    final vocab = await rootBundle.loadString(_vocabFile);
     var dict = <String, int>{};
     final vocabList = vocab.split('\n');
     for (var i = 0; i < vocabList.length; i++) {
