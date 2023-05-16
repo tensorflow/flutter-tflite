@@ -76,16 +76,16 @@ class _HomeState extends State<Home> {
     //   options.addDelegate(GpuDelegateV2());
     // }
 
-    // User Metal Delegate
+    // Use Metal Delegate
     if (Platform.isIOS) {
       options.addDelegate(GpuDelegate());
     }
 
     // Load model from assets
     interpreter = await Interpreter.fromAsset(modelPath, options: options);
-    // Get tensor input shape [1, 224, 224, 3]
+    // Get tensor input shape [1, 50, 50, 3]
     inputShape = interpreter.getInputTensors().first.shape;
-    // Get tensor output shape [1, 1001]
+    // Get tensor output shape [1, 200, 200, 3]
     outputShape = interpreter.getOutputTensors().first.shape;
     setState(() {});
 

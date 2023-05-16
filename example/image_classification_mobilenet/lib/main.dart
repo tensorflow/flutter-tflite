@@ -82,7 +82,7 @@ class _HomeState extends State<Home> {
     //   options.addDelegate(GpuDelegateV2());
     // }
 
-    // User Metal Delegate
+    // Use Metal Delegate
     if (Platform.isIOS) {
       options.addDelegate(GpuDelegate());
     }
