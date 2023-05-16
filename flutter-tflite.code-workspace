@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "example/super_resolution_esrgan"
+		},
+		{
+			"path": "example/style_transfer"
 		}
 	],
 	"settings": {}
