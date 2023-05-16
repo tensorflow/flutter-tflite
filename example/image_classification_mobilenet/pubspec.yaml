@@ -1,5 +1,5 @@
 name: image_classification_mobilenet
-description: A new Flutter project.
+description: Image Classification using mobilenet.
 
 publish_to: 'none'
 
