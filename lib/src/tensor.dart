@@ -281,27 +281,48 @@ enum TensorType {
 
   const TensorType(this.value);
 
-  static TensorType fromValue(int tfLiteValue) => switch (tfLiteValue) {
-        TfLiteType.kTfLiteFloat32 => TensorType.float32,
-        TfLiteType.kTfLiteInt32 => TensorType.int32,
-        TfLiteType.kTfLiteUInt8 => TensorType.uint8,
-        TfLiteType.kTfLiteInt64 => TensorType.int64,
-        TfLiteType.kTfLiteString => TensorType.string,
-        TfLiteType.kTfLiteBool => TensorType.boolean,
-        TfLiteType.kTfLiteInt16 => TensorType.int16,
-        TfLiteType.kTfLiteComplex64 => TensorType.complex64,
-        TfLiteType.kTfLiteInt8 => TensorType.int8,
-        TfLiteType.kTfLiteFloat16 => TensorType.float16,
-        TfLiteType.kTfLiteFloat64 => TensorType.float64,
-        TfLiteType.kTfLiteComplex128 => TensorType.complex128,
-        TfLiteType.kTfLiteUInt64 => TensorType.uint64,
-        TfLiteType.kTfLiteResource => TensorType.resource,
-        TfLiteType.kTfLiteVariant => TensorType.variant,
-        TfLiteType.kTfLiteUInt32 => TensorType.uint32,
-        TfLiteType.kTfLiteUInt16 => TensorType.uint16,
-        TfLiteType.kTfLiteInt4 => TensorType.int4,
-        _ => TensorType.noType,
-      };
+  static TensorType fromValue(int tfLiteValue) {
+    switch (tfLiteValue) {
+      case TfLiteType.kTfLiteFloat32:
+        return TensorType.float32;
+      case TfLiteType.kTfLiteInt32:
+        return TensorType.int32;
+      case TfLiteType.kTfLiteUInt8:
+        return TensorType.uint8;
+      case TfLiteType.kTfLiteInt64:
+        return TensorType.int64;
+      case TfLiteType.kTfLiteString:
+        return TensorType.string;
+      case TfLiteType.kTfLiteBool:
+        return TensorType.boolean;
+      case TfLiteType.kTfLiteInt16:
+        return TensorType.int16;
+      case TfLiteType.kTfLiteComplex64:
+        return TensorType.complex64;
+      case TfLiteType.kTfLiteInt8:
+        return TensorType.int8;
+      case TfLiteType.kTfLiteFloat16:
+        return TensorType.float16;
+      case TfLiteType.kTfLiteFloat64:
+        return TensorType.float64;
+      case TfLiteType.kTfLiteComplex128:
+        return TensorType.complex128;
+      case TfLiteType.kTfLiteUInt64:
+        return TensorType.uint64;
+      case TfLiteType.kTfLiteResource:
+        return TensorType.resource;
+      case TfLiteType.kTfLiteVariant:
+        return TensorType.variant;
+      case TfLiteType.kTfLiteUInt32:
+        return TensorType.uint32;
+      case TfLiteType.kTfLiteUInt16:
+        return TensorType.uint16;
+      case TfLiteType.kTfLiteInt4:
+        return TensorType.int4;
+      default:
+        return TensorType.noType;
+    }
+  }
 
   final int value;
 

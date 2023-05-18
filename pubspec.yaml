@@ -20,7 +20,7 @@ version: 0.9.5
 homepage: https://github.com/tensorflow/flutter-tflite
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=2.17.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -31,7 +31,7 @@ dependencies:
   ffi: ^2.0.1
 
 dev_dependencies:
-  ffigen: ^8.0.1
+  ffigen: ^7.2.11
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
