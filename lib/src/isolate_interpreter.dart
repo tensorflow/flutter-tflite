@@ -77,7 +77,7 @@ class IsolateInterpreter {
       sendPort.send(IsolateInterpreterState.idle);
     }
   }
-  
+
   /// Run for single input and output
   Future<void> run(Object input, Object output) {
     var map = <int, Object>{};
@@ -101,7 +101,7 @@ class IsolateInterpreter {
 
     _sendPort.send(data);
     await _wait();
-    
+
     final interpreter = Interpreter.fromAddress(address);
     final outputTensors = interpreter.getOutputTensors();
     for (var i = 0; i < outputTensors.length; i++) {
