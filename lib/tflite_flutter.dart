@@ -14,6 +14,7 @@ export 'src/delegates/metal_delegate.dart';
 export 'src/delegates/xnnpack_delegate.dart';
 export 'src/interpreter.dart';
 export 'src/interpreter_options.dart';
+export 'src/isolate_interpreter.dart';
 export 'src/quanitzation_params.dart';
 export 'src/tensor.dart';
 export 'src/util/byte_conversion_utils.dart';

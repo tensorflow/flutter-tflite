@@ -42,7 +42,9 @@ class _HomeState extends State<Home> {
       'assets/magenta/magenta_arbitrary-image-stylization-v1-256_int8_transfer_1.tflite';
 
   late final Interpreter predictionInterpreter;
+  late final IsolateInterpreter predictionIsolateInterpreter;
   late final Interpreter transferInterpreter;
+  late final IsolateInterpreter transferIsolateInterpreter;
 
   final imagePicker = ImagePicker();
   String? imagePath;
@@ -54,6 +56,13 @@ class _HomeState extends State<Home> {
     super.initState();
     // Load model and labels from assets
     loadModels();
+  }
+
+  @override
+  void dispose() {
+    predictionIsolateInterpreter.close();
+    transferIsolateInterpreter.close();
+    super.dispose();
   }
 
   // Clean old results when press some take picture button
@@ -95,10 +104,16 @@ class _HomeState extends State<Home> {
       options: predictionOptions,
     );
 
+    predictionIsolateInterpreter =
+        IsolateInterpreter(address: predictionInterpreter.address);
+
     transferInterpreter = await Interpreter.fromAsset(
       transferModelPath,
       options: transferOptions,
     );
+
+    transferIsolateInterpreter =
+        IsolateInterpreter(address: transferInterpreter.address);
 
     setState(() {});
 
@@ -198,7 +213,7 @@ class _HomeState extends State<Home> {
       ];
 
       // Run prediction inference
-      predictionInterpreter.run(predictionInput, predictionOutput);
+      await predictionIsolateInterpreter.run(predictionInput, predictionOutput);
 
       // [1, 384, 384, 3]
       final transferOutput = [
@@ -216,7 +231,7 @@ class _HomeState extends State<Home> {
       ];
 
       // Run transfer inference
-      transferInterpreter.runForMultipleInputs(
+      await transferIsolateInterpreter.runForMultipleInputs(
         transferInput,
         {0: transferOutput},
       );
@@ -263,25 +278,34 @@ class _HomeState extends State<Home> {
                 alignment: Alignment.center,
                 children: [
                   if (imagePath != null)
-                    Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(24),
-                          child: imageResult != null
-                              ? Image.memory(imageResult!)
-                              : Image.file(File(imagePath!)),
-                        ),
-                        if (stylePath != null)
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: Image.asset(
-                              stylePath!,
-                              height: 48,
-                            ),
-                          ),
-                      ],
-                    )
+                    StreamBuilder(
+                        stream: transferIsolateInterpreter.stateChanges,
+                        builder: (context, state) {
+                          return Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(24),
+                                child: imageResult != null
+                                    ? Image.memory(imageResult!)
+                                    : Image.file(File(imagePath!)),
+                              ),
+                              if (stylePath != null)
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: Image.asset(
+                                    stylePath!,
+                                    height: 48,
+                                  ),
+                                ),
+                              if (state.data == IsolateInterpreterState.loading)
+                                const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                            ],
+                          );
+                        })
                   else
                     Padding(
                       padding: const EdgeInsets.all(8.0),

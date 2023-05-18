@@ -174,11 +174,20 @@ class Interpreter {
 
   /// Run for multiple inputs and outputs
   void runForMultipleInputs(List<Object> inputs, Map<int, Object> outputs) {
-    if (inputs.isEmpty) {
-      throw ArgumentError('Input error: Inputs should not be null or empty.');
-    }
     if (outputs.isEmpty) {
       throw ArgumentError('Input error: Outputs should not be null or empty.');
+    }
+    runInference(inputs);
+    var outputTensors = getOutputTensors();
+    for (var i = 0; i < outputTensors.length; i++) {
+      outputTensors[i].copyTo(outputs[i]!);
+    }
+  }
+
+  /// Just run inference
+  void runInference(List<Object> inputs) {
+    if (inputs.isEmpty) {
+      throw ArgumentError('Input error: Inputs should not be null or empty.');
     }
 
     var inputTensors = getInputTensors();
@@ -205,11 +214,6 @@ class Interpreter {
     invoke();
     _lastNativeInferenceDurationMicroSeconds =
         DateTime.now().microsecondsSinceEpoch - inferenceStartNanos;
-
-    var outputTensors = getOutputTensors();
-    for (var i = 0; i < outputTensors.length; i++) {
-      outputTensors[i].copyTo(outputs[i]!);
-    }
   }
 
   /// Gets all input tensors associated with the model.
