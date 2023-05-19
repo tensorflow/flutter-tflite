@@ -7,15 +7,19 @@ on:
 
 jobs:
   build:
-    runs-on: macOS-13
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - uses: dart-lang/setup-dart@08de7e0c9a57cb3229b052af11c7f8eae4a845bd
       - uses: subosito/flutter-action@48cafc24713cca54bbe03cdc3a423187d413aafa
         with:
           channel: 'stable'
+
+      - name: Install melos
+        run: dart pub global activate melos
+
       - name: Install dependencies
-        run: dart pub get
+        run: melos bootstrap
 
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
