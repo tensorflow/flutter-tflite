@@ -1,3 +1,17 @@
+##
+0.10.0 (May 22, 2023)
+* Use ffi for binding to iOS dependencies. Use the ios/tflite_flutter.podspec file to specify tensorflow lite library version. Dependencies are automatically downloaded without user intervention (no need for releases/download folder)
+* Use ffi for binding with Android dependencies. Use the android/build.gradle file to specify tensorflow lite library version. Dependencies are automatically downloaded without user intervention (no need for releases/download folder)
+* Use ffigen to generate the binding code in dart
+* Enable delegates in text_classification example
+* Add conversion for tensors of type uint8
+* Add image classification example using mobilenet
+* Add super resolution example using esrgan
+* Add style transfer example
+* IsolateInterpreter to run inference in an isolate. Related to Use isolates to run inference #52
+* Support for melos added
+* Text classification example fixed
+
 ## 0.9.0 (Jun 28, 2021)
 * Support for Windows, Mac and Linux platforms.
 * Improved gpu delegate support and bug fixes.
