@@ -55,53 +55,55 @@ class _MyAppState extends State<MyApp> {
                   return _children[index];
                 },
               )),
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.orangeAccent)),
-                child: Row(children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      decoration: const InputDecoration(
-                          hintText: 'Write some text here'),
-                      controller: _controller,
+              SafeArea(
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.orangeAccent)),
+                  child: Row(children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                            hintText: 'Write some text here'),
+                        controller: _controller,
+                      ),
                     ),
-                  ),
-                  TextButton(
-                    child: const Text('Classify'),
-                    onPressed: () {
-                      final text = _controller.text;
-                      final prediction = _classifier.classify(text);
-                      setState(() {
-                        _children.add(Dismissible(
-                          key: GlobalKey(),
-                          onDismissed: (direction) {},
-                          child: Card(
-                            child: Container(
-                              padding: const EdgeInsets.all(16),
-                              color: prediction[1] > prediction[0]
-                                  ? Colors.lightGreen
-                                  : Colors.redAccent,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "Input: $text",
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                  Text("Output:"),
-                                  Text("   Positive: ${prediction[1]}"),
-                                  Text("   Negative: ${prediction[0]}"),
-                                ],
+                    TextButton(
+                      child: const Text('Classify'),
+                      onPressed: () {
+                        final text = _controller.text;
+                        final prediction = _classifier.classify(text);
+                        setState(() {
+                          _children.add(Dismissible(
+                            key: GlobalKey(),
+                            onDismissed: (direction) {},
+                            child: Card(
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                color: prediction[1] > prediction[0]
+                                    ? Colors.lightGreen
+                                    : Colors.redAccent,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Input: $text",
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                    Text("Output:"),
+                                    Text("   Positive: ${prediction[1]}"),
+                                    Text("   Negative: ${prediction[0]}"),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ));
-                        _controller.clear();
-                      });
-                    },
-                  ),
-                ]),
+                          ));
+                          _controller.clear();
+                        });
+                      },
+                    ),
+                  ]),
+                ),
               ),
             ],
           ),

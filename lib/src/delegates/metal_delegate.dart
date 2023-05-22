@@ -17,9 +17,9 @@ import 'dart:ffi';
 
 import 'package:ffi/ffi.dart';
 import 'package:quiver/check.dart';
-import '../bindings/delegates/metal_delegate.dart';
-import '../bindings/types.dart';
-import '../delegate.dart';
+import 'package:tflite_flutter/src/bindings/bindings.dart';
+import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
+import 'package:tflite_flutter/tflite_flutter.dart';
 
 /// Metal Delegate for iOS
 class GpuDelegate implements Delegate {
@@ -34,16 +34,16 @@ class GpuDelegate implements Delegate {
   factory GpuDelegate({GpuDelegateOptions? options}) {
     if (options == null) {
       return GpuDelegate._(
-        tflGpuDelegateCreate(nullptr),
+        tfliteBinding.TFLGpuDelegateCreate(nullptr),
       );
     }
-    return GpuDelegate._(tflGpuDelegateCreate(options.base));
+    return GpuDelegate._(tfliteBinding.TFLGpuDelegateCreate(options.base));
   }
 
   @override
   void delete() {
     checkState(!_deleted, message: 'TfLiteGpuDelegate already deleted.');
-    tflGpuDelegateDelete(_delegate);
+    tfliteBinding.TFLGpuDelegateDelete(_delegate);
     _deleted = true;
   }
 }
@@ -59,14 +59,17 @@ class GpuDelegateOptions {
 
   factory GpuDelegateOptions({
     bool allowPrecisionLoss = false,
-    TFLGpuDelegateWaitType waitType = TFLGpuDelegateWaitType.passive,
+    int waitType = TFLGpuDelegateWaitType.TFLGpuDelegateWaitTypePassive,
     bool enableQuantization = true,
   }) {
-    return GpuDelegateOptions._(TFLGpuDelegateOptions.allocate(
-      allowPrecisionLoss,
-      waitType,
-      enableQuantization,
-    ));
+    final options = calloc<TFLGpuDelegateOptions>();
+
+    options.ref
+      ..allow_precision_loss = allowPrecisionLoss
+      ..wait_type = waitType
+      ..enable_quantization = enableQuantization;
+
+    return GpuDelegateOptions._(options);
   }
 
   void delete() {

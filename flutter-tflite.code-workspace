@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "example/text_classification"
+		},
+		{
+			"path": "example/image_classification_mobilenet"
+		},
+		{
+			"path": "example/super_resolution_esrgan"
+		},
+		{
+			"path": "example/style_transfer"
+		}
+	],
+	"settings": {}
+}

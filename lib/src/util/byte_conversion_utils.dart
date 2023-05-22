@@ -15,11 +15,23 @@
  */
 
 import 'dart:typed_data';
-import 'list_shape_extension.dart';
-import 'package:tflite_flutter/src/bindings/types.dart';
+
+import 'package:tflite_flutter/tflite_flutter.dart';
+
+class ByteConvertionError extends ArgumentError {
+  ByteConvertionError({
+    required this.input,
+    required this.tensorType,
+  }) : super(
+          'The input element is ${input.runtimeType} while tensor data type is $tensorType',
+        );
+
+  final Object input;
+  final TensorType tensorType;
+}
 
 class ByteConversionUtils {
-  static Uint8List convertObjectToBytes(Object o, TfLiteType tfliteType) {
+  static Uint8List convertObjectToBytes(Object o, TensorType tensorType) {
     if (o is Uint8List) {
       return o;
     }
@@ -29,101 +41,150 @@ class ByteConversionUtils {
     List<int> bytes = <int>[];
     if (o is List) {
       for (var e in o) {
-        bytes.addAll(convertObjectToBytes(e, tfliteType));
+        bytes.addAll(convertObjectToBytes(e, tensorType));
       }
     } else {
-      return _convertElementToBytes(o, tfliteType);
+      return _convertElementToBytes(o, tensorType);
     }
     return Uint8List.fromList(bytes);
   }
 
-  static Uint8List _convertElementToBytes(Object o, TfLiteType tfliteType) {
-    if (tfliteType == TfLiteType.float32) {
+  static Uint8List _convertElementToBytes(Object o, TensorType tensorType) {
+    // Float32
+    if (tensorType.value == TfLiteType.kTfLiteFloat32) {
       if (o is double) {
         var buffer = Uint8List(4).buffer;
         var bdata = ByteData.view(buffer);
         bdata.setFloat32(0, o, Endian.little);
         return buffer.asUint8List();
-      } else {
-        throw ArgumentError(
-            'The input element is ${o.runtimeType} while tensor data tfliteType is ${TfLiteType.float32}');
       }
-    } else if (tfliteType == TfLiteType.int32) {
+      if (o is int) {
+        var buffer = Uint8List(4).buffer;
+        var bdata = ByteData.view(buffer);
+        bdata.setFloat32(0, o.toDouble(), Endian.little);
+        return buffer.asUint8List();
+      }
+      throw ByteConvertionError(
+        input: o,
+        tensorType: tensorType,
+      );
+    }
+
+    // Uint8
+    if (tensorType.value == TfLiteType.kTfLiteUInt8) {
+      if (o is int) {
+        var buffer = Uint8List(1).buffer;
+        var bdata = ByteData.view(buffer);
+        bdata.setUint8(0, o);
+        return buffer.asUint8List();
+      }
+      throw ByteConvertionError(
+        input: o,
+        tensorType: tensorType,
+      );
+    }
+
+    // Int32
+    if (tensorType.value == TfLiteType.kTfLiteInt32) {
       if (o is int) {
         var buffer = Uint8List(4).buffer;
         var bdata = ByteData.view(buffer);
         bdata.setInt32(0, o, Endian.little);
         return buffer.asUint8List();
-      } else {
-        throw ArgumentError(
-            'The input element is ${o.runtimeType} while tensor data tfliteType is ${TfLiteType.int32}');
       }
-    } else if (tfliteType == TfLiteType.int64) {
+      throw ByteConvertionError(
+        input: o,
+        tensorType: tensorType,
+      );
+    }
+
+    // Int64
+    if (tensorType.value == TfLiteType.kTfLiteInt64) {
       if (o is int) {
         var buffer = Uint8List(8).buffer;
         var bdata = ByteData.view(buffer);
         bdata.setInt64(0, o, Endian.big);
         return buffer.asUint8List();
-      } else {
-        throw ArgumentError(
-            'The input element is ${o.runtimeType} while tensor data tfliteType is ${TfLiteType.int32}');
       }
-    } else if (tfliteType == TfLiteType.int16) {
+      throw ByteConvertionError(
+        input: o,
+        tensorType: tensorType,
+      );
+    }
+
+    // Int16
+    if (tensorType.value == TfLiteType.kTfLiteInt16) {
       if (o is int) {
         var buffer = Uint8List(2).buffer;
         var bdata = ByteData.view(buffer);
         bdata.setInt16(0, o, Endian.little);
         return buffer.asUint8List();
-      } else {
-        throw ArgumentError(
-            'The input element is ${o.runtimeType} while tensor data tfliteType is ${TfLiteType.int32}');
       }
-    } else if (tfliteType == TfLiteType.float16) {
+      throw ByteConvertionError(
+        input: o,
+        tensorType: tensorType,
+      );
+    }
+
+    // Float16
+    if (tensorType.value == TfLiteType.kTfLiteFloat16) {
       if (o is double) {
         var buffer = Uint8List(4).buffer;
         var bdata = ByteData.view(buffer);
         bdata.setFloat32(0, o, Endian.little);
         return buffer.asUint8List().sublist(0, 2);
-      } else {
-        throw ArgumentError(
-            'The input element is ${o.runtimeType} while tensor data tfliteType is ${TfLiteType.float32}');
       }
-    } else if (tfliteType == TfLiteType.int8) {
+      if (o is int) {
+        var buffer = Uint8List(4).buffer;
+        var bdata = ByteData.view(buffer);
+        bdata.setFloat32(0, o.toDouble(), Endian.little);
+        return buffer.asUint8List().sublist(0, 2);
+      }
+      throw ByteConvertionError(
+        input: o,
+        tensorType: tensorType,
+      );
+    }
+
+    // Int8
+    if (tensorType.value == TfLiteType.kTfLiteInt8) {
       if (o is int) {
         var buffer = Uint8List(1).buffer;
         var bdata = ByteData.view(buffer);
         bdata.setInt8(0, o);
         return buffer.asUint8List();
-      } else {
-        throw ArgumentError(
-            'The input element is ${o.runtimeType} while tensor data tfliteType is ${TfLiteType.float32}');
       }
-    } else {
-      throw ArgumentError(
-          'The input data tfliteType ${o.runtimeType} is unsupported');
+      throw ByteConvertionError(
+        input: o,
+        tensorType: tensorType,
+      );
     }
+
+    throw ArgumentError(
+      'The input data tfliteType ${o.runtimeType} is unsupported',
+    );
   }
 
   static Object convertBytesToObject(
-      Uint8List bytes, TfLiteType tfliteType, List<int> shape) {
+      Uint8List bytes, TensorType tensorType, List<int> shape) {
     // stores flattened data
     List<dynamic> list = [];
-    if (tfliteType == TfLiteType.int32) {
+    if (tensorType.value == TfLiteType.kTfLiteInt32) {
       for (var i = 0; i < bytes.length; i += 4) {
         list.add(ByteData.view(bytes.buffer).getInt32(i, Endian.little));
       }
       return list.reshape<int>(shape);
-    } else if (tfliteType == TfLiteType.float32) {
+    } else if (tensorType.value == TfLiteType.kTfLiteFloat32) {
       for (var i = 0; i < bytes.length; i += 4) {
         list.add(ByteData.view(bytes.buffer).getFloat32(i, Endian.little));
       }
       return list.reshape<double>(shape);
-    } else if (tfliteType == TfLiteType.int16) {
+    } else if (tensorType.value == TfLiteType.kTfLiteInt16) {
       for (var i = 0; i < bytes.length; i += 2) {
         list.add(ByteData.view(bytes.buffer).getInt16(i, Endian.little));
       }
       return list.reshape<int>(shape);
-    } else if (tfliteType == TfLiteType.float16) {
+    } else if (tensorType.value == TfLiteType.kTfLiteFloat16) {
       Uint8List list32 = Uint8List(bytes.length * 2);
       for (var i = 0; i < bytes.length; i += 2) {
         list32[i] = bytes[i];
@@ -133,22 +194,22 @@ class ByteConversionUtils {
         list.add(ByteData.view(list32.buffer).getFloat32(i, Endian.little));
       }
       return list.reshape<double>(shape);
-    } else if (tfliteType == TfLiteType.int8) {
+    } else if (tensorType.value == TfLiteType.kTfLiteInt8) {
       for (var i = 0; i < bytes.length; i += 1) {
         list.add(ByteData.view(bytes.buffer).getInt8(i));
       }
       return list.reshape<int>(shape);
-    } else if (tfliteType == TfLiteType.uint8) {
+    } else if (tensorType.value == TfLiteType.kTfLiteUInt8) {
       for (var i = 0; i < bytes.length; i += 1) {
         list.add(ByteData.view(bytes.buffer).getUint8(i));
       }
       return list.reshape<int>(shape);
-    } else if (tfliteType == TfLiteType.int64) {
+    } else if (tensorType.value == TfLiteType.kTfLiteInt64) {
       for (var i = 0; i < bytes.length; i += 8) {
         list.add(ByteData.view(bytes.buffer).getInt64(i));
       }
       return list.reshape<int>(shape);
     }
-    throw UnsupportedError("$tfliteType is not Supported.");
+    throw UnsupportedError("$tensorType is not Supported.");
   }
 }

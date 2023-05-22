@@ -13,15 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import 'dart:ffi';
+import 'dart:io';
 
-import 'package:ffi/ffi.dart';
+import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
 
-import 'dlib.dart';
+final DynamicLibrary _dylib = () {
+  if (Platform.isAndroid) {
+    return DynamicLibrary.open('libtensorflowlite_jni.so');
+  }
 
-/// Version information for the TensorFlowLite library.
-final Pointer<Utf8> Function() tfLiteVersion = tflitelib
-    .lookup<NativeFunction<_TfLiteVersionNativeT>>('TfLiteVersion')
-    .asFunction();
+  if (Platform.isIOS) {
+    return DynamicLibrary.process();
+  }
 
-typedef _TfLiteVersionNativeT = Pointer<Utf8> Function();
+  throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
+}();
+
+final DynamicLibrary _dylibGpu = () {
+  if (Platform.isAndroid) {
+    return DynamicLibrary.open('libtensorflowlite_gpu_jni.so');
+  }
+
+  throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
+}();
+
+/// TensorFlowLite Bindings
+final tfliteBinding = TensorFlowLiteBindings(_dylib);
+
+/// TensorFlowLite Gpu Bindings
+final tfliteBindingGpu = TensorFlowLiteBindings(_dylibGpu);

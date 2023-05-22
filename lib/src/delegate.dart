@@ -15,7 +15,7 @@
  */
 import 'dart:ffi';
 
-import 'bindings/types.dart';
+import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
 
 abstract class Delegate {
   /// Get pointer to TfLiteDelegate
