@@ -30,11 +30,11 @@ This repo is a TensorFlow managed fork of the [tflite_flutter_plugin](https://gi
 
 This project is currently a work-in-progress as we update it to create a working plugin that meets the latest and greatest Flutter and TensorFlow Lite standards. That said, *pull requests and contributions are more than welcome* and will be reviewed by TensorFlow or Flutter team members. We thank you for your understanding as we make progress on this update.
 
-Feel free to reach out to me with questions until then.
+Feel free to reach out to us by posting in the issues or discussion areas.
 
 Thanks!
 
-- ptruiz@google.com
+- PaulTR
 
 ## Overview
 
@@ -53,25 +53,23 @@ TensorFlow Lite Flutter plugin provides a flexible and fast solution for accessi
 
 ## (Important) Initial setup : Add dynamic libraries to your app
 
-### Android
+### Android & iOS
 
-Copy the folders from https://github.com/tensorflow/flutter-tflite/tree/main/releases/download/android into your project's /android/app/src/main/jniLibs directory.
+Examples and support now support dynamic library downloads! iOS samples can be run with the commands
 
-### iOS
+`flutter build ios` & `flutter install ios` from their respective iOS folders.
 
-1. Download [`TensorFlowLiteC.framework`](https://github.com/tensorflow/flutter-tflite/raw/main/releases/download/ios/TensorFlowLiteC.framework.zip).
-2. Place the `TensorFlowLiteC.framework` in the pub-cache folder of this package.
+Android can be run with the commands
 
- Pub-Cache folder location: [(ref)](https://dart.dev/tools/pub/cmd/pub-get#the-system-package-cache)
+`flutter build android` & `flutter install android`
 
- - `~/.pub-cache/hosted/pub.dartlang.org/tflite_flutter-<plugin-version>/ios/` (Linux/ Mac) 
- - `%LOCALAPPDATA%\Pub\Cache\hosted\pub.dartlang.org\tflite_flutter-<plugin-version>\ios\` (Windows)
+while devices are plugged in.
 
 Note: TFLite may not work in the iOS simulator. It's recommended that you test with a physical device.
 
 ## TFLite Flutter Helper Library
 
-The helper library has been deprecated. New development underway for a replacement at https://github.com/google/flutter-mediapipe
+The helper library has been deprecated. New development underway for a replacement at https://github.com/google/flutter-mediapipe. Current timeline is to have wide support by the end of August, 2023.
 
 ## Import
 
@@ -141,5 +139,3 @@ Refer to the documentation for info on creating interpreter from buffer or file.
 ```dart
 interpreter.close();
 ```
-
-Refer [Tests](https://github.com/tensorflow/flutter-tflite/blob/main/example/integration_test/tflite_flutter_test.dart) to see more example code for each method.
