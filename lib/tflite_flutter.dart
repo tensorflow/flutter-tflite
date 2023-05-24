@@ -12,6 +12,7 @@ export 'src/delegate.dart';
 export 'src/delegates/gpu_delegate.dart';
 export 'src/delegates/metal_delegate.dart';
 export 'src/delegates/xnnpack_delegate.dart';
+export 'src/delegates/coreml_delegate.dart';
 export 'src/interpreter.dart';
 export 'src/interpreter_options.dart';
 export 'src/isolate_interpreter.dart';
