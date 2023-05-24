@@ -144,7 +144,7 @@ class _HomeState extends State<Home> {
   ) async {
     // Set tensor input [1, 224, 224, 3]
     final input = [imageMatrix];
-    // Set tensor output [1, 10001]
+    // Set tensor output [1, 1001]
     final output = [List<int>.filled(1001, 0)];
 
     // Run inference
