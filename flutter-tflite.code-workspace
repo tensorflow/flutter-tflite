@@ -14,6 +14,9 @@
 		},
 		{
 			"path": "example/style_transfer"
+		},
+		{
+			"path": "example/object_detection_ssd_mobilenet"
 		}
 	],
 	"settings": {}
