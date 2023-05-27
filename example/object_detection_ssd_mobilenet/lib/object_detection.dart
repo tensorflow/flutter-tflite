@@ -5,7 +5,8 @@ import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart';
 
 class ObjectDetection {
-  static const String _modelPath = 'assets/model/lite-model_ssd_mobilenet_v1_1_metadata_2.tflite';
+  static const String _modelPath =
+      'assets/model/lite-model_ssd_mobilenet_v1_1_metadata_2.tflite';
   static const String _labelPath = 'assets/model/lite-labelmap.txt';
 
   Interpreter? _interpreter;
@@ -32,7 +33,8 @@ class ObjectDetection {
     }
 
     log('Loading interpreter...');
-    _interpreter = await Interpreter.fromAsset(_modelPath, options: interpreterOptions);
+    _interpreter =
+        await Interpreter.fromAsset(_modelPath, options: interpreterOptions);
   }
 
   Future<void> _loadLabels() async {
