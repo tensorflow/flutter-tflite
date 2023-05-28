@@ -86,7 +86,7 @@ import 'package:tflite_flutter/tflite_flutter.dart';
     Place `your_model.tflite` in `assets` directory. Make sure to include assets in `pubspec.yaml`.
 
     ```dart
-    final interpreter = await tfl.Interpreter.fromAsset('your_model.tflite');
+    final interpreter = await tfl.Interpreter.fromAsset('assets/your_model.tflite');
     ```
 
 Refer to the documentation for info on creating interpreter from buffer or file.
