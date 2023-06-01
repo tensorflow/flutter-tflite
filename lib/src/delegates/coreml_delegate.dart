@@ -32,13 +32,11 @@ class CoreMlDelegate implements Delegate {
   CoreMlDelegate._(this._delegate);
 
   factory CoreMlDelegate({CoreMlDelegateOptions? options}) {
-    if (options == null) {
-      return CoreMlDelegate._(
-        tfliteBinding.TfLiteCoreMlDelegateCreate(nullptr),
-      );
-    }
+    final delegateOptions = options ?? CoreMlDelegateOptions();
+
     return CoreMlDelegate._(
-        tfliteBinding.TfLiteCoreMlDelegateCreate(options.base));
+      tfliteBinding.TfLiteCoreMlDelegateCreate(delegateOptions.base),
+    );
   }
 
   @override
