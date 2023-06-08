@@ -22,6 +22,7 @@ import 'package:quiver/check.dart';
 import 'package:tflite_flutter/src/bindings/bindings.dart';
 import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
 import 'package:tflite_flutter/src/util/byte_conversion_utils.dart';
+import 'package:flutter/foundation.dart';
 
 import 'ffi/helper.dart';
 import 'quanitzation_params.dart';
@@ -246,9 +247,10 @@ class Tensor {
     }
 
     final inputShape = computeShapeOf(input);
-    if (inputShape == shape) {
+    if (listEquals(inputShape, shape)) {
       return null;
     }
+    
     return inputShape;
   }
 
