@@ -149,8 +149,7 @@ class _TfLiteGpuExperimentalFlagsUtil {
 
   static int value(int flag) {
     switch (flag) {
-      case TfLiteGpuExperimentalFlags
-            .TFLITE_GPU_EXPERIMENTAL_FLAGS_ENABLE_QUANT:
+      case TfLiteGpuExperimentalFlags.TFLITE_GPU_EXPERIMENTAL_FLAGS_ENABLE_QUANT:
         return enableQuant;
       case TfLiteGpuExperimentalFlags.TFLITE_GPU_EXPERIMENTAL_FLAGS_CL_ONLY:
         return clOnly;
