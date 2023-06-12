@@ -250,7 +250,7 @@ class Tensor {
     if (listEquals(inputShape, shape)) {
       return null;
     }
-    
+
     return inputShape;
   }
 
