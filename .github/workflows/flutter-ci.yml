@@ -23,7 +23,8 @@ jobs:
         run: melos bootstrap
 
       - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed .
+        # run: dart format --output=none --set-exit-if-changed .
+        run: dart format . --set-exit-if-changed .
 
       - name: Flutter Analyze project source
         run: flutter analyze .
