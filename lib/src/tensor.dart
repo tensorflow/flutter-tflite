@@ -247,10 +247,10 @@ class Tensor {
     }
 
     final inputShape = computeShapeOf(input);
-    if (listEquals(inputShape, shape)) {
+    if (inputShape == shape) {
       return null;
     }
-    
+
     return inputShape;
   }
 
