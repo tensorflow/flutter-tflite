@@ -20,9 +20,9 @@ import 'dart:io';
 import 'package:ffi/ffi.dart';
 import 'package:flutter/services.dart';
 import 'package:quiver/check.dart';
-import 'package:tflite_flutter/src/bindings/bindings.dart';
-import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
 
+import 'bindings/bindings.dart';
+import 'bindings/tensorflow_lite_bindings_generated.dart';
 import 'ffi/helper.dart';
 import 'interpreter_options.dart';
 import 'model.dart';
@@ -166,21 +166,14 @@ class Interpreter {
   }
 
   /// Run for single input and output
-  void run(Object input, Object output) {
-    var map = <int, Object>{};
-    map[0] = output;
-    runForMultipleInputs([input], map);
-  }
-
-  /// Run for multiple inputs and outputs
-  void runForMultipleInputs(List<Object> inputs, Map<int, Object> outputs) {
-    if (outputs.isEmpty) {
+  void run(Object input, Map<int, dynamic> output) {
+    if (output.isEmpty) {
       throw ArgumentError('Input error: Outputs should not be null or empty.');
     }
-    runInference(inputs);
+    runInference([input]);
     var outputTensors = getOutputTensors();
     for (var i = 0; i < outputTensors.length; i++) {
-      outputTensors[i].copyTo(outputs[i]!);
+      outputTensors[i].copyTo(output[i]!);
     }
   }
 
@@ -224,7 +217,7 @@ class Interpreter {
 
     var tensors = List.generate(
         tfliteBinding.TfLiteInterpreterGetInputTensorCount(_interpreter),
-        (i) => Tensor(
+            (i) => Tensor(
             tfliteBinding.TfLiteInterpreterGetInputTensor(_interpreter, i)),
         growable: false);
 
@@ -239,7 +232,7 @@ class Interpreter {
 
     var tensors = List.generate(
         tfliteBinding.TfLiteInterpreterGetOutputTensorCount(_interpreter),
-        (i) => Tensor(
+            (i) => Tensor(
             tfliteBinding.TfLiteInterpreterGetOutputTensor(_interpreter, i)),
         growable: false);
 
@@ -251,7 +244,7 @@ class Interpreter {
     final dimensionSize = shape.length;
     final dimensions = calloc<Int>(dimensionSize);
     final externalTypedData =
-        dimensions.cast<Int32>().asTypedList(dimensionSize);
+    dimensions.cast<Int32>().asTypedList(dimensionSize);
     externalTypedData.setRange(0, dimensionSize, shape);
     final status = tfliteBinding.TfLiteInterpreterResizeInputTensor(
         _interpreter, tensorIndex, dimensions, dimensionSize);
@@ -330,6 +323,6 @@ class Interpreter {
 
   bool get isDeleted => _deleted;
 
-  //TODO: (JAVA) void modifyGraphWithDelegate(Delegate delegate)
-  //TODO: (JAVA) void resetVariableTensors()
+//TODO: (JAVA) void modifyGraphWithDelegate(Delegate delegate)
+//TODO: (JAVA) void resetVariableTensors()
 }
