@@ -1,12 +1,12 @@
 name: image_classification_mobilenet
 description: Image Classification using mobilenet.
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.0 <4.0.0'
+  sdk: ">=2.18.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -27,10 +27,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-    - assets/mobilenet/
+    - assets/models/
 
 flutter_launcher_icons:
-  image_path: 'assets/images/logo.png'
-  android: 'ic_launcher'
+  image_path: "assets/images/logo.png"
+  android: "ic_launcher"
   ios: true
   remove_alpha_ios: true

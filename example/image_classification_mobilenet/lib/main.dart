@@ -36,8 +36,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  static const modelPath = 'assets/mobilenet/mobilenet_v1_1.0_224_quant.tflite';
-  static const labelsPath = 'assets/mobilenet/labels.txt';
+  static const modelPath = 'assets/models/mobilenet_quant.tflite';
+  static const labelsPath = 'assets/models/labels.txt';
 
   late final Interpreter interpreter;
   late final List<String> labels;

@@ -37,9 +37,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   static const predictionModelPath =
-      'assets/magenta/magenta_arbitrary-image-stylization-v1-256_int8_prediction_1.tflite';
+      'assets/models/magenta_arbitrary-image-stylization-v1-256_int8_prediction_1.tflite';
   static const transferModelPath =
-      'assets/magenta/magenta_arbitrary-image-stylization-v1-256_int8_transfer_1.tflite';
+      'assets/models/magenta_arbitrary-image-stylization-v1-256_int8_transfer_1.tflite';
 
   late final Interpreter predictionInterpreter;
   late final IsolateInterpreter predictionIsolateInterpreter;
