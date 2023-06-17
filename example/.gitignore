@@ -40,4 +40,6 @@ lib/generated_plugin_registrant.dart
 pubspec.lock
 
 # Models
-models/
+vocab
+*.txt
+*.tflite
