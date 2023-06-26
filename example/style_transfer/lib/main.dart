@@ -351,7 +351,7 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   // allow camera input only on mobile
-                  if(Platform.isAndroid || Platform.isIOS)
+                  if (Platform.isAndroid || Platform.isIOS)
                     IconButton(
                       onPressed: () async {
                         cleanResult();

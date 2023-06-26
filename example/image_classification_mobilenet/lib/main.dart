@@ -249,7 +249,7 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   // only allow taking pictures on supported platforms
-                  if(Platform.isAndroid || Platform.isIOS)
+                  if (Platform.isAndroid || Platform.isIOS)
                     IconButton(
                       onPressed: () async {
                         cleanResult();
