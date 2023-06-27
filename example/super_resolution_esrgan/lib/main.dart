@@ -50,7 +50,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  static const modelPath = 'assets/esrgan/esrgan-tf2.tflite';
+  static const modelPath = 'assets/models/esrgan-tf2.tflite';
 
   late final Interpreter interpreter;
   late final List<String> labels;
