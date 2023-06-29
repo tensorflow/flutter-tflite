@@ -65,6 +65,8 @@ class _HomeState extends State<Home> {
   String? imagePath;
   String? stylePath;
   Uint8List? imageResult;
+  int? widthOrg;
+  int? heightOrg;
 
   @override
   void initState() {
@@ -161,6 +163,11 @@ class _HomeState extends State<Home> {
 
       // Decode image using package:image/image.dart (https://pub.dev/image)
       final image = img.decodeImage(imageData)!;
+
+      setState(() {
+        widthOrg = image.width;
+        heightOrg = image.height;
+      });
 
       // Resize image for model input (384, 384)
       final imageInput = img.copyResize(
@@ -271,7 +278,9 @@ class _HomeState extends State<Home> {
       );
 
       // Encode image in jpeg format
-      imageResult = img.encodeJpg(image);
+      img.Image resized =
+          img.copyResize(image!, width: widthOrg, height: heightOrg);
+      imageResult = img.encodeJpg(resized);
 
       setState(() {});
     }
