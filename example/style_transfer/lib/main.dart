@@ -279,7 +279,7 @@ class _HomeState extends State<Home> {
 
       // Encode image in jpeg format
       img.Image resized =
-          img.copyResize(image!, width: widthOrg, height: heightOrg);
+          img.copyResize(image, width: widthOrg, height: heightOrg);
       imageResult = img.encodeJpg(resized);
 
       setState(() {});
