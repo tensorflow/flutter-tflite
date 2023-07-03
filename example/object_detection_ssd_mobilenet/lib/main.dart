@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:object_detection_ssd_mobilenet/object_detection.dart';
 
@@ -74,38 +73,24 @@ class _MyHomeState extends State<MyHome> {
               ),
             ),
             SizedBox(
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
+                  TextButton(
                     onPressed: () async {
-                      final result = await imagePicker.pickImage(
-                        source: ImageSource.camera,
-                      );
-                      if (result != null) {
-                        image = objectDetection!.analyseImage(result.path);
-                        setState(() {});
-                      }
+                      final ByteData bytes = await rootBundle.load('assets/images/image_test_1.jpg');
+                      image = objectDetection!.analyseImage(bytes.buffer.asUint8List());
+                      setState(() {});
                     },
-                    icon: const Icon(
-                      Icons.camera,
-                      size: 64,
-                    ),
+                    child: const Text('Test correct Image', style: TextStyle(fontSize: 20)),
                   ),
-                  IconButton(
+                  TextButton(
                     onPressed: () async {
-                      final result = await imagePicker.pickImage(
-                        source: ImageSource.gallery,
-                      );
-                      if (result != null) {
-                        image = objectDetection!.analyseImage(result.path);
-                        setState(() {});
-                      }
+                      final ByteData bytes = await rootBundle.load('assets/images/tfl_logo.png');
+                      image = objectDetection!.analyseImage(bytes.buffer.asUint8List());
+                      setState(() {});
                     },
-                    icon: const Icon(
-                      Icons.photo,
-                      size: 64,
-                    ),
+                    child: const Text('Test Incorrect Image', style: TextStyle(fontSize: 20)),
                   ),
                 ],
               ),
