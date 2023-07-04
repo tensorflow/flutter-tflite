@@ -84,6 +84,9 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 
 ## Usage instructions
 
+### Import the libraries
+In the dependency section of `pubspec.yaml` file, add `tflite_flutter: ^0.10.1` (adjust the version accordingly based on the latest release)
+
 ### Creating the Interpreter
 
 * **From asset**
