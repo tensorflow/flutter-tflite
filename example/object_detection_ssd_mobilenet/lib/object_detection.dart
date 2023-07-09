@@ -46,7 +46,11 @@ class ObjectDetection03 {
   }
 
   Uint8List analyseImage(Uint8List imageData) {
+    var startTime = DateTime.now();
     final image = img.decodeImage(imageData.buffer.asUint8List())!;
+    var duration1 = DateTime.now().difference(startTime).inMilliseconds;
+    print('decodeImage duration --> $duration1');
+    startTime = DateTime.now();
     final imageInput = img.copyResize(image, width: 416, height: 416);
     Uint8List byte = imageToByteListFloat32(imageInput, 416, 127.5, 127.5);
     final output = {0: List<List<num>>.filled(16, List<num>.filled(7, 0))};
@@ -59,6 +63,8 @@ class ObjectDetection03 {
     num max = allValue.reduce((value, element) => value > element ? value : element);
     int maxIndex = allValue.indexOf(max);
     print('$max ---> $maxIndex');
+    var duration2 = DateTime.now().difference(startTime).inMilliseconds;
+    print('runForMultipleInputs duration --> $duration2');
     return imageData;
   }
 
