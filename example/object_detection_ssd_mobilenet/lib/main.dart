@@ -16,7 +16,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:object_detection_ssd_mobilenet/object_detection.dart';
+
+import 'object_detection.dart';
 
 void main() => runApp(const MyApp());
 
@@ -47,14 +48,14 @@ class MyHome extends StatefulWidget {
 class _MyHomeState extends State<MyHome> {
   final imagePicker = ImagePicker();
 
-  ObjectDetection? objectDetection;
+  ObjectDetection03? objectDetection;
 
   Uint8List? image;
 
   @override
   void initState() {
     super.initState();
-    objectDetection = ObjectDetection();
+    objectDetection = ObjectDetection03();
   }
 
   @override
@@ -78,19 +79,27 @@ class _MyHomeState extends State<MyHome> {
                 children: [
                   TextButton(
                     onPressed: () async {
-                      final ByteData bytes = await rootBundle.load('assets/images/image_test_1.jpg');
+                      final ByteData bytes = await rootBundle.load('assets/images/01.jpg');
                       image = objectDetection!.analyseImage(bytes.buffer.asUint8List());
                       setState(() {});
                     },
-                    child: const Text('Test correct Image', style: TextStyle(fontSize: 20)),
+                    child: const Text('01', style: TextStyle(fontSize: 20)),
                   ),
                   TextButton(
                     onPressed: () async {
-                      final ByteData bytes = await rootBundle.load('assets/images/tfl_logo.png');
+                      final ByteData bytes = await rootBundle.load('assets/images/02.jpg');
                       image = objectDetection!.analyseImage(bytes.buffer.asUint8List());
                       setState(() {});
                     },
-                    child: const Text('Test Incorrect Image', style: TextStyle(fontSize: 20)),
+                    child: const Text('02', style: TextStyle(fontSize: 20)),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      final ByteData bytes = await rootBundle.load('assets/images/03.jpg');
+                      image = objectDetection!.analyseImage(bytes.buffer.asUint8List());
+                      setState(() {});
+                    },
+                    child: const Text('03', style: TextStyle(fontSize: 20)),
                   ),
                 ],
               ),

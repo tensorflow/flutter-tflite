@@ -13,42 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import 'dart:developer';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart';
 
-class ObjectDetection {
-  static const String _modelPath = 'assets/models/fazaza_model_1.tflite';
+class ObjectDetection03 {
+  static const String _modelPath = 'assets/models/yolox_nano_with_post_float32.tflite';
   static const String _labelPath = 'assets/models/labels.txt';
 
   Interpreter? _interpreter;
   List<String>? _labels;
 
-  ObjectDetection() {
+  ObjectDetection03() {
     _loadModel();
     _loadLabels();
-    log('Done.');
   }
 
   Future<void> _loadModel() async {
-    log('Loading interpreter options...');
     final interpreterOptions = InterpreterOptions();
-
-    // Use XNNPACK Delegate
-    if (Platform.isAndroid) {
-      interpreterOptions.addDelegate(XNNPackDelegate());
-    }
-
-    // Use Metal Delegate
-    if (Platform.isIOS) {
-      interpreterOptions.addDelegate(GpuDelegate());
-    }
-
-    log('Loading interpreter...');
     _interpreter = await Interpreter.fromAsset(_modelPath, options: interpreterOptions);
     List<Tensor>? inputTensor = _interpreter?.getInputTensors();
     List<Tensor>? outputTensor = _interpreter?.getOutputTensors();
@@ -57,58 +41,25 @@ class ObjectDetection {
   }
 
   Future<void> _loadLabels() async {
-    log('Loading labels...');
     final labelsRaw = await rootBundle.loadString(_labelPath);
     _labels = labelsRaw.split('\n');
   }
 
   Uint8List analyseImage(Uint8List imageData) {
-    log('Analysing image...');
-
-    // Decoding image
-    final image = img.decodeImage(imageData);
-
-    // Resizing image fpr model, [300, 300]
-    final imageInput = img.copyResize(
-      image!,
-      width: 416,
-      height: 416,
-    );
+    final image = img.decodeImage(imageData.buffer.asUint8List())!;
+    final imageInput = img.copyResize(image, width: 416, height: 416);
     Uint8List byte = imageToByteListFloat32(imageInput, 416, 127.5, 127.5);
-
-    // Creating matrix representation, [300, 300, 3]
-    final imageMatrix = List.generate(
-      imageInput.height,
-      (y) => List.generate(
-        imageInput.width,
-        (x) {
-          final pixel = imageInput.getPixel(x, y);
-          return [pixel.r, pixel.g, pixel.b];
-        },
-      ),
-    );
-
-    final output = _runInference(byte);
-
-    print(output);
-
-    return img.encodeJpg(imageInput);
-  }
-
-  List<List<Object>> _runInference(
-    Uint8List byte,
-  ) {
-    log('Running inference...');
-
-    final output = [
-      List.generate(
-        21,
-        (index) => List.filled(7098, 0.0),
-      )
-    ];
-    _interpreter!.run(byte.buffer, output);
-    print(_interpreter?.lastNativeInferenceDurationMicroSeconds.toString());
-    return output.first;
+    final output = {0: List<List<num>>.filled(16, List<num>.filled(7, 0))};
+    _interpreter!.runForMultipleInputs([byte], output);
+    final elements = output.values.toList().elementAt(0);
+    List<num> allValue = [];
+    for (var element in elements) {
+      allValue.add(element.elementAt(2));
+    }
+    num max = allValue.reduce((value, element) => value > element ? value : element);
+    int maxIndex = allValue.indexOf(max);
+    print('$max ---> $maxIndex');
+    return imageData;
   }
 
   Uint8List imageToByteListFloat32(img.Image image, int inputSize, double mean, double std) {

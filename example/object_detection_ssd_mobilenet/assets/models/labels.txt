@@ -1,16 +1,16 @@
-label_01
-label_02
-label_03
-label_04
-label_05
-label_06
-label_07
-label_07
-label_08
-label_09
-label_10
-label_11
-label_12
-label_13
-label_14
-label_15
+LABEL 1
+LABEL 2
+LABEL 3
+LABEL 4
+LABEL 5
+LABEL 6
+LABEL 7
+LABEL 8
+LABEL 9
+LABEL 10
+LABEL 11
+LABEL 12
+LABEL 13
+LABEL 14
+LABEL 15
+LABEL 16
