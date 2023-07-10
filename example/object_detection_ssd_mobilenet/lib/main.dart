@@ -68,6 +68,7 @@ class _MyHomeState extends State<MyHome> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
+            Text(objectDetection!.getLastScore(), style: const TextStyle(fontSize: 18, color: Colors.red)),
             Expanded(
               child: Center(
                 child: (image != null) ? Image.memory(image!) : Container(),
