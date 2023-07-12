@@ -81,26 +81,26 @@ class _MyHomeState extends State<MyHome> {
                   TextButton(
                     onPressed: () async {
                       final ByteData bytes = await rootBundle.load('assets/images/01.jpg');
-                      image = objectDetection!.analyseImage(bytes.buffer.asUint8List());
+                      image = await objectDetection!.analyseImagePythonImage(bytes.buffer.asUint8List());
                       setState(() {});
                     },
-                    child: const Text('01', style: TextStyle(fontSize: 20)),
+                    child: const Text('image from python json image', style: TextStyle(fontSize: 20)),
                   ),
                   TextButton(
                     onPressed: () async {
-                      final ByteData bytes = await rootBundle.load('assets/images/02.jpg');
-                      image = objectDetection!.analyseImage(bytes.buffer.asUint8List());
+                      final ByteData bytes = await rootBundle.load('assets/images/01.jpg');
+                      image = await objectDetection!.analyseImage(bytes.buffer.asUint8List());
                       setState(() {});
                     },
-                    child: const Text('02', style: TextStyle(fontSize: 20)),
+                    child: const Text('image 1 from local assets', style: TextStyle(fontSize: 20)),
                   ),
                   TextButton(
                     onPressed: () async {
                       final ByteData bytes = await rootBundle.load('assets/images/03.jpg');
-                      image = objectDetection!.analyseImage(bytes.buffer.asUint8List());
+                      image = await objectDetection!.analyseImage(bytes.buffer.asUint8List());
                       setState(() {});
                     },
-                    child: const Text('03', style: TextStyle(fontSize: 20)),
+                    child: const Text('image 2 from local assets', style: TextStyle(fontSize: 20)),
                   ),
                 ],
               ),

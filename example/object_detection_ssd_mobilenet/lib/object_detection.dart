@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
@@ -46,13 +47,14 @@ class ObjectDetection03 {
     _labels = labelsRaw.split('\n');
   }
 
-  Uint8List analyseImage(Uint8List imageData) {
-    final image = img.decodeImage(imageData.buffer.asUint8List())!;
-    final imageInput = img.copyResize(image, width: 416, height: 416);
-    Uint8List byte = imageToByteListFloat32(imageInput, 416, 127.5, 127.5);
-    final output = {0: List<List<num>>.filled(16, List<num>.filled(7, 0))};
-    _interpreter!.runForMultipleInputs([byte], output);
-    final elements = output.values.toList().elementAt(0);
+  Future<Uint8List> analyseImagePythonImage(Uint8List imageData) async {
+    String jsonStr = await rootBundle.loadString('assets/models/image_matrix.json');
+    final jsonData = json.decode(jsonStr);
+    final List<dynamic> pixels = jsonData['pixels'];
+    Uint8List convertObjectToBytes = ByteConversionUtils.convertObjectToBytes(pixels, TensorType.float32);
+    final output = List<List<num>>.filled(16, List<num>.filled(7, 0));
+    _interpreter!.run(convertObjectToBytes, output);
+    final elements = output.toList();
     List<num> allValue = [];
     for (var element in elements) {
       allValue.add(element.elementAt(2));
@@ -60,6 +62,32 @@ class ObjectDetection03 {
     num max = allValue.reduce((value, element) => value > element ? value : element);
     int maxIndex = allValue.indexOf(max);
     _lastScore = '$max ---> $maxIndex';
+    print(_lastScore);
+    return imageData;
+  }
+
+  Future<Uint8List> analyseImage(Uint8List imageData) async {
+    print('---------------------------------------------------------------');
+    var startProcessing = DateTime.now();
+    final image = img.decodeJpg(imageData.buffer.asUint8List())!;
+    final imageInput = img.copyResize(image, width: 416, height: 416);
+    var list = List.from(imageInput.getBytes());
+    var startConvertObjectToBytes = DateTime.now();
+    Uint8List convertObjectToBytes = ByteConversionUtils.convertObjectToBytes(list, TensorType.float32);
+    var endConvertObjectToBytes = DateTime.now().difference(startConvertObjectToBytes).inMilliseconds;
+    print('convertObjectToBytes Duration --> $endConvertObjectToBytes');
+    final output = List<List<num>>.filled(16, List<num>.filled(7, 0));
+    _interpreter!.run(convertObjectToBytes, output);
+    final elements = output.toList();
+    List<num> allValue = [];
+    for (var element in elements) {
+      allValue.add(element.elementAt(2));
+    }
+    num max = allValue.reduce((value, element) => value > element ? value : element);
+    int maxIndex = allValue.indexOf(max);
+    _lastScore = 'score = $max ---> label = $maxIndex';
+    var totalDuration = DateTime.now().difference(startProcessing).inMilliseconds;
+    print('total Duration --> $totalDuration');
     print(_lastScore);
     return imageData;
   }
