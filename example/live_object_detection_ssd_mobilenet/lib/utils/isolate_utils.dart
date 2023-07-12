@@ -3,7 +3,7 @@ import 'dart:isolate';
 
 import 'package:camera/camera.dart';
 import 'package:image/image.dart' as imageLib;
-import 'package:live_object_detection_ssd_mobilenet/tflite/classifier.dart';
+import 'package:live_object_detection_ssd_mobilenet/tflite/detector.dart';
 import 'package:live_object_detection_ssd_mobilenet/utils/image_utils.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
@@ -38,16 +38,19 @@ class IsolateUtils {
 
     receivePort.listen((dynamic data) {
       final isolateData = data as IsolateData;
-      final Classifier classifier = Classifier(
+      final Detector detector = Detector(
         interpreter: Interpreter.fromAddress(isolateData.interpreterAddress),
         labels: isolateData.labels,
       );
+
+      var preConversionTime = DateTime.now().millisecondsSinceEpoch;
+
       convertCameraImageToImage(isolateData.cameraImage).then((image) {
         if (image != null) {
           if (Platform.isAndroid) {
             image = imageLib.copyRotate(image, angle: 90);
           }
-          final results = classifier.analyseImage(image);
+          final results = detector.analyseImage(image, preConversionTime);
           isolateData.responsePort.send(results);
         }
       });

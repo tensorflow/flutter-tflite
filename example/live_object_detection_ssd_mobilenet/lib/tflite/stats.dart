@@ -1,9 +1,12 @@
 /// Bundles different elapsed times
 class Stats {
-  /// Total time taken in the isolate where the inference runs
-  int totalPredictTime;
+  /// Total time taken to convert CameraImage to Image
+  int conversionTime;
 
-  /// [totalPredictTime] + communication overhead time
+  /// Total time taken in the isolate where the inference runs
+  int analysisTime;
+
+  /// [analysisTime] + communication overhead time
   /// between main isolate and another isolate
   int totalElapsedTime;
 
@@ -14,14 +17,16 @@ class Stats {
   int preProcessingTime;
 
   Stats({
-    required this.totalPredictTime,
-    required this.totalElapsedTime,
-    required this.inferenceTime,
+    required this.conversionTime,
     required this.preProcessingTime,
+    required this.inferenceTime,
+    required this.analysisTime,
+    required this.totalElapsedTime,
   });
 
   @override
   String toString() {
-    return 'Stats{totalPredictTime: $totalPredictTime, totalElapsedTime: $totalElapsedTime, inferenceTime: $inferenceTime, preProcessingTime: $preProcessingTime}';
+    return 'Stats{conversionTime: $conversionTime, preProcessingTime: $preProcessingTime, '
+        'inferenceTime: $inferenceTime, analysisTime: $analysisTime, totalElapsedTime: $totalElapsedTime}';
   }
 }

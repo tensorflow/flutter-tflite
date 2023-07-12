@@ -21,7 +21,7 @@ import 'package:live_object_detection_ssd_mobilenet/tflite/recognition.dart';
 import 'package:live_object_detection_ssd_mobilenet/tflite/stats.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
-class Classifier {
+class Detector {
   static const String _modelPath = 'assets/models/ssd_mobilenet.tflite';
   static const String _labelPath = 'assets/models/labelmap.txt';
 
@@ -37,7 +37,7 @@ class Classifier {
 
   get labels => _labels;
 
-  Classifier({
+  Detector({
     Interpreter? interpreter,
     List<String>? labels,
   }) {
@@ -85,11 +85,12 @@ class Classifier {
     // Decoding image
     final image = img.decodeImage(imageData);
 
-    return analyseImage(image);
+    return analyseImage(image, DateTime.now().millisecondsSinceEpoch);
   }
 
-  Map<String, dynamic>? analyseImage(img.Image? image) {
-    var predictStartTime = DateTime.now().millisecondsSinceEpoch;
+  Map<String, dynamic>? analyseImage(img.Image? image, int preConversionTime) {
+    var analysisStartTime = DateTime.now().millisecondsSinceEpoch;
+    var conversionElapsedTime = analysisStartTime - preConversionTime;
 
     if (_interpreter == null) {
       dev.log("Interpreter not initialized");
@@ -106,9 +107,6 @@ class Classifier {
       height: INPUT_SIZE,
     );
 
-    var preProcessElapsedTime =
-        DateTime.now().millisecondsSinceEpoch - preProcessStart;
-
     // Creating matrix representation, [300, 300, 3]
     final imageMatrix = List.generate(
       imageInput.height,
@@ -121,9 +119,12 @@ class Classifier {
       ),
     );
 
-    final output = _runInference(imageMatrix);
+    var preProcessElapsedTime =
+        DateTime.now().millisecondsSinceEpoch - preProcessStart;
 
     var inferenceTimeStart = DateTime.now().millisecondsSinceEpoch;
+
+    final output = _runInference(imageMatrix);
 
     dev.log('Processing outputs...');
     // Location
@@ -198,14 +199,14 @@ class Classifier {
       }
     }
 
-    var inferenceTimeElapsed =
+    var inferenceElapsedTime =
         DateTime.now().millisecondsSinceEpoch - inferenceTimeStart;
 
-    var predictElapsedTime =
-        DateTime.now().millisecondsSinceEpoch - predictStartTime;
+    var analysisElapsedTime =
+        DateTime.now().millisecondsSinceEpoch - analysisStartTime;
 
     var totalElapsedTime =
-        DateTime.now().millisecondsSinceEpoch - predictStartTime;
+        DateTime.now().millisecondsSinceEpoch - preConversionTime;
 
     dev.log('Recognition Done.');
 
@@ -213,10 +214,11 @@ class Classifier {
       // "image": image,
       "recognitions": recognitions,
       "stats": Stats(
-        totalPredictTime: predictElapsedTime,
-        totalElapsedTime: totalElapsedTime,
-        inferenceTime: inferenceTimeElapsed,
+        conversionTime: conversionElapsedTime,
         preProcessingTime: preProcessElapsedTime,
+        inferenceTime: inferenceElapsedTime,
+        analysisTime: analysisElapsedTime,
+        totalElapsedTime: totalElapsedTime,
       )
     };
   }

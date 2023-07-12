@@ -3,7 +3,7 @@ import 'dart:isolate';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:live_object_detection_ssd_mobilenet/tflite/classifier.dart';
+import 'package:live_object_detection_ssd_mobilenet/tflite/detector.dart';
 import 'package:live_object_detection_ssd_mobilenet/tflite/recognition.dart';
 import 'package:live_object_detection_ssd_mobilenet/tflite/stats.dart';
 import 'package:live_object_detection_ssd_mobilenet/ui/camera_view_singleton.dart';
@@ -36,8 +36,8 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
   /// true when inference is ongoing
   late bool predicting;
 
-  /// Instance of [Classifier]
-  late Classifier classifier;
+  /// Instance of [Detector]
+  late Detector detector;
 
   /// Instance of [IsolateUtils]
   late IsolateUtils isolateUtils;
@@ -55,8 +55,8 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     await isolateUtils.start();
     // Camera initialization
     initializeCamera();
-    // Create an instance of classifier to load model and labels
-    classifier = Classifier();
+    // Create an instance of detector to load model and labels
+    detector = Detector();
     // Initially predicting = false
     predicting = false;
   }
@@ -67,7 +67,7 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
 
     // cameras[0] for rear-camera
     _cameraController =
-        CameraController(cameras[0], ResolutionPreset.high, enableAudio: false)
+        CameraController(cameras[0], ResolutionPreset.max, enableAudio: false)
           ..initialize().then((_) async {
             // Stream of image passed to [onLatestImageAvailable] callback
             await controller.startImageStream(onLatestImageAvailable);
@@ -104,7 +104,7 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
 
   /// Callback to receive each frame [CameraImage] perform inference on it
   onLatestImageAvailable(CameraImage cameraImage) async {
-    if (classifier.interpreter != null && classifier.labels != null) {
+    if (detector.interpreter != null && detector.labels != null) {
       // If previous inference has not completed then return
       if (predicting) {
         return;
@@ -118,7 +118,7 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
 
       // Data to be passed to inference isolate
       var isolateData = IsolateData(
-          cameraImage, classifier.interpreter.address, classifier.labels);
+          cameraImage, detector.interpreter.address, detector.labels);
 
       // We could have simply used the compute method as well however
       // it would be as in-efficient as we need to continuously passing data

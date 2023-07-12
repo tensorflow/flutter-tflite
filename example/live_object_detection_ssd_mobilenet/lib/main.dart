@@ -16,7 +16,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:live_object_detection_ssd_mobilenet/ui/camera_view_singleton.dart';
 import 'package:live_object_detection_ssd_mobilenet/ui/home_view.dart';
 
 void main() async {

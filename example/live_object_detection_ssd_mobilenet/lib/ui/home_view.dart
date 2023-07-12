@@ -1,4 +1,3 @@
-import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:live_object_detection_ssd_mobilenet/tflite/recognition.dart';
 import 'package:live_object_detection_ssd_mobilenet/tflite/stats.dart';
@@ -47,49 +46,51 @@ class _HomeViewState extends State<HomeView> {
             // Bounding boxes
             boundingBoxes(results),
             // Bottom Sheet
-            // Align(
-            //   alignment: Alignment.bottomCenter,
-            //   child: DraggableScrollableSheet(
-            //     initialChildSize: 0.4,
-            //     minChildSize: 0.1,
-            //     maxChildSize: 0.5,
-            //     builder: (_, ScrollController scrollController) => Container(
-            //       width: double.maxFinite,
-            //       decoration: BoxDecoration(
-            //           color: Colors.white.withOpacity(0.9),
-            //           borderRadius: BORDER_RADIUS_BOTTOM_SHEET),
-            //       child: SingleChildScrollView(
-            //         controller: scrollController,
-            //         child: Center(
-            //           child: Column(
-            //             mainAxisSize: MainAxisSize.min,
-            //             children: [
-            //               const Icon(Icons.keyboard_arrow_up,
-            //                   size: 48, color: Colors.orange),
-            //               (stats != null)
-            //                   ? Padding(
-            //                       padding: const EdgeInsets.all(8.0),
-            //                       child: Column(
-            //                         children: [
-            //                           StatsRow('Inference time:',
-            //                               '${stats!.inferenceTime} ms'),
-            //                           StatsRow('Total prediction time:',
-            //                               '${stats!.totalElapsedTime} ms'),
-            //                           StatsRow('Pre-processing time:',
-            //                               '${stats!.preProcessingTime} ms'),
-            //                           StatsRow('Frame',
-            //                               '${CameraViewSingleton.inputImageSize.width} X ${CameraViewSingleton.inputImageSize.height}'),
-            //                         ],
-            //                       ),
-            //                     )
-            //                   : Container()
-            //             ],
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // )
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: DraggableScrollableSheet(
+                initialChildSize: 0.4,
+                minChildSize: 0.1,
+                maxChildSize: 0.5,
+                builder: (_, ScrollController scrollController) => Container(
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      borderRadius: BORDER_RADIUS_BOTTOM_SHEET),
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.keyboard_arrow_up,
+                              size: 48, color: Colors.orange),
+                          (stats != null)
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      StatsRow('Conversion time:',
+                                          '${stats!.conversionTime} ms'),
+                                      StatsRow('Pre-processing time:',
+                                          '${stats!.preProcessingTime} ms'),
+                                      StatsRow('Inference time:',
+                                          '${stats!.inferenceTime} ms'),
+                                      StatsRow('Total prediction time:',
+                                          '${stats!.totalElapsedTime} ms'),
+                                      StatsRow('Frame',
+                                          '${CameraViewSingleton.inputImageSize.width} X ${CameraViewSingleton.inputImageSize.height}'),
+                                    ],
+                                  ),
+                                )
+                              : Container()
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       );
