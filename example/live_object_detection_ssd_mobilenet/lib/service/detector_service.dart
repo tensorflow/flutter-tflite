@@ -12,7 +12,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as imageLib;
 import 'package:live_object_detection_ssd_mobilenet/models/recognition.dart';
-import 'package:live_object_detection_ssd_mobilenet/models/screen_params.dart';
 import 'package:live_object_detection_ssd_mobilenet/utils/image_utils.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
@@ -249,15 +248,9 @@ class _DetectorServer {
 
     convertCameraImageToImage(cameraImage).then((image) {
       if (image != null) {
-        // for debug purpose only
-        // String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-        // saveImage(image, _path, '${timestamp}_0');
-
         if (Platform.isAndroid) {
           image = imageLib.copyRotate(image, angle: 90);
         }
-
-        // saveImage(image, _path, '${timestamp}_1');
 
         final results = analyseImage(image, preConversionTime);
         _sendPort.send(_Command(_Codes.result, args: [results]));
@@ -345,51 +338,6 @@ class _DetectorServer {
         recognitions.add(
           Recognition(i, label, score, locations[i]),
         );
-
-        // /// This can be used for testing purposes only
-        // imageLib.drawRect(
-        //   imageInput,
-        //   x1: locations[i].left.toInt(),
-        //   y1: locations[i].top.toInt(),
-        //   x2: locations[i].right.toInt(),
-        //   y2: locations[i].bottom.toInt(),
-        //   color: imageLib.ColorRgb8(0, 255, 0),
-        //   thickness: 3,
-        // );
-        //
-        // // Label drawing
-        // imageLib.drawString(
-        //   imageInput,
-        //   '${classification[i]} ${(scores[i] * 100).round()}%',
-        //   font: imageLib.arial24,
-        //   x: locations[i].left.toInt() + 1,
-        //   y: locations[i].top.toInt() + 1,
-        //   color: imageLib.ColorRgb8(255, 255, 255),
-        // );
-        //
-        // saveImage(imageInput, _path, '${imageTimestamp}_3');
-        //
-        // imageLib.drawRect(
-        //   image,
-        //   x1: transformedRect.left.toInt(),
-        //   y1: transformedRect.top.toInt(),
-        //   x2: transformedRect.right.toInt(),
-        //   y2: transformedRect.bottom.toInt(),
-        //   color: imageLib.ColorRgb8(0, 255, 0),
-        //   thickness: 3,
-        // );
-        //
-        // // Label drawing
-        // imageLib.drawString(
-        //   image,
-        //   '${classification[i]} ${(scores[i] * 100).round()}%',
-        //   font: imageLib.arial24,
-        //   x: transformedRect.left.toInt() + 1,
-        //   y: transformedRect.top.toInt() + 1,
-        //   color: imageLib.ColorRgb8(255, 255, 255),
-        // );
-        //
-        // saveImage(image, _path, '${imageTimestamp}_4');
       }
     }
 
