@@ -1,7 +1,6 @@
-import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
-import 'package:live_object_detection_ssd_mobilenet/ui/camera_view_singleton.dart';
+import 'package:live_object_detection_ssd_mobilenet/models/screen_params.dart';
 
 /// Represents the recognition output from the model
 class Recognition {
@@ -36,22 +35,20 @@ class Recognition {
   /// This is the actual location where rectangle is rendered on
   /// the screen
   Rect get renderLocation {
-    // ratioX = screenWidth / imageInputWidth
-    // ratioY = ratioX if image fits screenWidth with aspectRatio = constant
-
-    double ratioX = CameraViewSingleton.ratio;
-    double ratioY = ratioX;
-
-    double transLeft = max(0.1, location.left * ratioX);
-    double transTop = max(0.1, location.top * ratioY);
-    double transWidth = min(
-        location.width * ratioX, CameraViewSingleton.actualPreviewSize.width);
-    double transHeight = min(
-        location.height * ratioY, CameraViewSingleton.actualPreviewSize.height);
-
-    Rect transformedRect =
-        Rect.fromLTWH(transLeft, transTop, transWidth, transHeight);
-    return transformedRect;
+    final double x1 = location.left;
+    final double y1 = location.top;
+    final double x2 = location.right;
+    final double y2 = location.bottom;
+    final double scaleX = ScreenParams.screenPreviewSize.width / 300;
+    final double scaleY = ScreenParams.screenPreviewSize.height / 300;
+    final double xDelta = (x2 - x1) * scaleX;
+    final double yDelta = (y2 - y1) * scaleY;
+    return Rect.fromLTRB(
+      x1 * scaleX,
+      y1 * scaleY,
+      x1 * scaleX + xDelta,
+      y1 * scaleY + yDelta,
+    );
   }
 
   @override

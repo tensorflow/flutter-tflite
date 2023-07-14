@@ -5,7 +5,6 @@ import 'dart:developer' as dev;
 import 'package:camera/camera.dart';
 import 'package:exif/exif.dart';
 import 'package:image/image.dart' as imageLib;
-import 'package:path_provider/path_provider.dart';
 
 Future<imageLib.Image?> convertCameraImageToImage(
     CameraImage cameraImage) async {
@@ -174,12 +173,13 @@ imageLib.Image applyExifRotation(imageLib.Image image, int exifRotation) {
   return image;
 }
 
-Future<void> saveImage(imageLib.Image image, String timestamp) async {
+Future<void> saveImage(
+  imageLib.Image image,
+  String path,
+  String name,
+) async {
   Uint8List bytes = imageLib.encodeJpg(image);
-  final appDir = await getTemporaryDirectory();
-  final appPath = appDir.path;
-  final fileOnDevice =
-      File('$appPath/$timestamp.jpg');
+  final fileOnDevice = File('$path/$name.jpg');
   await fileOnDevice.writeAsBytes(bytes, flush: true);
   dev.log('Saved ${fileOnDevice.path}');
 }
