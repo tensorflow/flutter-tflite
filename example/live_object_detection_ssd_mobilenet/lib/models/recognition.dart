@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:live_object_detection_ssd_mobilenet/models/screen_params.dart';
 
