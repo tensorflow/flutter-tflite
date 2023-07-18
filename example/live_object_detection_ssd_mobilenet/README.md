@@ -13,4 +13,6 @@ All expensive and heavy operations are performed in a separate background isolat
 
 Run 'sh ./scripts/download_model.sh' from your repo core folder to download tf models.
 
-![Example UI output](scr_output.png)
+## Sample output
+
+![Example output](scr_output.gif)
