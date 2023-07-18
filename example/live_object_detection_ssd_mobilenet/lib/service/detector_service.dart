@@ -10,7 +10,7 @@ import 'dart:isolate';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:image/image.dart' as imageLib;
+import 'package:image/image.dart' as image_lib;
 import 'package:live_object_detection_ssd_mobilenet/models/recognition.dart';
 import 'package:live_object_detection_ssd_mobilenet/utils/image_utils.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
@@ -249,7 +249,7 @@ class _DetectorServer {
     convertCameraImageToImage(cameraImage).then((image) {
       if (image != null) {
         if (Platform.isAndroid) {
-          image = imageLib.copyRotate(image, angle: 90);
+          image = image_lib.copyRotate(image, angle: 90);
         }
 
         final results = analyseImage(image, preConversionTime);
@@ -259,7 +259,7 @@ class _DetectorServer {
   }
 
   Map<String, dynamic> analyseImage(
-      imageLib.Image? image, int preConversionTime) {
+      image_lib.Image? image, int preConversionTime) {
     var conversionElapsedTime =
         DateTime.now().millisecondsSinceEpoch - preConversionTime;
 
@@ -267,7 +267,7 @@ class _DetectorServer {
 
     /// Pre-process the image
     /// Resizing image fpr model, [300, 300]
-    final imageInput = imageLib.copyResize(
+    final imageInput = image_lib.copyResize(
       image!,
       width: mlModelInputSize,
       height: mlModelInputSize,

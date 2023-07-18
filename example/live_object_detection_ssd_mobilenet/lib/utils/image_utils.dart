@@ -4,11 +4,11 @@ import 'dart:developer' as dev;
 
 import 'package:camera/camera.dart';
 import 'package:exif/exif.dart';
-import 'package:image/image.dart' as imageLib;
+import 'package:image/image.dart' as image_lib;
 
-Future<imageLib.Image?> convertCameraImageToImage(
+Future<image_lib.Image?> convertCameraImageToImage(
     CameraImage cameraImage) async {
-  imageLib.Image image;
+  image_lib.Image image;
 
   if (cameraImage.format.group == ImageFormatGroup.yuv420) {
     image = convertYUV420ToImage(cameraImage);
@@ -25,7 +25,7 @@ Future<imageLib.Image?> convertCameraImageToImage(
   return image;
 }
 
-imageLib.Image convertYUV420ToImage(CameraImage cameraImage) {
+image_lib.Image convertYUV420ToImage(CameraImage cameraImage) {
   final width = cameraImage.width;
   final height = cameraImage.height;
 
@@ -36,7 +36,7 @@ imageLib.Image convertYUV420ToImage(CameraImage cameraImage) {
   final uPlane = cameraImage.planes[1].bytes;
   final vPlane = cameraImage.planes[2].bytes;
 
-  final image = imageLib.Image(width: width, height: height);
+  final image = image_lib.Image(width: width, height: height);
 
   var uvIndex = 0;
 
@@ -70,12 +70,12 @@ imageLib.Image convertYUV420ToImage(CameraImage cameraImage) {
   return image;
 }
 
-imageLib.Image convertBGRA8888ToImage(CameraImage cameraImage) {
+image_lib.Image convertBGRA8888ToImage(CameraImage cameraImage) {
   // Extract the bytes from the CameraImage
   final bytes = cameraImage.planes[0].bytes;
 
   // Create a new Image instance
-  final image = imageLib.Image.fromBytes(
+  final image = image_lib.Image.fromBytes(
     width: cameraImage.width,
     height: cameraImage.height,
     bytes: bytes.buffer,
@@ -84,23 +84,23 @@ imageLib.Image convertBGRA8888ToImage(CameraImage cameraImage) {
   return image;
 }
 
-imageLib.Image convertJPEGToImage(CameraImage cameraImage) {
+image_lib.Image convertJPEGToImage(CameraImage cameraImage) {
   // Extract the bytes from the CameraImage
   final bytes = cameraImage.planes[0].bytes;
 
   // Create a new Image instance from the JPEG bytes
-  final image = imageLib.decodeImage(bytes);
+  final image = image_lib.decodeImage(bytes);
 
   return image!;
 }
 
-imageLib.Image convertNV21ToImage(CameraImage cameraImage) {
+image_lib.Image convertNV21ToImage(CameraImage cameraImage) {
   // Extract the bytes from the CameraImage
   final yuvBytes = cameraImage.planes[0].bytes;
   final vuBytes = cameraImage.planes[1].bytes;
 
   // Create a new Image instance
-  final image = imageLib.Image(
+  final image = image_lib.Image(
     width: cameraImage.width,
     height: cameraImage.height,
   );
@@ -118,7 +118,7 @@ imageLib.Image convertNV21ToImage(CameraImage cameraImage) {
 }
 
 void convertNV21ToRGB(Uint8List yuvBytes, Uint8List vuBytes, int width,
-    int height, imageLib.Image image) {
+    int height, image_lib.Image image) {
   // Conversion logic from NV21 to RGB
   // ...
 
@@ -157,28 +157,28 @@ Future<int> getExifRotation(CameraImage cameraImage) async {
   return 1;
 }
 
-imageLib.Image applyExifRotation(imageLib.Image image, int exifRotation) {
+image_lib.Image applyExifRotation(image_lib.Image image, int exifRotation) {
   dev.log('Applying rotation: $exifRotation');
 
   if (exifRotation == 1) {
-    return imageLib.copyRotate(image, angle: 0);
+    return image_lib.copyRotate(image, angle: 0);
   } else if (exifRotation == 3) {
-    return imageLib.copyRotate(image, angle: 180);
+    return image_lib.copyRotate(image, angle: 180);
   } else if (exifRotation == 6) {
-    return imageLib.copyRotate(image, angle: 90);
+    return image_lib.copyRotate(image, angle: 90);
   } else if (exifRotation == 8) {
-    return imageLib.copyRotate(image, angle: 270);
+    return image_lib.copyRotate(image, angle: 270);
   }
 
   return image;
 }
 
 Future<void> saveImage(
-  imageLib.Image image,
+  image_lib.Image image,
   String path,
   String name,
 ) async {
-  Uint8List bytes = imageLib.encodeJpg(image);
+  Uint8List bytes = image_lib.encodeJpg(image);
   final fileOnDevice = File('$path/$name.jpg');
   await fileOnDevice.writeAsBytes(bytes, flush: true);
   dev.log('Saved ${fileOnDevice.path}');
