@@ -9,7 +9,6 @@ import 'package:live_object_detection_ssd_mobilenet/models/screen_params.dart';
 import 'package:live_object_detection_ssd_mobilenet/service/detector_service.dart';
 import 'package:live_object_detection_ssd_mobilenet/ui/box_widget.dart';
 import 'package:live_object_detection_ssd_mobilenet/ui/stats_widget.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 
 /// [DetectorWidget] sends each frame for inference
 class DetectorWidget extends StatefulWidget {
@@ -54,15 +53,13 @@ class _DetectorWidgetState extends State<DetectorWidget>
     // initialize preview and CameraImage stream
     _initializeCamera();
     // Spawn a new isolate
-    await path_provider.getTemporaryDirectory().then((appDir) {
-      Detector.start(appDir.path).then((instance) {
-        setState(() {
-          _detector = instance;
-          _subscription = instance.resultsStream.stream.listen((values) {
-            setState(() {
-              results = values['recognitions'];
-              stats = values['stats'];
-            });
+    Detector.start().then((instance) {
+      setState(() {
+        _detector = instance;
+        _subscription = instance.resultsStream.stream.listen((values) {
+          setState(() {
+            results = values['recognitions'];
+            stats = values['stats'];
           });
         });
       });

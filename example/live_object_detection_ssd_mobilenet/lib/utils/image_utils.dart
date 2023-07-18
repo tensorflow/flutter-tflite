@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:developer' as dev;
 
 import 'package:camera/camera.dart';
 import 'package:exif/exif.dart';
@@ -148,7 +147,6 @@ void convertNV21ToRGB(Uint8List yuvBytes, Uint8List vuBytes, int width,
 
 Future<int> getExifRotation(CameraImage cameraImage) async {
   final exifData = await readExifFromBytes(cameraImage.planes[0].bytes);
-  dev.log('All exifData: $exifData');
   final ifd = exifData['Image Orientation'];
 
   if (ifd != null) {
@@ -158,8 +156,6 @@ Future<int> getExifRotation(CameraImage cameraImage) async {
 }
 
 image_lib.Image applyExifRotation(image_lib.Image image, int exifRotation) {
-  dev.log('Applying rotation: $exifRotation');
-
   if (exifRotation == 1) {
     return image_lib.copyRotate(image, angle: 0);
   } else if (exifRotation == 3) {
@@ -181,5 +177,4 @@ Future<void> saveImage(
   Uint8List bytes = image_lib.encodeJpg(image);
   final fileOnDevice = File('$path/$name.jpg');
   await fileOnDevice.writeAsBytes(bytes, flush: true);
-  dev.log('Saved ${fileOnDevice.path}');
 }

@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:developer' as dev;
 import 'dart:io';
 import 'dart:isolate';
 
@@ -72,9 +71,8 @@ class Detector {
   static const String _modelPath = 'assets/models/ssd_mobilenet.tflite';
   static const String _labelPath = 'assets/models/labelmap.txt';
 
-  Detector._(this._path, this._isolate, this._interpreter, this._labels);
+  Detector._(this._isolate, this._interpreter, this._labels);
 
-  final String _path;
   final Isolate _isolate;
   late final Interpreter _interpreter;
   late final List<String> _labels;
@@ -90,14 +88,13 @@ class Detector {
       StreamController<Map<String, dynamic>>();
 
   /// Open the database at [path] and launch the server on a background isolate..
-  static Future<Detector> start(String path) async {
+  static Future<Detector> start() async {
     final ReceivePort receivePort = ReceivePort();
     // sendPort - To be used by service Isolate to send message to our ReceiverPort
     final Isolate isolate =
         await Isolate.spawn(_DetectorServer._run, receivePort.sendPort);
 
     final Detector result = Detector._(
-      path,
       isolate,
       await _loadModel(),
       await _loadLabels(),
@@ -109,7 +106,6 @@ class Detector {
   }
 
   static Future<Interpreter> _loadModel() async {
-    dev.log('Loading interpreter options...');
     final interpreterOptions = InterpreterOptions();
 
     // Use XNNPACK Delegate
@@ -122,7 +118,6 @@ class Detector {
       interpreterOptions.addDelegate(GpuDelegate());
     }
 
-    dev.log('Loading interpreter...');
     return Interpreter.fromAsset(
       _modelPath,
       options: interpreterOptions..threads = 4,
@@ -130,7 +125,6 @@ class Detector {
   }
 
   static Future<List<String>> _loadLabels() async {
-    dev.log('Loading labels...');
     return (await rootBundle.loadString(_labelPath)).split('\n');
   }
 
@@ -155,7 +149,6 @@ class Detector {
         // ----------------------------------------------------------------------
         RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
         _sendPort.send(_Command(_Codes.init, args: [
-          _path,
           rootIsolateToken,
           _interpreter.address,
           _labels,
@@ -194,7 +187,6 @@ class _DetectorServer {
   _DetectorServer(this._sendPort);
 
   final SendPort _sendPort;
-  late final String _path;
 
   // ----------------------------------------------------------------------
   // Here the plugin is used from the background isolate.
@@ -216,7 +208,6 @@ class _DetectorServer {
   Future<void> _handleCommand(_Command command) async {
     switch (command.code) {
       case _Codes.init:
-        _path = command.args?[0] as String;
         // ----------------------------------------------------------------------
         // The [RootIsolateToken] is required for
         // [BackgroundIsolateBinaryMessenger.ensureInitialized] and must be
@@ -224,7 +215,7 @@ class _DetectorServer {
         // a [SendPort].
         // ----------------------------------------------------------------------
         RootIsolateToken rootIsolateToken =
-            command.args?[1] as RootIsolateToken;
+            command.args?[0] as RootIsolateToken;
         // ----------------------------------------------------------------------
         // [BackgroundIsolateBinaryMessenger.ensureInitialized] for each
         // background isolate that will use plugins. This sets up the
@@ -232,8 +223,8 @@ class _DetectorServer {
         // the background isolate.
         // ----------------------------------------------------------------------
         BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
-        _interpreter = Interpreter.fromAddress(command.args?[2] as int);
-        _labels = command.args?[3] as List<String>;
+        _interpreter = Interpreter.fromAddress(command.args?[1] as int);
+        _labels = command.args?[2] as List<String>;
         _sendPort.send(const _Command(_Codes.ready));
       case _Codes.detect:
         _sendPort.send(const _Command(_Codes.busy));
@@ -273,9 +264,6 @@ class _DetectorServer {
       height: mlModelInputSize,
     );
 
-    String imageTimestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    saveImage(imageInput, _path, '${imageTimestamp}_2');
-
     // Creating matrix representation, [300, 300, 3]
     final imageMatrix = List.generate(
       imageInput.height,
@@ -295,7 +283,6 @@ class _DetectorServer {
 
     final output = _runInference(imageMatrix);
 
-    dev.log('Processing outputs...');
     // Location
     final locationsRaw = output.first.first as List<List<double>>;
 
@@ -303,28 +290,22 @@ class _DetectorServer {
         .map((list) => list.map((value) => (value * mlModelInputSize)).toList())
         .map((rect) => Rect.fromLTRB(rect[1], rect[0], rect[3], rect[2]))
         .toList();
-    dev.log('Locations: $locations');
 
     // Classes
     final classesRaw = output.elementAt(1).first as List<double>;
     final classes = classesRaw.map((value) => value.toInt()).toList();
-    dev.log('Classes: $classes');
 
     // Scores
     final scores = output.elementAt(2).first as List<double>;
-    dev.log('Scores: $scores');
 
     // Number of detections
     final numberOfDetectionsRaw = output.last.first as double;
     final numberOfDetections = numberOfDetectionsRaw.toInt();
-    dev.log('Number of detections: $numberOfDetections');
 
-    dev.log('Classifying detected objects...');
     final List<String> classification = [];
     for (var i = 0; i < numberOfDetections; i++) {
       classification.add(_labels![classes[i]]);
     }
-    dev.log('Classes String: $classification');
 
     /// Generate recognitions
     List<Recognition> recognitions = [];
@@ -347,9 +328,6 @@ class _DetectorServer {
     var totalElapsedTime =
         DateTime.now().millisecondsSinceEpoch - preConversionTime;
 
-    dev.log('Recognitions: $recognitions');
-    dev.log('Recognition Done.');
-
     return {
       "recognitions": recognitions,
       "stats": <String, String>{
@@ -366,8 +344,6 @@ class _DetectorServer {
   List<List<Object>> _runInference(
     List<List<List<num>>> imageMatrix,
   ) {
-    dev.log('Running inference...');
-
     // Set input tensor [1, 300, 300, 3]
     final input = [imageMatrix];
 
