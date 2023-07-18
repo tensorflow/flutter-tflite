@@ -13,13 +13,11 @@ class HomeView extends StatelessWidget {
       key: GlobalKey(),
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text(
-          'Live Object Detection',
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+        title: FractionallySizedBox(
+          widthFactor: 0.75,
+          child: Image.asset(
+            'assets/images/tfl_logo.png',
+            fit: BoxFit.cover,
           ),
         ),
       ),
