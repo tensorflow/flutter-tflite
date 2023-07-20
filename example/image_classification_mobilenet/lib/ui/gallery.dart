@@ -32,7 +32,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
   final imagePicker = ImagePicker();
   String? imagePath;
   img.Image? image;
-  Map<String, int>? classification;
+  Map<String, double>? classification;
 
   @override
   void initState() {
@@ -131,12 +131,12 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     if (imageClassificationHelper?.inputTensor != null)
                       Text(
                         'Input: (shape: ${imageClassificationHelper?.inputTensor.shape} type: '
-                            '${imageClassificationHelper?.inputTensor.type})',
+                        '${imageClassificationHelper?.inputTensor.type})',
                       ),
                     if (imageClassificationHelper?.outputTensor != null)
                       Text(
                         'Output: (shape: ${imageClassificationHelper?.outputTensor.shape} '
-                            'type: ${imageClassificationHelper?.outputTensor.type})',
+                        'type: ${imageClassificationHelper?.outputTensor.type})',
                       ),
                     const SizedBox(height: 8),
                     // Show picked image information
@@ -145,7 +145,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     Text('Height: ${image?.height}'),
                     Text('Width: ${image?.width}'),
                   ],
-                  const SizedBox(height: 24),
+                  const Spacer(),
                   // Show classification result
                   SingleChildScrollView(
                     child: Column(
@@ -156,14 +156,16 @@ class _GalleryScreenState extends State<GalleryScreen> {
                                   (a, b) => a.value.compareTo(b.value),
                                 ))
                               .reversed
-                              .take(5)
+                              .take(3)
                               .map(
                                 (e) => Container(
                                   padding: const EdgeInsets.all(8),
-                                  color: Colors.orange.withOpacity(0.3),
+                                  color: Colors.white,
                                   child: Row(
                                     children: [
-                                      Text('${e.key}: ${e.value}'),
+                                      Text(e.key),
+                                      const Spacer(),
+                                      Text(e.value.toStringAsFixed(2))
                                     ],
                                   ),
                                 ),

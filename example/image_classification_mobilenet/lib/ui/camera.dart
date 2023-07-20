@@ -35,7 +35,7 @@ class CameraScreenState extends State<CameraScreen>
     with WidgetsBindingObserver {
   late CameraController cameraController;
   late ImageClassificationHelper imageClassificationHelper;
-  Map<String, int>? classification;
+  Map<String, double>? classification;
   bool _isProcessing = false;
 
   // init camera
@@ -46,7 +46,9 @@ class CameraScreenState extends State<CameraScreen>
             : ImageFormatGroup.yuv420);
     cameraController.initialize().then((value) {
       cameraController.startImageStream(imageAnalysis);
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
   }
 
@@ -59,7 +61,9 @@ class CameraScreenState extends State<CameraScreen>
     classification =
         await imageClassificationHelper.inferenceCameraFrame(cameraImage);
     _isProcessing = false;
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -128,8 +132,9 @@ class CameraScreenState extends State<CameraScreen>
             : cameraWidget(context),
       ),
     );
-    list.add(
-      SingleChildScrollView(
+    list.add(Align(
+      alignment: Alignment.bottomCenter,
+      child: SingleChildScrollView(
         child: Column(
           children: [
             if (classification != null)
@@ -138,14 +143,16 @@ class CameraScreenState extends State<CameraScreen>
                       (a, b) => a.value.compareTo(b.value),
                     ))
                   .reversed
-                  .take(5)
+                  .take(3)
                   .map(
                     (e) => Container(
                       padding: const EdgeInsets.all(8),
-                      color: Colors.orange.withOpacity(0.3),
+                      color: Colors.white,
                       child: Row(
                         children: [
-                          Text('${e.key}: ${e.value}'),
+                          Text(e.key),
+                          const Spacer(),
+                          Text(e.value.toStringAsFixed(2))
                         ],
                       ),
                     ),
@@ -153,7 +160,7 @@ class CameraScreenState extends State<CameraScreen>
           ],
         ),
       ),
-    );
+    ));
 
     return SafeArea(
       child: Stack(

@@ -31,7 +31,7 @@ class ImageClassificationHelper {
 
   late final Interpreter interpreter;
   late final List<String> labels;
-  late final IsolateInference isolateUtils;
+  late final IsolateInference isolateInference;
   late Tensor inputTensor;
   late Tensor outputTensor;
 
@@ -74,13 +74,13 @@ class ImageClassificationHelper {
   Future<void> initHelper() async {
     _loadLabels();
     _loadModel();
-    isolateUtils = IsolateInference();
-    await isolateUtils.start();
+    isolateInference = IsolateInference();
+    await isolateInference.start();
   }
 
-  Future<Map<String, int>> _inference(InferenceModel inferenceModel) async {
+  Future<Map<String, double>> _inference(InferenceModel inferenceModel) async {
     ReceivePort responsePort = ReceivePort();
-    isolateUtils.sendPort
+    isolateInference.sendPort
         .send(inferenceModel..responsePort = responsePort.sendPort);
     // get inference result.
     var results = await responsePort.first;
@@ -88,20 +88,21 @@ class ImageClassificationHelper {
   }
 
   // inference camera frame
-  Future<Map<String, int>> inferenceCameraFrame(CameraImage cameraImage) async {
+  Future<Map<String, double>> inferenceCameraFrame(
+      CameraImage cameraImage) async {
     var isolateModel = InferenceModel(cameraImage, null, interpreter.address,
         labels, inputTensor.shape, outputTensor.shape);
     return _inference(isolateModel);
   }
 
   // inference still image
-  Future<Map<String, int>> inferenceImage(Image image) async {
+  Future<Map<String, double>> inferenceImage(Image image) async {
     var isolateModel = InferenceModel(null, image, interpreter.address, labels,
         inputTensor.shape, outputTensor.shape);
     return _inference(isolateModel);
   }
 
   Future<void> close() async {
-    isolateUtils.close();
+    isolateInference.close();
   }
 }
