@@ -45,11 +45,11 @@ class _DetectorWidgetState extends State<DetectorWidget>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _initStateAsync();
   }
 
   void _initStateAsync() async {
-    WidgetsBinding.instance.addObserver(this);
     // initialize preview and CameraImage stream
     _initializeCamera();
     // Spawn a new isolate
@@ -148,13 +148,13 @@ class _DetectorWidgetState extends State<DetectorWidget>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
-      case AppLifecycleState.paused:
-        _controller.stopImageStream();
+      case AppLifecycleState.inactive:
+        _cameraController?.stopImageStream();
+        _detector?.stop();
+        _subscription?.cancel();
         break;
       case AppLifecycleState.resumed:
-        if (!_controller.value.isStreamingImages) {
-          await _controller.startImageStream(onLatestImageAvailable);
-        }
+        _initStateAsync();
         break;
       default:
     }
