@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:isolate';
 
 import 'package:camera/camera.dart';
@@ -91,10 +90,7 @@ class _DetectorWidgetState extends State<DetectorWidget>
       return const SizedBox.shrink();
     }
 
-    var aspect = _controller.value.aspectRatio;
-    if (Platform.isAndroid) {
-      aspect = 1 / aspect;
-    }
+    var aspect = 1 / _controller.value.aspectRatio;
 
     return Stack(
       children: [

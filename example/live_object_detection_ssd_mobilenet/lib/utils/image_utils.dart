@@ -78,6 +78,7 @@ image_lib.Image convertBGRA8888ToImage(CameraImage cameraImage) {
     width: cameraImage.width,
     height: cameraImage.height,
     bytes: bytes.buffer,
+    order: image_lib.ChannelOrder.rgba,
   );
 
   return image;
