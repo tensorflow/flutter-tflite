@@ -13,12 +13,9 @@ class HomeView extends StatelessWidget {
       key: GlobalKey(),
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: FractionallySizedBox(
-          widthFactor: 0.75,
-          child: Image.asset(
-            'assets/images/tfl_logo.png',
-            fit: BoxFit.cover,
-          ),
+        title: Image.asset(
+          'assets/images/tfl_logo.png',
+          fit: BoxFit.contain,
         ),
       ),
       body: const DetectorWidget(),
