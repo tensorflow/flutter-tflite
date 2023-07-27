@@ -34,19 +34,13 @@ class Recognition {
   /// This is the actual location where rectangle is rendered on
   /// the screen
   Rect get renderLocation {
-    final double x1 = location.left;
-    final double y1 = location.top;
-    final double x2 = location.right;
-    final double y2 = location.bottom;
     final double scaleX = ScreenParams.screenPreviewSize.width / 300;
     final double scaleY = ScreenParams.screenPreviewSize.height / 300;
-    final double xDelta = (x2 - x1) * scaleX;
-    final double yDelta = (y2 - y1) * scaleY;
-    return Rect.fromLTRB(
-      x1 * scaleX,
-      y1 * scaleY,
-      x1 * scaleX + xDelta,
-      y1 * scaleY + yDelta,
+    return Rect.fromLTWH(
+      location.left * scaleX,
+      location.top * scaleY,
+      location.width * scaleX,
+      location.height * scaleY,
     );
   }
 

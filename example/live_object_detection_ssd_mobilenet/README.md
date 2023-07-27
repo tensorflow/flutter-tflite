@@ -15,4 +15,4 @@ Run 'sh ./scripts/download_model.sh' from your repo core folder to download tf m
 
 ## Sample output
 
-|![Android](output_Android.gif)|![iOS](output_iOS.gif)|
+|![Pixel](output_Pixel7.gif)|![iPhone](output_iPhone.gif)|![iPad](output_iPad.gif)|
