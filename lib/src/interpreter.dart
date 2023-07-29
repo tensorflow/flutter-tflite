@@ -323,7 +323,7 @@ class Interpreter {
     }
   }
 
-// Resets all variable tensors to the defaul value
+  // Resets all variable tensors to the defaul value
   void resetVariableTensors() {
     checkState(_deleted,
         message: 'Should not acces delegate after it has been closed.');
