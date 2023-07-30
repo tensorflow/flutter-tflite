@@ -16,21 +16,19 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart';
 
 class ObjectDetection03 {
   static const String _modelPath = 'assets/models/yolox_nano_with_post_float32.tflite';
-  static const String _labelPath = 'assets/models/labels.txt';
 
   Interpreter? _interpreter;
-  List<String>? _labels;
   String _lastScore = "NaN";
 
   ObjectDetection03() {
     _loadModel();
-    _loadLabels();
   }
 
   Future<void> _loadModel() async {
@@ -42,12 +40,7 @@ class ObjectDetection03 {
     print(outputTensor);
   }
 
-  Future<void> _loadLabels() async {
-    final labelsRaw = await rootBundle.loadString(_labelPath);
-    _labels = labelsRaw.split('\n');
-  }
-
-  Future<Uint8List> analyseImagePythonImage(Uint8List imageData) async {
+  Future<Uint8List> analysePythonImage(Uint8List imageData) async {
     String jsonStr = await rootBundle.loadString('assets/models/image_matrix.json');
     final jsonData = json.decode(jsonStr);
     final List<dynamic> pixels = jsonData['pixels'];
@@ -67,7 +60,7 @@ class ObjectDetection03 {
   }
 
   Future<Uint8List> analyseImage(Uint8List imageData) async {
-    print('---------------------------------------------------------------');
+    debugPrint('---------------------------------------------------------------');
     var startProcessing = DateTime.now();
     final image = img.decodeJpg(imageData.buffer.asUint8List())!;
     final imageInput = img.copyResize(image, width: 416, height: 416);
@@ -75,7 +68,7 @@ class ObjectDetection03 {
     var startConvertObjectToBytes = DateTime.now();
     Uint8List convertObjectToBytes = ByteConversionUtils.convertObjectToBytes(list, TensorType.float32);
     var endConvertObjectToBytes = DateTime.now().difference(startConvertObjectToBytes).inMilliseconds;
-    print('convertObjectToBytes Duration --> $endConvertObjectToBytes');
+    debugPrint('convertObjectToBytes Duration --> $endConvertObjectToBytes');
     final output = List<List<num>>.filled(16, List<num>.filled(7, 0));
     _interpreter!.run(convertObjectToBytes, output);
     final elements = output.toList();
@@ -87,8 +80,8 @@ class ObjectDetection03 {
     int maxIndex = allValue.indexOf(max);
     _lastScore = 'score = $max ---> label = $maxIndex';
     var totalDuration = DateTime.now().difference(startProcessing).inMilliseconds;
-    print('total Duration --> $totalDuration');
-    print(_lastScore);
+    debugPrint('total Duration --> $totalDuration');
+    debugPrint(_lastScore);
     return imageData;
   }
 
