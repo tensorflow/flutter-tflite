@@ -323,6 +323,13 @@ class Interpreter {
     }
   }
 
+  // Resets all variable tensors to the defaul value
+  void resetVariableTensors() {
+    checkState(_deleted,
+        message: 'Should not acces delegate after it has been closed.');
+    tfliteBinding.TfLiteInterpreterResetVariableTensors(_interpreter);
+  }
+
   /// Returns the address to the interpreter
   int get address => _interpreter.address;
 
@@ -331,5 +338,4 @@ class Interpreter {
   bool get isDeleted => _deleted;
 
   //TODO: (JAVA) void modifyGraphWithDelegate(Delegate delegate)
-  //TODO: (JAVA) void resetVariableTensors()
 }
