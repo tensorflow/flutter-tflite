@@ -30,8 +30,7 @@ final DynamicLibrary _dylib = () {
 
   if (Platform.isMacOS) {
     return DynamicLibrary.open(
-        Directory(Platform.resolvedExecutable).parent.parent.path +
-            '/resources/libtensorflowlite_c-mac.dylib');
+        '${Directory(Platform.resolvedExecutable).parent.parent.path}/resources/libtensorflowlite_c-mac.dylib');
   }
 
   throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
