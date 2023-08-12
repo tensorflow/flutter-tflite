@@ -161,8 +161,8 @@ final isolateInterpreter =
 Both `run` and `runForMultipleInputs` methods of `isolateInterpreter` are asynchronous:
 
 ```dart
-await interpreter.run(input, output);
-await interpreter.runForMultipleInputs(inputs, outputs);
+await isolateInterpreter.run(input, output);
+await isolateInterpreter.runForMultipleInputs(inputs, outputs);
 ```
 
 By using `IsolateInterpreter`, the inference runs in a separate isolate. This ensures that the main isolate, responsible for UI tasks, remains unblocked and responsive.
