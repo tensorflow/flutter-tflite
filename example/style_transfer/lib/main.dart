@@ -122,7 +122,7 @@ class _HomeState extends State<Home> {
     );
 
     predictionIsolateInterpreter =
-        IsolateInterpreter(address: predictionInterpreter.address);
+        await IsolateInterpreter.create(address: predictionInterpreter.address);
 
     transferInterpreter = await Interpreter.fromAsset(
       transferModelPath,
@@ -130,7 +130,7 @@ class _HomeState extends State<Home> {
     );
 
     transferIsolateInterpreter =
-        IsolateInterpreter(address: transferInterpreter.address);
+        await IsolateInterpreter.create(address: transferInterpreter.address);
 
     setState(() {});
 

@@ -147,3 +147,22 @@ Refer to the documentation for info on creating interpreter from buffer or file.
 ```dart
 interpreter.close();
 ```
+
+### Asynchronous Inference with `IsolateInterpreter`
+
+To utilize asynchronous inference, first create your `Interpreter` and then wrap it with `IsolateInterpreter`.
+
+```dart
+final interpreter = await Interpreter.fromAsset('assets/your_model.tflite');
+final isolateInterpreter =
+        await IsolateInterpreter.create(address: interpreter.address);
+```
+
+Both `run` and `runForMultipleInputs` methods of `isolateInterpreter` are asynchronous:
+
+```dart
+await interpreter.run(input, output);
+await interpreter.runForMultipleInputs(inputs, outputs);
+```
+
+By using `IsolateInterpreter`, the inference runs in a separate isolate. This ensures that the main isolate, responsible for UI tasks, remains unblocked and responsive.
