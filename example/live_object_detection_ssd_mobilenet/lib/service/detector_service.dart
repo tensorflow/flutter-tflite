@@ -18,11 +18,11 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 // **WARNING:** This is not production code and is only intended to be used for
 // demonstration purposes.
 //
-// The following database works by spawning a background isolate and
+// The following Detector example works by spawning a background isolate and
 // communicating with it over Dart's SendPort API. It is presented below as a
 // demonstration of the feature "Background Isolate Channels" and shows using
-// plugins from a background isolate. The [SimpleDatabase] operates on the root
-// isolate and the [_SimpleDatabaseServer] operates on a background isolate.
+// plugins from a background isolate. The [Detector] operates on the root
+// isolate and the [_DetectorServer] operates on a background isolate.
 //
 // Here is an example of the protocol they use to communicate:
 //
@@ -111,11 +111,6 @@ class Detector {
     // Use XNNPACK Delegate
     if (Platform.isAndroid) {
       interpreterOptions.addDelegate(XNNPackDelegate());
-    }
-
-    // Use Metal Delegate
-    if (Platform.isIOS) {
-      interpreterOptions.addDelegate(GpuDelegate());
     }
 
     return Interpreter.fromAsset(
@@ -257,7 +252,7 @@ class _DetectorServer {
     var preProcessStart = DateTime.now().millisecondsSinceEpoch;
 
     /// Pre-process the image
-    /// Resizing image fpr model, [300, 300]
+    /// Resizing image for model [300, 300]
     final imageInput = image_lib.copyResize(
       image!,
       width: mlModelInputSize,
