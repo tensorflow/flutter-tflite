@@ -60,7 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
   // second clips (15600 samples).
   static const _sampleRate = 16000; // 16kHz
   static const _expectAudioLength = 975; // milliseconds
-  final int _requiredInputBuffer = (16000 * (_expectAudioLength / 1000)).toInt();
+  final int _requiredInputBuffer =
+      (16000 * (_expectAudioLength / 1000)).toInt();
   late AudioClassificationHelper _helper;
   List<MapEntry<String, double>> _classification = List.empty();
   final List<Color> _primaryProgressColorList = [
