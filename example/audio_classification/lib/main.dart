@@ -196,7 +196,9 @@ class _MyHomePageState extends State<MyHomePage> {
     if (_showError) {
       return const Center(
         child: Text(
-            "Audio recording permission required for audio classification"),
+          "Audio recording permission required for audio classification",
+          textAlign: TextAlign.center,
+        ),
       );
     } else {
       return ListView.separated(
