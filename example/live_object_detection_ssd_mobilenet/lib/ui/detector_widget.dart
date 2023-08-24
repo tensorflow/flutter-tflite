@@ -69,10 +69,11 @@ class _DetectorWidgetState extends State<DetectorWidget>
   void _initializeCamera() async {
     cameras = await availableCameras();
     // cameras[0] for back-camera
-    _cameraController = CameraController(cameras[0], ResolutionPreset.medium,
-        enableAudio: false)
-      ..initialize().then((_) async {
-        // Stream of image passed to [onLatestImageAvailable] callback
+    _cameraController = CameraController(
+      cameras[0],
+      ResolutionPreset.medium,
+      enableAudio: false,
+    )..initialize().then((_) async {
         await _controller.startImageStream(onLatestImageAvailable);
         setState(() {});
 
