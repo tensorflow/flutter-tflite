@@ -67,6 +67,20 @@ while devices are plugged in.
 
 Note: TFLite may not work in the iOS simulator. It's recommended that you test with a physical device.
 
+### MacOS
+
+For MacOS a TensorFlow Lite dynamic library needs to be added to the project manually.
+For this, first a `.dylib` needs to be built. You can follow the [Bazel build guide](https://www.tensorflow.org/lite/guide/build_arm) or the [CMake build guide](https://www.tensorflow.org/lite/guide/build_cmake) to build the libraries.
+
+**CMake Note:**
+* cross compiling in CMake can be achieved using:
+`-DCMAKE_OSX_ARCHITECTURES=x86_64|arm64`
+
+* bundling two architectures (arm / x86) using lipo:
+`lipo -create arm64/libtensorflowlite_c.dylib x86/libtensorflowlite_c.dylib -output libtensorflowlite_c.dylib`
+
+As a second step, the library needs to be added to your application's XCode project. For this, you can follow the step 1 and 2 of the [official Flutter guide on adding dynamic libraries](https://docs.flutter.dev/platform-integration/macos/c-interop#compiled-dynamic-library-macos).
+
 ## TFLite Flutter Helper Library
 
 The helper library has been deprecated. New development underway for a replacement at https://github.com/google/flutter-mediapipe. Current timeline is to have wide support by the end of August, 2023.
