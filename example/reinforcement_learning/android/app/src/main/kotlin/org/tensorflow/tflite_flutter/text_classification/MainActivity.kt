@@ -1,4 +1,4 @@
-package org.tensorflow.tflite_flutter.text_classification
+package org.tensorflow.tflite_flutter.reinforcement_learning
 
 import io.flutter.embedding.android.FlutterActivity
 
