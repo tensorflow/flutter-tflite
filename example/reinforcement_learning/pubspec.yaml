@@ -1,4 +1,4 @@
-name: tflite_flutter_plugin_example
+name: tflite_flutter_plugin_rl_example
 description: Demonstrates how to use the tflite_flutter_plugin plugin.
 publish_to: "none"
 
