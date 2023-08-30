@@ -9,3 +9,6 @@ This app demonstrate a reinforcement learning agent for a simple board game. It 
 ### Instructions
 
 Run `scripts/download.sh` first to download the model and then start the Flutter app.
+
+![DEMO GIF](demo.gif)
+
