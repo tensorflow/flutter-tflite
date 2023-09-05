@@ -374,22 +374,24 @@ class _HomeState extends State<Home> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  IconButton(
-                    onPressed: () async {
-                      cleanResult();
-                      final result = await imagePicker.pickImage(
-                        source: ImageSource.camera,
-                      );
+                  // allow camera input only on mobile
+                  if (Platform.isAndroid || Platform.isIOS)
+                    IconButton(
+                      onPressed: () async {
+                        cleanResult();
+                        final result = await imagePicker.pickImage(
+                          source: ImageSource.camera,
+                        );
 
-                      imagePath = result?.path;
-                      setState(() {});
-                      processImage();
-                    },
-                    icon: const Icon(
-                      Icons.camera,
-                      size: 64,
+                        imagePath = result?.path;
+                        setState(() {});
+                        processImage();
+                      },
+                      icon: const Icon(
+                        Icons.camera,
+                        size: 64,
+                      ),
                     ),
-                  ),
                   IconButton(
                     onPressed: () async {
                       cleanResult();
