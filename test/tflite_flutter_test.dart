@@ -19,7 +19,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-
     expect(version, '42');
   });
 }

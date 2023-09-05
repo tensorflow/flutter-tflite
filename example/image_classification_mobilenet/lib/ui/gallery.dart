@@ -75,11 +75,10 @@ class _GalleryScreenState extends State<GalleryScreen> {
     return SafeArea(
       child: Column(
         children: [
-          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              if(cameraIsAvailable)
+              if (cameraIsAvailable)
                 TextButton.icon(
                   onPressed: () async {
                     cleanResult();

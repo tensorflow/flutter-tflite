@@ -62,10 +62,9 @@ class _BottomNavigationBarExampleState
   }
 
   initPages() async {
-
     _widgetOptions = [const GalleryScreen()];
 
-    if(cameraIsAvailable) {
+    if (cameraIsAvailable) {
       // get list available camera
       cameraDescription = (await availableCameras()).first;
       _widgetOptions!.add(CameraScreen(camera: cameraDescription));
@@ -75,7 +74,7 @@ class _BottomNavigationBarExampleState
   }
 
   void _onItemTapped(int index) {
-    if(!cameraIsAvailable){
+    if (!cameraIsAvailable) {
       print("This is not supported on your current platform");
       return;
     }
