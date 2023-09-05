@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import 'package:flutter/foundation.dart';  
+
 @Timeout(Duration(minutes: 1))
 
 import 'dart:io';
@@ -25,14 +27,14 @@ import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
 
-const final dataFileName = 'permute_uint8.tflite';
-const final missingFileName = 'missing.tflite';
-const final badFileName = 'bad_model.tflite';
-const final quantFileName = 'mobilenet_quant.tflite';
-const final intFileName = 'int32.bin';
-const final int64FileName = 'int64.bin';
-const final multiInputFileName = 'multi_add.bin';
-const final addFileName = 'add.bin';
+const dataFileName = 'permute_uint8.tflite';
+const missingFileName = 'missing.tflite';
+const badFileName = 'bad_model.tflite';
+const quantFileName = 'mobilenet_quant.tflite';
+const intFileName = 'int32.bin';
+const int64FileName = 'int64.bin';
+const multiInputFileName = 'multi_add.bin';
+const addFileName = 'add.bin';
 
 //flutter drive --driver=test_driver/integration_test.dart --target=integration_test/tflite_flutter_test.dart
 void main() {
@@ -202,7 +204,7 @@ void main() {
           test('params', () {
             interpreter.allocateTensors();
             final tensor = interpreter.getInputTensor(0);
-            debugPrint(tensor.params);
+            debugPrint(tensor.params.toString());
           });
           tearDown(() => interpreter.close());
         });
@@ -288,7 +290,7 @@ void main() {
         var output1 = List<double>.filled(1, 0);
         var outputs = {0: output0, 1: output1};
         interpreter.runForMultipleInputs(inputs, outputs);
-        debugPrint(interpreter.lastNativeInferenceDurationMicroSeconds);
+        debugPrint(interpreter.lastNativeInferenceDurationMicroSeconds.toString());
         expect(output0[0].toStringAsFixed(2), '4.89');
         expect(output1[0].toStringAsFixed(2), '6.09');
         interpreter.close();
@@ -317,7 +319,7 @@ void main() {
         var output1 = List<double>.filled(1, 0);
         var outputs = {0: output0, 1: output1};
         interpreter.runForMultipleInputs(inputs, outputs);
-        debugPrint(interpreter.lastNativeInferenceDurationMicroSeconds);
+        debugPrint(interpreter.lastNativeInferenceDurationMicroSeconds.toString());
         expect(output0[0].toStringAsFixed(2), '4.89');
         expect(output1[0].toStringAsFixed(2), '6.09');
         interpreter.close();
@@ -343,7 +345,7 @@ void main() {
       tfl.Interpreter interpreter;
       final path = await getPathOnDevice(int64FileName);
       interpreter = tfl.Interpreter.fromFile(File(path));
-      debugPrint(interpreter.getInputTensor(0));
+      debugPrint(interpreter.getInputTensor(0).toString());
       final oneD = <int>[3, 7, -4];
       final twoD = List.filled(8, oneD);
       final threeD = List.filled(8, twoD);
