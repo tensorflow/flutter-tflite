@@ -25,14 +25,14 @@ import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
 
-final dataFileName = 'permute_uint8.tflite';
-final missingFileName = 'missing.tflite';
-final badFileName = 'bad_model.tflite';
-final quantFileName = 'mobilenet_quant.tflite';
-final intFileName = 'int32.bin';
-final int64FileName = 'int64.bin';
-final multiInputFileName = 'multi_add.bin';
-final addFileName = 'add.bin';
+const final dataFileName = 'permute_uint8.tflite';
+const final missingFileName = 'missing.tflite';
+const final badFileName = 'bad_model.tflite';
+const final quantFileName = 'mobilenet_quant.tflite';
+const final intFileName = 'int32.bin';
+const final int64FileName = 'int64.bin';
+const final multiInputFileName = 'multi_add.bin';
+const final addFileName = 'add.bin';
 
 //flutter drive --driver=test_driver/integration_test.dart --target=integration_test/tflite_flutter_test.dart
 void main() {
