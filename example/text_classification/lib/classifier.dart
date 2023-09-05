@@ -63,7 +63,7 @@ class Classifier {
     // Creating the interpreter using Interpreter.fromAsset
     _interpreter = await Interpreter.fromAsset(_modelFile, options: options);
 
-    print('Interpreter loaded successfully');
+    debugPrint('Interpreter loaded successfully');
   }
 
   void _loadDictionary() async {
@@ -79,7 +79,7 @@ class Classifier {
       }
     }
     _dict = dict;
-    print('Dictionary loaded successfully');
+    debugPrint('Dictionary loaded successfully');
   }
 
   List<double> classify(String rawText) {

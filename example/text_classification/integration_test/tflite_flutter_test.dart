@@ -40,7 +40,7 @@ void main() {
 
   test('version', () {
     expect(tfl.version, isNotEmpty);
-    print('TensorFlow Lite version: ${tfl.version}');
+    debugPrint('TensorFlow Lite version: ${tfl.version}');
   });
 
   test('interpreter from file', () async {
@@ -202,7 +202,7 @@ void main() {
           test('params', () {
             interpreter.allocateTensors();
             final tensor = interpreter.getInputTensor(0);
-            print(tensor.params);
+            debugPrint(tensor.params);
           });
           tearDown(() => interpreter.close());
         });
@@ -288,7 +288,7 @@ void main() {
         var output1 = List<double>.filled(1, 0);
         var outputs = {0: output0, 1: output1};
         interpreter.runForMultipleInputs(inputs, outputs);
-        print(interpreter.lastNativeInferenceDurationMicroSeconds);
+        debugPrint(interpreter.lastNativeInferenceDurationMicroSeconds);
         expect(output0[0].toStringAsFixed(2), '4.89');
         expect(output1[0].toStringAsFixed(2), '6.09');
         interpreter.close();
@@ -317,7 +317,7 @@ void main() {
         var output1 = List<double>.filled(1, 0);
         var outputs = {0: output0, 1: output1};
         interpreter.runForMultipleInputs(inputs, outputs);
-        print(interpreter.lastNativeInferenceDurationMicroSeconds);
+        debugPrint(interpreter.lastNativeInferenceDurationMicroSeconds);
         expect(output0[0].toStringAsFixed(2), '4.89');
         expect(output1[0].toStringAsFixed(2), '6.09');
         interpreter.close();
@@ -343,7 +343,7 @@ void main() {
       tfl.Interpreter interpreter;
       final path = await getPathOnDevice(int64FileName);
       interpreter = tfl.Interpreter.fromFile(File(path));
-      print(interpreter.getInputTensor(0));
+      debugPrint(interpreter.getInputTensor(0));
       final oneD = <int>[3, 7, -4];
       final twoD = List.filled(8, oneD);
       final threeD = List.filled(8, twoD);
