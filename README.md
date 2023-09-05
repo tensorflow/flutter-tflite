@@ -67,6 +67,10 @@ while devices are plugged in.
 
 Note: TFLite may not work in the iOS simulator. It's recommended that you test with a physical device.
 
+When creating a release archive (IPA), the symbols are stripped by Xcode, so the command `flutter build ipa` may throw a `Failed to lookup symbol ... symbol not found` error. To work around this:
+
+1. In Xcode, go to **Target Runner > Build Settings > Strip Style**
+2. Change from **All Symbols** to **Non-Global Symbols**
 ### MacOS
 
 For MacOS a TensorFlow Lite dynamic library needs to be added to the project manually.
@@ -93,6 +97,9 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 
 ## Usage instructions
 
+### Import the libraries
+In the dependency section of `pubspec.yaml` file, add `tflite_flutter: ^0.10.1` (adjust the version accordingly based on the latest release)
+
 ### Creating the Interpreter
 
 * **From asset**
@@ -100,7 +107,7 @@ import 'package:tflite_flutter/tflite_flutter.dart';
     Place `your_model.tflite` in `assets` directory. Make sure to include assets in `pubspec.yaml`.
 
     ```dart
-    final interpreter = await tfl.Interpreter.fromAsset('your_model.tflite');
+    final interpreter = await tfl.Interpreter.fromAsset('assets/your_model.tflite');
     ```
 
 Refer to the documentation for info on creating interpreter from buffer or file.
@@ -153,3 +160,22 @@ Refer to the documentation for info on creating interpreter from buffer or file.
 ```dart
 interpreter.close();
 ```
+
+### Asynchronous Inference with `IsolateInterpreter`
+
+To utilize asynchronous inference, first create your `Interpreter` and then wrap it with `IsolateInterpreter`.
+
+```dart
+final interpreter = await Interpreter.fromAsset('assets/your_model.tflite');
+final isolateInterpreter =
+        await IsolateInterpreter.create(address: interpreter.address);
+```
+
+Both `run` and `runForMultipleInputs` methods of `isolateInterpreter` are asynchronous:
+
+```dart
+await isolateInterpreter.run(input, output);
+await isolateInterpreter.runForMultipleInputs(inputs, outputs);
+```
+
+By using `IsolateInterpreter`, the inference runs in a separate isolate. This ensures that the main isolate, responsible for UI tasks, remains unblocked and responsive.

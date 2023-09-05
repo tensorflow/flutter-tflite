@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023 The TensorFlow Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *             http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import 'dart:developer';
 import 'dart:io';
 
@@ -37,9 +52,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   static const predictionModelPath =
-      'assets/magenta/magenta_arbitrary-image-stylization-v1-256_int8_prediction_1.tflite';
+      'assets/models/magenta_arbitrary-image-stylization-v1-256_int8_prediction_1.tflite';
   static const transferModelPath =
-      'assets/magenta/magenta_arbitrary-image-stylization-v1-256_int8_transfer_1.tflite';
+      'assets/models/magenta_arbitrary-image-stylization-v1-256_int8_transfer_1.tflite';
 
   late final Interpreter predictionInterpreter;
   late final IsolateInterpreter predictionIsolateInterpreter;
@@ -50,6 +65,8 @@ class _HomeState extends State<Home> {
   String? imagePath;
   String? stylePath;
   Uint8List? imageResult;
+  int? widthOrg;
+  int? heightOrg;
 
   @override
   void initState() {
@@ -105,7 +122,7 @@ class _HomeState extends State<Home> {
     );
 
     predictionIsolateInterpreter =
-        IsolateInterpreter(address: predictionInterpreter.address);
+        await IsolateInterpreter.create(address: predictionInterpreter.address);
 
     transferInterpreter = await Interpreter.fromAsset(
       transferModelPath,
@@ -113,7 +130,7 @@ class _HomeState extends State<Home> {
     );
 
     transferIsolateInterpreter =
-        IsolateInterpreter(address: transferInterpreter.address);
+        await IsolateInterpreter.create(address: transferInterpreter.address);
 
     setState(() {});
 
@@ -146,6 +163,11 @@ class _HomeState extends State<Home> {
 
       // Decode image using package:image/image.dart (https://pub.dev/image)
       final image = img.decodeImage(imageData)!;
+
+      setState(() {
+        widthOrg = image.width;
+        heightOrg = image.height;
+      });
 
       // Resize image for model input (384, 384)
       final imageInput = img.copyResize(
@@ -256,7 +278,9 @@ class _HomeState extends State<Home> {
       );
 
       // Encode image in jpeg format
-      imageResult = img.encodeJpg(image);
+      img.Image resized =
+          img.copyResize(image, width: widthOrg, height: heightOrg);
+      imageResult = img.encodeJpg(resized);
 
       setState(() {});
     }

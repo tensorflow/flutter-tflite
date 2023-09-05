@@ -550,9 +550,9 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterDeletePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<TfLiteInterpreter>)>>('TfLiteInterpreterDelete');
+          ffi
+          .NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteInterpreter>)>>(
+      'TfLiteInterpreterDelete');
   late final _TfLiteInterpreterDelete = _TfLiteInterpreterDeletePtr.asFunction<
       void Function(ffi.Pointer<TfLiteInterpreter>)>();
 
@@ -566,8 +566,8 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterGetInputTensorCountPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
+          ffi
+          .NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
       'TfLiteInterpreterGetInputTensorCount');
   late final _TfLiteInterpreterGetInputTensorCount =
       _TfLiteInterpreterGetInputTensorCountPtr.asFunction<
@@ -643,8 +643,8 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterAllocateTensorsPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
+          ffi
+          .NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
       'TfLiteInterpreterAllocateTensors');
   late final _TfLiteInterpreterAllocateTensors =
       _TfLiteInterpreterAllocateTensorsPtr.asFunction<
@@ -688,9 +688,9 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterInvokePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<TfLiteInterpreter>)>>('TfLiteInterpreterInvoke');
+          ffi
+          .NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
+      'TfLiteInterpreterInvoke');
   late final _TfLiteInterpreterInvoke = _TfLiteInterpreterInvokePtr.asFunction<
       int Function(ffi.Pointer<TfLiteInterpreter>)>();
 
@@ -704,8 +704,8 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterGetOutputTensorCountPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
+          ffi
+          .NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
       'TfLiteInterpreterGetOutputTensorCount');
   late final _TfLiteInterpreterGetOutputTensorCount =
       _TfLiteInterpreterGetOutputTensorCountPtr.asFunction<
@@ -917,8 +917,8 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterResetVariableTensorsPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
+          ffi
+          .NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
       'TfLiteInterpreterResetVariableTensors');
   late final _TfLiteInterpreterResetVariableTensors =
       _TfLiteInterpreterResetVariableTensorsPtr.asFunction<
@@ -1376,8 +1376,8 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterGetSignatureCountPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
+          ffi
+          .NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
       'TfLiteInterpreterGetSignatureCount');
   late final _TfLiteInterpreterGetSignatureCount =
       _TfLiteInterpreterGetSignatureCountPtr.asFunction<
