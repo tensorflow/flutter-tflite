@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import 'package:flutter/foundation.dart';  
+import 'package:flutter/foundation.dart';
 
 @Timeout(Duration(minutes: 1))
-
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -290,7 +289,8 @@ void main() {
         var output1 = List<double>.filled(1, 0);
         var outputs = {0: output0, 1: output1};
         interpreter.runForMultipleInputs(inputs, outputs);
-        debugPrint(interpreter.lastNativeInferenceDurationMicroSeconds.toString());
+        debugPrint(
+            interpreter.lastNativeInferenceDurationMicroSeconds.toString());
         expect(output0[0].toStringAsFixed(2), '4.89');
         expect(output1[0].toStringAsFixed(2), '6.09');
         interpreter.close();
@@ -319,7 +319,8 @@ void main() {
         var output1 = List<double>.filled(1, 0);
         var outputs = {0: output0, 1: output1};
         interpreter.runForMultipleInputs(inputs, outputs);
-        debugPrint(interpreter.lastNativeInferenceDurationMicroSeconds.toString());
+        debugPrint(
+            interpreter.lastNativeInferenceDurationMicroSeconds.toString());
         expect(output0[0].toStringAsFixed(2), '4.89');
         expect(output1[0].toStringAsFixed(2), '6.09');
         interpreter.close();
