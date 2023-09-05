@@ -75,7 +75,7 @@ class _BottomNavigationBarExampleState
 
   void _onItemTapped(int index) {
     if (!cameraIsAvailable) {
-      print("This is not supported on your current platform");
+      debugPrint("This is not supported on your current platform");
       return;
     }
     setState(() {
