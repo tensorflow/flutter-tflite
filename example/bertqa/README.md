@@ -1,16 +1,26 @@
-# bertqa
+# BertQA
 
-An end-to-end example of BERT Question & Answer application
+An end-to-end example of BERT Question & Answer application using Tensorflow
+Lite in Flutter. It includes support for both Android and IOS.
 
-## Getting Started
+## Download model and labels
 
-This project is a starting point for a Flutter application.
+To build the project, you must first download the Mobilebert TensorFlow Lite
+model, its corresponding labels and list sample question. You can do this by running sh
+./scripts/download_model.sh from the root folder of the repository.
 
-A few resources to get you started if this is your first Flutter project:
+## About the sample
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- You can use Flutter-supported IDEs such as Android Studio or Visual Studio.
+  This project has been tested on Android Studio Flamingo.
+- Before building, ensure that you have downloaded the model and the labels by
+  following a set of instructions.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Screenshot
+#### Android
+![Android QA](screenshots/android_question.png)
+![Android Detail](screenshots/android_qa_detail.png)
+
+#### IOS
+![IOS](screenshots/ios_question.png)
+![IOS](screenshots/ios_qa_detail.png)

@@ -1,5 +1,21 @@
-import 'package:bertqa/helper/qa_answer.dart';
-import 'package:bertqa/helper/qa_client.dart';
+/*
+ * Copyright 2023 The TensorFlow Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *             http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import 'package:bertqa/ml/qa_answer.dart';
+import 'package:bertqa/ml/qa_client.dart';
 import 'package:flutter/material.dart';
 
 class QaDetail extends StatefulWidget {
@@ -18,14 +34,16 @@ class QaDetail extends StatefulWidget {
 }
 
 class _QaDetailState extends State<QaDetail> {
-  late QaClient qaClient;
+  late QaClient _qaClient;
   final TextEditingController _controller = TextEditingController();
   String _currentQuestion = "";
+  QaAnswer? _qaAnswer;
+  int _answerIndex = 0;
 
   @override
   void initState() {
-    qaClient = QaClient();
-    qaClient.initQaClient();
+    _qaClient = QaClient();
+    _qaClient.initQaClient();
     super.initState();
   }
 
@@ -48,10 +66,17 @@ class _QaDetailState extends State<QaDetail> {
     if (!trimQuestion.endsWith("?")) {
       trimQuestion += "?";
     }
-
     List<QaAnswer> answers =
-        await qaClient.runInference(trimQuestion, widget.content);
-    // Highlight answer here
+        await _qaClient.runInference(trimQuestion, widget.content);
+    // Highlight the answer here
+    _highlightAnswer(answers.first);
+  }
+
+  void _highlightAnswer(QaAnswer answer) {
+    setState(() {
+      _qaAnswer = answer;
+      _answerIndex = widget.content.indexOf(_qaAnswer!.text);
+    });
   }
 
   @override
@@ -84,7 +109,33 @@ class _QaDetailState extends State<QaDetail> {
           Expanded(
               child: SingleChildScrollView(
                   padding: const EdgeInsets.all(16),
-                  child: Text(widget.content))),
+                  child: _qaAnswer == null
+                      ? Text(
+                          widget.content,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        )
+                      : RichText(
+                          text: TextSpan(
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              children: [
+                                if (_answerIndex > 0)
+                                  TextSpan(
+                                      text: widget.content
+                                          .substring(0, _answerIndex)),
+                                TextSpan(
+                                    style: TextStyle(
+                                        background: Paint()
+                                          ..color = Colors.yellow),
+                                    text: widget.content.substring(_answerIndex,
+                                        _answerIndex + _qaAnswer!.text.length)),
+                                if ((_answerIndex + _qaAnswer!.text.length) <
+                                    widget.content.length)
+                                  TextSpan(
+                                      text: widget.content.substring(
+                                          _answerIndex + _qaAnswer!.text.length,
+                                          widget.content.length))
+                              ]),
+                        ))),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(color: Colors.white, boxShadow: [

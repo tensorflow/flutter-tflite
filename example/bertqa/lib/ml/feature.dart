@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-class QA {
-  List<String>? titles;
-  List<String>? contents;
-  List<List<String>>? questions;
+// Feature to be fed into the Bert model.
+class Feature {
+  List<int> inputIds;
+  List<int> inputMask;
+  List<int> segmentIds;
+  List<String> origTokens;
+  Map<int, int> tokenToOrigMap;
 
-  QA({this.titles, this.contents, this.questions});
-
-  QA.fromJson(Map<String, dynamic> map) {
-    titles = (map['titles'] as List<dynamic>)
-        .map((e) => (e as List<dynamic>)[0] as String)
-        .toList();
-    contents = (map['contents'] as List<dynamic>)
-        .map((e) => (e as List<dynamic>)[0] as String)
-        .toList();
-    questions = (map['questions'] as List<dynamic>)
-        .map((e) => (e as List<dynamic>).cast<String>())
-        .toList();
-  }
+  Feature(
+      {required this.inputIds,
+      required this.inputMask,
+      required this.segmentIds,
+      required this.origTokens,
+      required this.tokenToOrigMap});
 }

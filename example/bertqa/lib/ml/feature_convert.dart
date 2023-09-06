@@ -1,7 +1,22 @@
+/*
+ * Copyright 2023 The TensorFlow Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *             http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import 'dart:collection';
-
 import 'feature.dart';
 
+// Convert String to features that can be fed into BERT model.
 class FeatureConverter {
   late FullTokenizer tokenizer;
   late int maxQueryLen;
@@ -18,7 +33,7 @@ class FeatureConverter {
       queryTokens = queryTokens.sublist(0, maxQueryLen);
     }
 
-    List<String> origTokens = context.trim().split(RegExp(r'\s+'));
+    final origTokens = context.trim().split(RegExp(r'\s+'));
     List<int> tokenToOrigIndex = [];
     List<String> allDocTokens = [];
     for (int i = 0; i < origTokens.length; i++) {
@@ -58,7 +73,7 @@ class FeatureConverter {
 
     // For Text Input.
     for (int i = 0; i < allDocTokens.length; i++) {
-      String docToken = allDocTokens[i];
+      final docToken = allDocTokens[i];
       tokens.add(docToken);
       segmentIds.add(1);
       tokenToOrigMap[tokens.length] = tokenToOrigIndex[i];
@@ -85,6 +100,9 @@ class FeatureConverter {
   }
 }
 
+// Original python code:
+// https://github.com/google-research/bert/blob/master/tokenization.py runs full tokenization to
+// tokenize a String into split subtokens or ids.
 class FullTokenizer {
   late BasicTokenizer basicTokenizer;
   late WordpieceTokenizer wordpieceTokenizer;
@@ -113,10 +131,11 @@ class FullTokenizer {
   }
 }
 
+// Word piece tokenization to split a piece of text into its word pieces.
 class WordpieceTokenizer {
   Map<String, int> dic;
-  static const String UNKNOWN_TOKEN = "[UNK]"; // For unknown words.
-  static const int MAX_INPUTCHARS_PER_WORD = 200;
+  static const String unknownToken = "[UNK]"; // For unknown words.
+  static const int maxInputcharsPerWord = 200;
 
   WordpieceTokenizer({required this.dic});
 
@@ -124,8 +143,8 @@ class WordpieceTokenizer {
     List<String> outputTokens = [];
 
     for (var token in BasicTokenizer.whitespaceTokenize(text)) {
-      if (token.length > MAX_INPUTCHARS_PER_WORD) {
-        outputTokens.add(UNKNOWN_TOKEN);
+      if (token.length > maxInputcharsPerWord) {
+        outputTokens.add(unknownToken);
         continue;
       }
 
@@ -163,7 +182,7 @@ class WordpieceTokenizer {
       }
 
       if (isBad) {
-        outputTokens.add(UNKNOWN_TOKEN);
+        outputTokens.add(unknownToken);
       } else {
         outputTokens.addAll(subTokens);
       }
@@ -238,11 +257,12 @@ class BasicTokenizer {
   }
 }
 
-// https://en.wikipedia.org/wiki/List_of_Unicode_characters#Special_areas_and_format_characters
+// Unicode table https://en.wikipedia.org/wiki/List_of_Unicode_characters
+// To check whether a char is whitespace/control/punctuation.
 class CharChecker {
   // To judge whether it can be regarded as a whitespace, "\n", "\t", "\r"
   static bool isWhitespaceForBert(String ch) {
-    int type = ch.codeUnitAt(0);
+    final type = ch.codeUnitAt(0);
     return type == 32 || type == 9 || type == 10 || type == 13;
   }
 
@@ -258,7 +278,7 @@ class CharChecker {
       return false;
     }
 
-    int type = ch.codeUnitAt(0);
+    final type = ch.codeUnitAt(0);
     return (type == 127 ||
         (type >= 1 && type <= 31) ||
         (type >= 128 && type <= 159));
@@ -266,7 +286,7 @@ class CharChecker {
 
   // To judge whether it's a punctuation.
   static bool isPunctuationForBert(String ch) {
-    int type = ch.codeUnitAt(0);
+    final type = ch.codeUnitAt(0);
     return (type >= 33 && type <= 47) || // ASCII Punctuation & Symbols
             (type >= 58 && type <= 64) ||
             (type >= 91 && type <= 96) ||

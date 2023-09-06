@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-class QA {
-  List<String>? titles;
-  List<String>? contents;
-  List<List<String>>? questions;
+class QaAnswer {
+  Pos pos;
+  String text;
 
-  QA({this.titles, this.contents, this.questions});
+  QaAnswer({required this.pos, required this.text});
+}
 
-  QA.fromJson(Map<String, dynamic> map) {
-    titles = (map['titles'] as List<dynamic>)
-        .map((e) => (e as List<dynamic>)[0] as String)
-        .toList();
-    contents = (map['contents'] as List<dynamic>)
-        .map((e) => (e as List<dynamic>)[0] as String)
-        .toList();
-    questions = (map['questions'] as List<dynamic>)
-        .map((e) => (e as List<dynamic>).cast<String>())
-        .toList();
+class Pos implements Comparable<Pos> {
+  int start;
+  int end;
+  double logit;
+
+  Pos({required this.start, required this.end, required this.logit});
+
+  @override
+  int compareTo(Pos other) {
+    return other.logit.compareTo(logit);
   }
 }
