@@ -1,5 +1,9 @@
 # Object Detection
 
+|      | Android | iOS | Linux | Mac | Windows | Web |
+|------|---------|-----|-------|-----|---------|-----|
+| live | ✅       | ✅   |       |    |         |     |
+
 Live object detection example following [this](https://www.tensorflow.org/lite/examples/object_detection/overview) example.
 
 ## Overview
