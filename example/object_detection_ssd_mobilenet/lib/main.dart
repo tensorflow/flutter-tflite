@@ -78,7 +78,7 @@ class _MyHomeState extends State<MyHome> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  if(Platform.isAndroid || Platform.isIOS)
+                  if (Platform.isAndroid || Platform.isIOS)
                     IconButton(
                       onPressed: () async {
                         final result = await imagePicker.pickImage(
