@@ -75,3 +75,7 @@ yarn-error.log*
 # desktop binaries
 **/blobs/*
 !**/blobs/.gitkeep
+
+# models
+example/object_detection_ssd_mobilenet/assets/models/labelmap.txt
+example/object_detection_ssd_mobilenet/assets/models/ssd_mobilenet.tflite
