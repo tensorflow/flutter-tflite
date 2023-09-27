@@ -18,7 +18,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:typed_data';
 
-import 'package:audio_classification/helper/audio_classification_helper.dart';
+import 'helper/audio_classification_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
