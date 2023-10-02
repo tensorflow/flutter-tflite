@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
@@ -49,6 +51,8 @@ class _BottomNavigationBarExampleState
   int _selectedIndex = 0;
   List<Widget>? _widgetOptions;
 
+  bool cameraIsAvailable = Platform.isAndroid || Platform.isIOS;
+
   @override
   void initState() {
     super.initState();
@@ -58,21 +62,22 @@ class _BottomNavigationBarExampleState
   }
 
   initPages() async {
-    // get list available camera
-    List<CameraDescription> availableCamera = await availableCameras();
-    cameraDescription = availableCamera.first;
+    _widgetOptions = [const GalleryScreen()];
 
-    setState(() {
-      _widgetOptions = <Widget>[
-        const GalleryScreen(),
-        CameraScreen(
-          camera: cameraDescription,
-        )
-      ];
-    });
+    if (cameraIsAvailable) {
+      // get list available camera
+      cameraDescription = (await availableCameras()).first;
+      _widgetOptions!.add(CameraScreen(camera: cameraDescription));
+    }
+
+    setState(() {});
   }
 
   void _onItemTapped(int index) {
+    if (!cameraIsAvailable) {
+      debugPrint("This is not supported on your current platform");
+      return;
+    }
     setState(() {
       _selectedIndex = index;
     });

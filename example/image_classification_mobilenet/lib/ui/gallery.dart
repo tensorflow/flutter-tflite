@@ -33,6 +33,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
   String? imagePath;
   img.Image? image;
   Map<String, double>? classification;
+  bool cameraIsAvailable = Platform.isAndroid || Platform.isIOS;
 
   @override
   void initState() {
@@ -77,23 +78,24 @@ class _GalleryScreenState extends State<GalleryScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              TextButton.icon(
-                onPressed: () async {
-                  cleanResult();
-                  final result = await imagePicker.pickImage(
-                    source: ImageSource.camera,
-                  );
+              if (cameraIsAvailable)
+                TextButton.icon(
+                  onPressed: () async {
+                    cleanResult();
+                    final result = await imagePicker.pickImage(
+                      source: ImageSource.camera,
+                    );
 
-                  imagePath = result?.path;
-                  setState(() {});
-                  processImage();
-                },
-                icon: const Icon(
-                  Icons.camera,
-                  size: 48,
+                    imagePath = result?.path;
+                    setState(() {});
+                    processImage();
+                  },
+                  icon: const Icon(
+                    Icons.camera,
+                    size: 48,
+                  ),
+                  label: const Text("Take a photo"),
                 ),
-                label: const Text("Take a photo"),
-              ),
               TextButton.icon(
                 onPressed: () async {
                   cleanResult();

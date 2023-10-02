@@ -18,6 +18,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:object_detection_ssd_mobilenet/object_detection.dart';
+import 'dart:io' show Platform;
 
 void main() => runApp(const MyApp());
 
@@ -77,21 +78,22 @@ class _MyHomeState extends State<MyHome> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
-                    onPressed: () async {
-                      final result = await imagePicker.pickImage(
-                        source: ImageSource.camera,
-                      );
-                      if (result != null) {
-                        image = objectDetection!.analyseImage(result.path);
-                        setState(() {});
-                      }
-                    },
-                    icon: const Icon(
-                      Icons.camera,
-                      size: 64,
+                  if (Platform.isAndroid || Platform.isIOS)
+                    IconButton(
+                      onPressed: () async {
+                        final result = await imagePicker.pickImage(
+                          source: ImageSource.camera,
+                        );
+                        if (result != null) {
+                          image = objectDetection!.analyseImage(result.path);
+                          setState(() {});
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.camera,
+                        size: 64,
+                      ),
                     ),
-                  ),
                   IconButton(
                     onPressed: () async {
                       final result = await imagePicker.pickImage(
