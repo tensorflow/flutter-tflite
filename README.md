@@ -65,6 +65,8 @@ Android can be run with the commands
 
 while devices are plugged in.
 
+Note: This requires a device with a minimum API level of 26.
+
 Note: TFLite may not work in the iOS simulator. It's recommended that you test with a physical device.
 
 When creating a release archive (IPA), the symbols are stripped by Xcode, so the command `flutter build ipa` may throw a `Failed to lookup symbol ... symbol not found` error. To work around this:
