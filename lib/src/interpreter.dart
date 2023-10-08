@@ -173,14 +173,14 @@ class Interpreter {
   }
 
   /// Run for multiple inputs and outputs
-  void runForMultipleInputs(List<Object> inputs, Map<int, Object> outputs) {
+  void runForMultipleInputs(List<Object> inputs, Map<int, Object?> outputs) {
     if (outputs.isEmpty) {
       throw ArgumentError('Input error: Outputs should not be null or empty.');
     }
     runInference(inputs);
     var outputTensors = getOutputTensors();
     for (var i = 0; i < outputTensors.length; i++) {
-      outputTensors[i].copyTo(outputs[i]);
+      outputTensors[i].copyTo(outputs[i] as Object);
     }
   }
 
