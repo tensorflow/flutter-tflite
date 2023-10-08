@@ -180,7 +180,7 @@ class Interpreter {
     runInference(inputs);
     var outputTensors = getOutputTensors();
     for (var i = 0; i < outputTensors.length; i++) {
-      outputTensors[i].copyTo(outputs[i]!);
+      outputTensors[i].copyTo(outputs[i]);
     }
   }
 
