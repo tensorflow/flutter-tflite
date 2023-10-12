@@ -16,8 +16,6 @@
 
 import 'dart:ui';
 
-import 'package:image/image.dart';
-
 import 'body_part.dart';
 
 class KeyPoint {

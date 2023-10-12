@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import 'dart:ui';
-
 import 'key_point.dart';
 
 class Person {
