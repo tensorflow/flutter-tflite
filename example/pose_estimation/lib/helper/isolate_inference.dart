@@ -18,7 +18,6 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:camera/camera.dart';
 import 'package:image/image.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
@@ -31,9 +30,9 @@ import '../models/person.dart';
 class IsolateInference {
   final ReceivePort _receivePort = ReceivePort();
   late Isolate _isolate;
-  late SendPort _sendPort;
+  SendPort? _sendPort;
 
-  SendPort get sendPort => _sendPort;
+  SendPort? get sendPort => _sendPort;
 
   Future<void> start() async {
     _isolate = await Isolate.spawn(entryPoint, _receivePort.sendPort);
@@ -94,8 +93,10 @@ class IsolateInference {
   static Person postProcessModelOutputs(
       List<List<List<List<double>>>> heatMap,
       List<List<List<List<double>>>> offsets,
-      int inputWidth,
-      int inputHeight,
+      int inputImageWidth,
+      int inputImageHeight,
+      int originalWidth,
+      int originalHeight,
       double ratio) {
     final height = heatMap[0].length;
     final width = heatMap[0][0].length;
@@ -128,13 +129,17 @@ class IsolateInference {
       final positionY = keypointPositions[idx][0];
       final positionX = keypointPositions[idx][1];
 
-      final inputImageCoordinateY = positionY / (height - 1.0) * inputHeight +
-          offsets[0][positionY][positionX][idx];
-      yCoords[idx] = inputImageCoordinateY * ratio;
+      final inputImageCoordinateY =
+          positionY / (height - 1.0) * inputImageHeight +
+              offsets[0][positionY][positionX][idx];
+      final double ratioHeight = originalHeight / inputImageHeight;
+      yCoords[idx] = inputImageCoordinateY * ratioHeight;
 
-      final inputImageCoordinateX = positionX / (width - 1.0) * inputWidth +
-          offsets[0][positionY][positionX][idx + numKeypoints];
-      xCoords[idx] = inputImageCoordinateX * ratio;
+      final inputImageCoordinateX =
+          positionX / (width - 1.0) * inputImageWidth +
+              offsets[0][positionY][positionX][idx + numKeypoints];
+      final double ratioWidth = originalWidth / inputImageWidth;
+      xCoords[idx] = inputImageCoordinateX * ratioWidth;
 
       confidenceScores[idx] = sigmoid(heatMap[0][positionY][positionX][idx]);
     }
@@ -149,35 +154,28 @@ class IsolateInference {
           coordinate: Offset(xCoords[value.index], yCoords[value.index]),
           score: confidenceScores[value.index]));
     }
-    return Person(
-        id: -1, keyPoints: keypointList, score: totalScore / numKeypoints);
+    return Person(keyPoints: keypointList, score: totalScore / numKeypoints);
   }
 
   static void entryPoint(SendPort sendPort) async {
     final port = ReceivePort();
     sendPort.send(port.sendPort);
     await for (final InferenceModel message in port) {
-      var inputImage = ImageUtils.convertCameraImage(message.cameraImage!);
+      var originalImage = ImageUtils.convertCameraImage(message.cameraImage);
 
       // rotate image 90 degree in android because android camera is landscape
       if (Platform.isAndroid) {
-        inputImage = copyRotate(inputImage!, angle: 90);
+        originalImage = copyRotate(originalImage!, angle: 90);
       }
 
-      // calculate ratio height. Because image is portrait, so we need to calculate ratio height
-      final ratio = inputImage!.height / message.inputShape[1];
-
-      // create square image and copy input image to square image
-      Image squareImage =
-          Image(width: inputImage.height, height: inputImage.height);
-      compositeImage(squareImage, inputImage, dstX: 0, dstY: 0);
-
-      // resize image to input shape
-      final resizedImage = copyResize(squareImage,
+      // resize image to map with input shape
+      final inputImage = copyResize(originalImage!,
           width: message.inputShape[2], height: message.inputShape[1]);
 
-      // convert image to matrix
-      final inputData = getImageMatrix(resizedImage);
+      // convert image to input matrix
+      final inputData = getImageMatrix(inputImage);
+
+      // prepare output map for model output
       final outputData = prepareOutput();
 
       Interpreter interpreter =
@@ -186,15 +184,16 @@ class IsolateInference {
 
       final heatMap = outputData[0] as List<List<List<List<double>>>>;
       final offsets = outputData[1] as List<List<List<List<double>>>>;
-      final person = postProcessModelOutputs(heatMap, offsets,
-          message.inputShape[2], message.inputShape[1], ratio);
-      message.responsePort.send([person]);
+
+      final person = postProcessModelOutputs(heatMap, offsets, inputImage.width,
+          inputImage.height, originalImage.width, originalImage.height, 0);
+      message.responsePort.send(person);
     }
   }
 }
 
 class InferenceModel {
-  CameraImage? cameraImage;
+  CameraImage cameraImage;
   int interpreterAddress;
   List<int> inputShape;
   late SendPort responsePort;

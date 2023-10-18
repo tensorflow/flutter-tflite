@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -93,8 +92,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     _isProcessing = false;
     if (mounted) {
       setState(() {
-        log("message person: ${persons.first.score}");
-        _person = persons.first;
+        _person = persons;
       });
     }
   }
@@ -109,8 +107,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initHelper();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _initHelper();
     });
   }
 
@@ -144,15 +142,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   Widget resultWidget(context) {
     if (_cameraController == null) return Container();
 
-    // get current camera preview size
-    var camera = _cameraController!.value;
-    // fetch screen size
-    final size = MediaQuery.of(context).size;
-    final kToolbarHeight = MediaQuery.of(context).padding.top;
-    final screenAspectRatio = size.width / (size.height - kToolbarHeight);
-    var scale = screenAspectRatio * camera.aspectRatio;
-    // to prevent scaling down, invert the value
-    if (scale < 1) scale = 1 / scale;
+    final scale = MediaQuery.of(context).size.width /
+        _cameraController!.value.previewSize!.height;
 
     return Stack(
       children: [

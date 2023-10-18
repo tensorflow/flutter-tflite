@@ -17,12 +17,10 @@
 import 'key_point.dart';
 
 class Person {
-  late int id;
   final List<KeyPoint> keyPoints;
   final double score;
 
   Person({
-    required this.id,
     required this.keyPoints,
     required this.score,
   });

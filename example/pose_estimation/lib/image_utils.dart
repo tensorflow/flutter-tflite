@@ -19,6 +19,8 @@ import 'package:image/image.dart' as image_lib;
 
 // ImageUtils
 class ImageUtils {
+  static const iosBytesOffset = 28;
+
   // Converts a [CameraImage] object to [image_lib.Image] object
   static image_lib.Image? convertCameraImage(CameraImage cameraImage) {
     if (cameraImage.format.group == ImageFormatGroup.yuv420) {
@@ -36,6 +38,8 @@ class ImageUtils {
         width: cameraImage.planes[0].width!,
         height: cameraImage.planes[0].height!,
         bytes: cameraImage.planes[0].bytes.buffer,
+        rowStride: cameraImage.planes[0].bytesPerRow,
+        bytesOffset: iosBytesOffset,
         order: image_lib.ChannelOrder.bgra);
     return img;
   }

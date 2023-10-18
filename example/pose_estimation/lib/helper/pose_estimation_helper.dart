@@ -39,12 +39,12 @@ class PoseEstimationHelper {
     await _isolateInference.start();
   }
 
-  Future<List<Person>> estimatePoses(CameraImage cameraImage) async {
+  Future<Person> estimatePoses(CameraImage cameraImage) async {
     final isolateModel =
         InferenceModel(cameraImage, _interpreter.address, _inputTensor.shape);
     ReceivePort responsePort = ReceivePort();
     _isolateInference.sendPort
-        .send(isolateModel..responsePort = responsePort.sendPort);
+        ?.send(isolateModel..responsePort = responsePort.sendPort);
     // get inference result.
     return await responsePort.first;
   }
