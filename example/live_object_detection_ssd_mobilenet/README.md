@@ -2,7 +2,7 @@
 
 |      | Android | iOS | Linux | Mac | Windows | Web |
 |------|---------|-----|-------|-----|---------|-----|
-| live | ✅       | ✅   |       |  [🚧](https://github.com/flutter/flutter/issues/41708)  |         |     |
+| live | ✅       | ✅   |   [🚧](https://github.com/flutter/flutter/issues/41710)   |  [🚧](https://github.com/flutter/flutter/issues/41708)  |         |     |
 
 Live object detection example following [this](https://www.tensorflow.org/lite/examples/object_detection/overview) example.
 
