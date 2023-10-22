@@ -137,3 +137,8 @@ if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
   install(FILES "${AOT_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
     COMPONENT Runtime)
 endif()
+
+install(
+  FILES ${PROJECT_BUILD_DIR}/../blobs/libtensorflowlite_c-linux.so 
+  DESTINATION ${INSTALL_BUNDLE_DATA_DIR}/../blobs/
+)
