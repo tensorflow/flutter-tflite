@@ -97,7 +97,7 @@ For this, first a `.so` needs to be built. You can follow the [Bazel build guide
 As a second step, the library needs to be added to your application's project. This is a simple procedure
 
 1. Create a folder called `blobs` in the top level of your project
-2. Copy the `.so` to this folder
+2. Copy the `libtensorflowlite_c-linux.so` to this folder
 3. Append following lines to your `linux/CMakeLists.txt`
 
 ``` Make
