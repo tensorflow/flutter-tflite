@@ -35,8 +35,8 @@ final DynamicLibrary _dylib = () {
 
   if (Platform.isLinux) {
     return DynamicLibrary.open(
-      Directory(Platform.resolvedExecutable).parent.path + '/blobs/libtensorflowlite_c-linux.so'
-    );
+        Directory(Platform.resolvedExecutable).parent.path +
+            '/blobs/libtensorflowlite_c-linux.so');
   }
 
   throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
