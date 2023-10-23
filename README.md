@@ -89,6 +89,27 @@ For this, first a `.dylib` needs to be built. You can follow the [Bazel build gu
 
 As a second step, the library needs to be added to your application's XCode project. For this, you can follow the step 1 and 2 of the [official Flutter guide on adding dynamic libraries](https://docs.flutter.dev/platform-integration/macos/c-interop#compiled-dynamic-library-macos).
 
+### Windows
+
+For Windows a TensorFlow Lite dynamic library needs to be added to the project manually.
+For this, first a `.dll` needs to be built. You can follow the [Bazel build guide](https://www.tensorflow.org/lite/guide/build_arm) or the [CMake build guide](https://www.tensorflow.org/lite/guide/build_cmake) to build the libraries.
+
+As a second step, the library needs to be added to your application's project. This is a simple procedure
+
+1. Create a folder called `blobs` in the top level of your project
+2. Copy the `libtensorflowlite_c-win.dll` to this folder
+3. Append following lines to your `linux/CMakeLists.txt`
+
+``` Make
+...
+
+# get tf lite binaries
+install(
+  FILES ${PROJECT_BUILD_DIR}/../blobs/libtensorflowlite_c-win.dll 
+  DESTINATION ${INSTALL_BUNDLE_DATA_DIR}/../blobs/
+)
+```
+
 ## TFLite Flutter Helper Library
 
 The helper library has been deprecated. New development underway for a replacement at https://github.com/google/flutter-mediapipe. Current timeline is to have wide support by the end of August, 2023.
