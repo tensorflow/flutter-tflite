@@ -323,11 +323,139 @@ class Interpreter {
     }
   }
 
-  // Resets all variable tensors to the defaul value
+  // Resets all variable tensors to the default value
   void resetVariableTensors() {
     checkState(_deleted,
-        message: 'Should not acces delegate after it has been closed.');
+        message: 'Should not access delegate after it has been closed.');
     tfliteBinding.TfLiteInterpreterResetVariableTensors(_interpreter);
+  }
+
+  /// Gets the number of inputs associated with a signature
+  int getSignatureInputCount(String signatureKey) {
+    Pointer<Char> signatureKeyPointer =
+        signatureKey.toNativeUtf8() as Pointer<Char>;
+    final signatureRunner = tfliteBinding.TfLiteInterpreterGetSignatureRunner(
+        _interpreter, signatureKeyPointer);
+    final subGraphIndex =
+        tfliteBinding.TfLiteSignatureRunnerGetInputCount(signatureRunner);
+    return subGraphIndex;
+  }
+
+  /// Get the number of outputs associated with a signature
+  int getSignatureOutputCount(String signatureKey) {
+    Pointer<Char> signatureKeyPointer =
+        signatureKey.toNativeUtf8() as Pointer<Char>;
+    final signatureRunner = tfliteBinding.TfLiteInterpreterGetSignatureRunner(
+        _interpreter, signatureKeyPointer);
+    final subGraphIndex =
+        tfliteBinding.TfLiteSignatureRunnerGetOutputCount(signatureRunner);
+    return subGraphIndex;
+  }
+
+  /// Get input name by index and signature key.
+  String getSignatureInputName(String signatureKey, int index) {
+    Pointer<Char> signatureKeyPointer =
+        signatureKey.toNativeUtf8() as Pointer<Char>;
+    final signatureRunner = tfliteBinding.TfLiteInterpreterGetSignatureRunner(
+        _interpreter, signatureKeyPointer);
+    final inputName =
+        tfliteBinding.TfLiteSignatureRunnerGetInputName(signatureRunner, index);
+    return inputName.toString();
+  }
+
+  /// Get output name by index and signature key.
+  String getSignatureOutputName(String signatureKey, int index) {
+    Pointer<Char> signatureKeyPointer =
+        signatureKey.toNativeUtf8() as Pointer<Char>;
+    final signatureRunner = tfliteBinding.TfLiteInterpreterGetSignatureRunner(
+        _interpreter, signatureKeyPointer);
+    final outputName = tfliteBinding.TfLiteSignatureRunnerGetOutputName(
+        signatureRunner, index);
+    return outputName.toString();
+  }
+
+  /// Get signature runner by signature key.
+  Pointer<TfLiteSignatureRunner> getSignatureRunner(String signatureKey) {
+    Pointer<Char> signatureKeyPointer =
+        signatureKey.toNativeUtf8() as Pointer<Char>;
+    final signatureRunner = tfliteBinding.TfLiteInterpreterGetSignatureRunner(
+        _interpreter, signatureKeyPointer);
+    return signatureRunner;
+  }
+
+  /// Resize input tensor for the given tensor index. `allocateTensors` must be called again afterward.
+  void resizeSignatureInputTensor(
+      Pointer<TfLiteSignatureRunner> signatureRunner,
+      String inputName,
+      List<int> shape) {
+    final dimensionSize = shape.length;
+    final dimensions = calloc<Int>(dimensionSize);
+    final externalTypedData =
+        dimensions.cast<Int32>().asTypedList(dimensionSize);
+    externalTypedData.setRange(0, dimensionSize, shape);
+    final inputNamePointer = inputName.toNativeUtf8().cast<Char>();
+    final status = tfliteBinding.TfLiteSignatureRunnerResizeInputTensor(
+        signatureRunner, inputNamePointer, dimensions, dimensionSize);
+    calloc.free(dimensions);
+    checkState(status == TfLiteStatus.kTfLiteOk);
+    _allocated = false;
+  }
+
+  /// Run for single input and output
+  void runSignature(Map<String, Object> inputs, Map<String, Object> outputs,
+      String signatureKey) {
+    if (inputs.isEmpty) {
+      throw ArgumentError('Input error: Inputs should not be null or empty.');
+    }
+    if (outputs.isEmpty) {
+      throw ArgumentError('Input error: Outputs should not be null or empty.');
+    }
+
+    final Pointer<TfLiteSignatureRunner> signatureRunner;
+
+    try {
+      // TODO: Should we cache the signature runner?
+      signatureRunner = getSignatureRunner(signatureKey);
+      _allocated = false;
+    } catch (e) {
+      throw ArgumentError('Input error: Signature key is not valid.');
+    }
+
+    inputs.forEach((key, value) {
+      final inputTensor = Tensor(
+          tfliteBinding.TfLiteSignatureRunnerGetInputTensor(
+              signatureRunner, key.toNativeUtf8().cast<Char>()));
+      final newShape = inputTensor.getInputShapeIfDifferent(value);
+      if (newShape != null) {
+        resizeSignatureInputTensor(signatureRunner, key, newShape);
+      }
+    });
+
+    if (!_allocated) {
+      tfliteBinding.TfLiteSignatureRunnerAllocateTensors(signatureRunner);
+      _allocated = true;
+    }
+
+    inputs.forEach((key, value) {
+      final inputTensor = Tensor(
+          tfliteBinding.TfLiteSignatureRunnerGetInputTensor(
+              signatureRunner, key.toNativeUtf8().cast<Char>()));
+      inputTensor.setTo(value);
+    });
+
+    tfliteBinding.TfLiteSignatureRunnerInvoke(signatureRunner);
+
+    outputs.forEach((key, value) {
+      final outputTensor = Tensor(
+          tfliteBinding.TfLiteSignatureRunnerGetOutputTensor(
+              signatureRunner, key.toNativeUtf8().cast<Char>()));
+      outputTensor.copyTo(value);
+    });
+  }
+
+  /// Delete signature runner. Should be called before interpreter is deleted.
+  void deleteSignatureRunner(Pointer<TfLiteSignatureRunner> signatureRunner) {
+    tfliteBinding.TfLiteSignatureRunnerDelete(signatureRunner);
   }
 
   /// Returns the address to the interpreter
