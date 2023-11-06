@@ -335,57 +335,69 @@ class Interpreter {
     tfliteBinding.TfLiteInterpreterResetVariableTensors(_interpreter);
   }
 
-  /// Gets the number of inputs associated with a signature
-  int getSignatureInputCount(String signatureKey) {
+  /// Get signature runner by signature key.
+  Pointer<TfLiteSignatureRunner> _getSignatureRunner(String signatureKey) {
     Pointer<Char> signatureKeyPointer =
-        signatureKey.toNativeUtf8() as Pointer<Char>;
+    signatureKey.toNativeUtf8() as Pointer<Char>;
     final signatureRunner = tfliteBinding.TfLiteInterpreterGetSignatureRunner(
         _interpreter, signatureKeyPointer);
+    return signatureRunner;
+  }
+
+  /// Gets the number of inputs associated with a signature
+  int getSignatureInputCount(String signatureKey) {
+    final signatureRunner = _getSignatureRunner(signatureKey);
     final subGraphIndex =
-        tfliteBinding.TfLiteSignatureRunnerGetInputCount(signatureRunner);
+    tfliteBinding.TfLiteSignatureRunnerGetInputCount(signatureRunner);
+    _deleteSignatureRunner(signatureRunner);
     return subGraphIndex;
   }
 
   /// Get the number of outputs associated with a signature
   int getSignatureOutputCount(String signatureKey) {
-    Pointer<Char> signatureKeyPointer =
-        signatureKey.toNativeUtf8() as Pointer<Char>;
-    final signatureRunner = tfliteBinding.TfLiteInterpreterGetSignatureRunner(
-        _interpreter, signatureKeyPointer);
+    final signatureRunner = _getSignatureRunner(signatureKey);
     final subGraphIndex =
-        tfliteBinding.TfLiteSignatureRunnerGetOutputCount(signatureRunner);
+    tfliteBinding.TfLiteSignatureRunnerGetOutputCount(signatureRunner);
+    _deleteSignatureRunner(signatureRunner);
     return subGraphIndex;
   }
 
   /// Get input name by index and signature key.
   String getSignatureInputName(String signatureKey, int index) {
-    Pointer<Char> signatureKeyPointer =
-        signatureKey.toNativeUtf8() as Pointer<Char>;
-    final signatureRunner = tfliteBinding.TfLiteInterpreterGetSignatureRunner(
-        _interpreter, signatureKeyPointer);
+    final signatureRunner = _getSignatureRunner(signatureKey);
     final inputName =
-        tfliteBinding.TfLiteSignatureRunnerGetInputName(signatureRunner, index);
-    return inputName.toString();
+    tfliteBinding.TfLiteSignatureRunnerGetInputName(signatureRunner, index);
+    _deleteSignatureRunner(signatureRunner);
+    return inputName.cast<Utf8>().toDartString();
   }
 
   /// Get output name by index and signature key.
   String getSignatureOutputName(String signatureKey, int index) {
-    Pointer<Char> signatureKeyPointer =
-        signatureKey.toNativeUtf8() as Pointer<Char>;
-    final signatureRunner = tfliteBinding.TfLiteInterpreterGetSignatureRunner(
-        _interpreter, signatureKeyPointer);
+    final signatureRunner = _getSignatureRunner(signatureKey);
     final outputName = tfliteBinding.TfLiteSignatureRunnerGetOutputName(
         signatureRunner, index);
-    return outputName.toString();
+    _deleteSignatureRunner(signatureRunner);
+    return outputName.cast<Utf8>().toDartString();
   }
 
-  /// Get signature runner by signature key.
-  Pointer<TfLiteSignatureRunner> getSignatureRunner(String signatureKey) {
-    Pointer<Char> signatureKeyPointer =
-        signatureKey.toNativeUtf8() as Pointer<Char>;
-    final signatureRunner = tfliteBinding.TfLiteInterpreterGetSignatureRunner(
-        _interpreter, signatureKeyPointer);
-    return signatureRunner;
+  List<int> getSignatureInputTensorShape(String signatureKey, String inputName) {
+    final signatureRunner = _getSignatureRunner(signatureKey);
+    final inputTensor = Tensor(
+        tfliteBinding.TfLiteSignatureRunnerGetInputTensor(
+            signatureRunner, inputName.toNativeUtf8().cast<Char>()));
+    final shape = inputTensor.shape;
+    _deleteSignatureRunner(signatureRunner);
+    return shape;
+  }
+
+  List<int> getSignatureOutputTensorShape(String signatureKey, String outputName) {
+    final signatureRunner = _getSignatureRunner(signatureKey);
+    final outputTensor = Tensor(
+        tfliteBinding.TfLiteSignatureRunnerGetOutputTensor(
+            signatureRunner, outputName.toNativeUtf8().cast<Char>()));
+    final shape = outputTensor.shape;
+    _deleteSignatureRunner(signatureRunner);
+    return shape;
   }
 
   /// Resize input tensor for the given tensor index. `allocateTensors` must be called again afterward.
@@ -396,15 +408,17 @@ class Interpreter {
     final dimensionSize = shape.length;
     final dimensions = calloc<Int>(dimensionSize);
     final externalTypedData =
-        dimensions.cast<Int32>().asTypedList(dimensionSize);
+    dimensions.cast<Int32>().asTypedList(dimensionSize);
     externalTypedData.setRange(0, dimensionSize, shape);
     final inputNamePointer = inputName.toNativeUtf8().cast<Char>();
     final status = tfliteBinding.TfLiteSignatureRunnerResizeInputTensor(
         signatureRunner, inputNamePointer, dimensions, dimensionSize);
     calloc.free(dimensions);
     checkState(status == TfLiteStatus.kTfLiteOk);
-    _allocated = false;
+    _isSignatureAllocate = true;
   }
+
+  bool _isSignatureAllocate = false;
 
   /// Run for single input and output
   void runSignature(Map<String, Object> inputs, Map<String, Object> outputs,
@@ -420,7 +434,7 @@ class Interpreter {
 
     // check if signature key exists
     if (!_signatureRunners.containsKey(signatureKey)) {
-      signatureRunner = getSignatureRunner(signatureKey);
+      signatureRunner = _getSignatureRunner(signatureKey);
       _signatureRunners[signatureKey] = signatureRunner;
     } else {
       signatureRunner = _signatureRunners[signatureKey]!;
@@ -436,9 +450,9 @@ class Interpreter {
       }
     });
 
-    if (!_allocated) {
-      tfliteBinding.TfLiteSignatureRunnerAllocateTensors(signatureRunner);
-      _allocated = true;
+    if(_isSignatureAllocate){
+      allocateTensors();
+      _isSignatureAllocate = false;
     }
 
     inputs.forEach((key, value) {
