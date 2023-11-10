@@ -35,7 +35,7 @@ final DynamicLibrary _dylib = () {
 
   if (Platform.isWindows) {
     return DynamicLibrary.open(
-      '${Directory(Platform.resolvedExecutable).parent.path}/blobs/libtensorflowlite_c-win.dll');
+        '${Directory(Platform.resolvedExecutable).parent.path}/blobs/libtensorflowlite_c-win.dll');
   }
 
   throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
