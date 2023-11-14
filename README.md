@@ -98,7 +98,7 @@ As a second step, the library needs to be added to your application's project. T
 
 1. Create a folder called `blobs` in the top level of your project
 2. Copy the `libtensorflowlite_c-win.dll` to this folder
-3. Append following lines to your `linux/CMakeLists.txt`
+3. Append following lines to your `windows/CMakeLists.txt`
 
 ``` Make
 ...
