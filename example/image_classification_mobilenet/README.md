@@ -2,8 +2,8 @@
 
 |      | Android | iOS | Linux | Mac | Windows | Web |
 |------|---------|-----|-------|-----|---------|-----|
-| file | ✅       | ✅   |       | ✅   |         |     |
-| life | ✅       | ✅   |       | [🚧](https://github.com/flutter/flutter/issues/41708)   |         |     |
+| file | ✅       | ✅   |       | ✅   |    ✅    |     |
+| life | ✅       | ✅   |       | [🚧](https://github.com/flutter/flutter/issues/41708)   |     [🚧](https://github.com/flutter/flutter/issues/41709)   |     |
 
 This project is a sample of how to perform Image Classification using
 TensorFlow Lite in Flutter. It includes support for both still images and live

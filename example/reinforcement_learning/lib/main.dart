@@ -20,10 +20,12 @@ import 'package:flutter/material.dart';
 import 'package:tflite_flutter_plugin_rl_example/game_agent.dart';
 
 void main() {
-  runApp(PlaneStrike());
+  runApp(const PlaneStrike());
 }
 
 class PlaneStrike extends StatefulWidget {
+  const PlaneStrike({super.key});
+
   // This widget is the root of your application.
   @override
   _PlaneStrikeState createState() => _PlaneStrikeState();
@@ -84,7 +86,7 @@ class _PlaneStrikeState extends State<PlaneStrike> {
     //   1: heading up
     //   2: heading left
     //   3: heading down
-    var rng = new Random();
+    var rng = Random();
     int planeOrientation = rng.nextInt(4);
 
     // Figrue out the location of plane core as the '*' below
@@ -92,7 +94,7 @@ class _PlaneStrikeState extends State<PlaneStrike> {
     //   |-*-    -*-    -*-|     |
     //   | |      |      | |    -*-
     //           ---             |
-    var planeCoreX, planeCoreY;
+    int planeCoreX, planeCoreY;
     switch (planeOrientation) {
       case 0:
         planeCoreX = rng.nextInt(_boardSize - 2) + 1;
@@ -142,7 +144,7 @@ class _PlaneStrikeState extends State<PlaneStrike> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('Plane Strike game based on TFLite'),
+        title: const Text('Plane Strike game based on TFLite'),
       ),
       body: Center(
         child: Column(
@@ -151,7 +153,7 @@ class _PlaneStrikeState extends State<PlaneStrike> {
             _gridView(_buildAgentBoardItems),
             Text(
               "Agent's board (hits: $_playerHits)",
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: 18,
                   color: Colors.blue,
                   fontWeight: FontWeight.bold),
@@ -164,7 +166,7 @@ class _PlaneStrikeState extends State<PlaneStrike> {
             ),
             Text(
               "Your board (hits: $_agentHits)",
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: 18,
                   color: Colors.purple,
                   fontWeight: FontWeight.bold),
@@ -172,7 +174,7 @@ class _PlaneStrikeState extends State<PlaneStrike> {
             _gridView(_buildPlayerBoardItems),
             ElevatedButton(
               onPressed: () => setState(_resetGame),
-              child: Text("Reset game"),
+              child: const Text("Reset game"),
             ),
           ],
         ),
