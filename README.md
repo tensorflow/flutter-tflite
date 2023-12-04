@@ -105,7 +105,28 @@ As a second step, the library needs to be added to your application's project. T
 
 # get tf lite binaries
 install(
-  FILES ${PROJECT_BUILD_DIR}/../blobs/libtensorflowlite_c-linux.so 
+  FILES ${PROJECT_BUILD_DIR}/../blobs/libtensorflowlite_c-linux.so
+  DESTINATION ${INSTALL_BUNDLE_DATA_DIR}/../blobs/
+)
+```
+
+### Windows
+
+For Windows a TensorFlow Lite dynamic library needs to be added to the project manually.
+For this, first a `.dll` needs to be built. You can follow the [Bazel build guide](https://www.tensorflow.org/lite/guide/build_arm) or the [CMake build guide](https://www.tensorflow.org/lite/guide/build_cmake) to build the libraries.
+
+As a second step, the library needs to be added to your application's project. This is a simple procedure
+
+1. Create a folder called `blobs` in the top level of your project
+2. Copy the `libtensorflowlite_c-win.dll` to this folder
+3. Append following lines to your `windows/CMakeLists.txt`
+
+``` Make
+...
+
+# get tf lite binaries
+install(
+  FILES ${PROJECT_BUILD_DIR}/../blobs/libtensorflowlite_c-win.dll 
   DESTINATION ${INSTALL_BUNDLE_DATA_DIR}/../blobs/
 )
 ```
