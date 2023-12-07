@@ -2,6 +2,6 @@
 
 |      | Android | iOS | Linux | Mac | Windows | Web |
 |------|---------|-----|-------|-----|---------|-----|
-| file | ✅       | ✅   |       | ✅   |    ✅    |     |
+| file | ✅       | ✅   | ✅   | ✅   |    ✅    |     |
 
 Example for using esrgan in flutter with TF Lite

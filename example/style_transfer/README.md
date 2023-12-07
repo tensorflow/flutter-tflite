@@ -2,6 +2,6 @@
 
 |      | Android | iOS | Linux | Mac | Windows | Web |
 |------|---------|-----|-------|-----|---------|-----|
-| file | ✅       | ✅   |       | ✅   |    ✅    |     |
+| file | ✅       | ✅   | ✅   | ✅   |    ✅    |     |
 
 Run `sh scripts/download_model.sh` to download models.

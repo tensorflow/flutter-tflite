@@ -2,8 +2,8 @@
 
 |      | Android | iOS | Linux | Mac | Windows | Web |
 |------|---------|-----|-------|-----|---------|-----|
-| file | ✅       | ✅   |       | ✅   |   ✅     |     |
-| life | ✅       | ✅   |       | [🚧](https://github.com/flutter/flutter/issues/41708)   |   [🚧](https://github.com/flutter/flutter/issues/41709)     |     |
+| file | ✅       | ✅   | ✅   | ✅   |   ✅     |     |
+| life | ✅       | ✅   |   [🚧](https://github.com/flutter/flutter/issues/41710)    | [🚧](https://github.com/flutter/flutter/issues/41708)   |   [🚧](https://github.com/flutter/flutter/issues/41709)     |     |
 
 A object detection example following [this](https://www.tensorflow.org/lite/examples/object_detection/overview) example.
 
