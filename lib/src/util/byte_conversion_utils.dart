@@ -128,17 +128,8 @@ class ByteConversionUtils {
 
     // Float16
     if (tensorType.value == TfLiteType.kTfLiteFloat16) {
-      if (o is double) {
-        var buffer = Uint8List(4).buffer;
-        var bdata = ByteData.view(buffer);
-        bdata.setFloat32(0, o, Endian.little);
-        return buffer.asUint8List().sublist(0, 2);
-      }
-      if (o is int) {
-        var buffer = Uint8List(4).buffer;
-        var bdata = ByteData.view(buffer);
-        bdata.setFloat32(0, o.toDouble(), Endian.little);
-        return buffer.asUint8List().sublist(0, 2);
+      if (o is num) {
+        return ByteConversionUtils.floatToFloat16Bytes(o.toDouble());
       }
       throw ByteConvertionError(
         input: o,
@@ -185,13 +176,10 @@ class ByteConversionUtils {
       }
       return list.reshape<int>(shape);
     } else if (tensorType.value == TfLiteType.kTfLiteFloat16) {
-      Uint8List list32 = Uint8List(bytes.length * 2);
       for (var i = 0; i < bytes.length; i += 2) {
-        list32[i] = bytes[i];
-        list32[i + 1] = bytes[i + 1];
-      }
-      for (var i = 0; i < list32.length; i += 4) {
-        list.add(ByteData.view(list32.buffer).getFloat32(i, Endian.little));
+        int float16 = ByteData.view(bytes.buffer).getUint16(i, Endian.little);
+        double float32 = _float16ToFloat32(float16);
+        list.add(float32);
       }
       return list.reshape<double>(shape);
     } else if (tensorType.value == TfLiteType.kTfLiteInt8) {
@@ -211,5 +199,66 @@ class ByteConversionUtils {
       return list.reshape<int>(shape);
     }
     throw UnsupportedError("$tensorType is not Supported.");
+  }
+
+  static Uint8List floatToFloat16Bytes(double value) {
+    int float16 = _float32ToFloat16(value);
+    final ByteData byteDataBuffer = ByteData(2)..setUint16(0, float16, Endian.little);
+    return Uint8List.fromList(byteDataBuffer.buffer.asUint8List());
+  }
+
+  static int _float32ToFloat16(double value) {
+    final Float32List float32Buffer = Float32List(1);
+    final Uint32List int32Buffer = float32Buffer.buffer.asUint32List();
+
+    float32Buffer[0] = value;
+    int f = int32Buffer[0];
+    int sign = (f >> 16) & 0x8000;
+    int exponent = (f >> 23) & 0xFF;
+    int mantissa = f & 0x007FFFFF;
+
+    if (exponent == 0) return sign;
+    if (exponent == 255) return sign | 0x7C00;
+
+    exponent = exponent - 127 + 15;
+    if (exponent >= 31) return sign | 0x7C00;
+    if (exponent <= 0) return sign;
+
+    // Implement rounding
+    int roundMantissa = (mantissa >> 13) + ((mantissa >> 12) & 1);
+
+    return sign | (exponent << 10) | roundMantissa;
+  }
+
+  static double bytesToFloat32(Uint8List bytes) {
+    final ByteData byteDataBuffer = ByteData(2);
+    int float16 = byteDataBuffer.buffer.asUint8List().buffer.asByteData().getUint16(0, Endian.little);
+    return _float16ToFloat32(float16);
+  }
+
+  static double _float16ToFloat32(int value) {
+    final Float32List float32Buffer = Float32List(1);
+    final Uint32List int32Buffer = float32Buffer.buffer.asUint32List();
+
+    int sign = (value & 0x8000) << 16;
+    int exponent = (value & 0x7C00) >> 10;
+    int mantissa = (value & 0x03FF) << 13;
+
+    if (exponent == 0) {
+      if (mantissa == 0) return sign == 0 ? 0.0 : -0.0;
+      while ((mantissa & 0x00800000) == 0) {
+        mantissa <<= 1;
+        exponent -= 1;
+      }
+      exponent += 1;
+    } else if (exponent == 31) {
+      if (mantissa == 0) return sign == 0 ? double.infinity : double.negativeInfinity;
+      return double.nan;
+    }
+
+    exponent = exponent - 15 + 127;
+    int32Buffer[0] = sign | (exponent << 23) | mantissa;
+
+    return float32Buffer[0];
   }
 }
