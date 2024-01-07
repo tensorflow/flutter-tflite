@@ -52,13 +52,7 @@ class ByteConversionUtils {
   static Uint8List _convertElementToBytes(Object o, TensorType tensorType) {
     // Float32
     if (tensorType.value == TfLiteType.kTfLiteFloat32) {
-      if (o is double) {
-        var buffer = Uint8List(4).buffer;
-        var bdata = ByteData.view(buffer);
-        bdata.setFloat32(0, o, Endian.little);
-        return buffer.asUint8List();
-      }
-      if (o is int) {
+      if (o is num) {
         var buffer = Uint8List(4).buffer;
         var bdata = ByteData.view(buffer);
         bdata.setFloat32(0, o.toDouble(), Endian.little);
