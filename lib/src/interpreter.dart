@@ -337,11 +337,17 @@ class Interpreter {
 
   /// Get signature runner by signature key.
   Pointer<TfLiteSignatureRunner> _getSignatureRunner(String signatureKey) {
-    Pointer<Char> signatureKeyPointer =
-    signatureKey.toNativeUtf8() as Pointer<Char>;
-    final signatureRunner = tfliteBinding.TfLiteInterpreterGetSignatureRunner(
-        _interpreter, signatureKeyPointer);
-    return signatureRunner;
+    // check if signature key exists
+    if (!_signatureRunners.containsKey(signatureKey)) {
+      Pointer<Char> signatureKeyPointer =
+      signatureKey.toNativeUtf8() as Pointer<Char>;
+      final signatureRunner = tfliteBinding.TfLiteInterpreterGetSignatureRunner(
+          _interpreter, signatureKeyPointer);
+      _signatureRunners[signatureKey] = signatureRunner;
+      return signatureRunner;
+    } else {
+      return _signatureRunners[signatureKey]!;
+    }
   }
 
   /// Gets the number of inputs associated with a signature
@@ -349,7 +355,6 @@ class Interpreter {
     final signatureRunner = _getSignatureRunner(signatureKey);
     final subGraphIndex =
     tfliteBinding.TfLiteSignatureRunnerGetInputCount(signatureRunner);
-    _deleteSignatureRunner(signatureRunner);
     return subGraphIndex;
   }
 
@@ -358,7 +363,6 @@ class Interpreter {
     final signatureRunner = _getSignatureRunner(signatureKey);
     final subGraphIndex =
     tfliteBinding.TfLiteSignatureRunnerGetOutputCount(signatureRunner);
-    _deleteSignatureRunner(signatureRunner);
     return subGraphIndex;
   }
 
@@ -367,7 +371,6 @@ class Interpreter {
     final signatureRunner = _getSignatureRunner(signatureKey);
     final inputName =
     tfliteBinding.TfLiteSignatureRunnerGetInputName(signatureRunner, index);
-    _deleteSignatureRunner(signatureRunner);
     return inputName.cast<Utf8>().toDartString();
   }
 
@@ -376,27 +379,26 @@ class Interpreter {
     final signatureRunner = _getSignatureRunner(signatureKey);
     final outputName = tfliteBinding.TfLiteSignatureRunnerGetOutputName(
         signatureRunner, index);
-    _deleteSignatureRunner(signatureRunner);
     return outputName.cast<Utf8>().toDartString();
   }
 
-  List<int> getSignatureInputTensorShape(String signatureKey, String inputName) {
+  List<int> getSignatureInputTensorShape(String signatureKey,
+      String inputName) {
     final signatureRunner = _getSignatureRunner(signatureKey);
     final inputTensor = Tensor(
         tfliteBinding.TfLiteSignatureRunnerGetInputTensor(
             signatureRunner, inputName.toNativeUtf8().cast<Char>()));
     final shape = inputTensor.shape;
-    _deleteSignatureRunner(signatureRunner);
     return shape;
   }
 
-  List<int> getSignatureOutputTensorShape(String signatureKey, String outputName) {
+  List<int> getSignatureOutputTensorShape(String signatureKey,
+      String outputName) {
     final signatureRunner = _getSignatureRunner(signatureKey);
     final outputTensor = Tensor(
         tfliteBinding.TfLiteSignatureRunnerGetOutputTensor(
             signatureRunner, outputName.toNativeUtf8().cast<Char>()));
     final shape = outputTensor.shape;
-    _deleteSignatureRunner(signatureRunner);
     return shape;
   }
 
@@ -430,15 +432,8 @@ class Interpreter {
       throw ArgumentError('Input error: Outputs should not be null or empty.');
     }
 
-    final Pointer<TfLiteSignatureRunner> signatureRunner;
-
-    // check if signature key exists
-    if (!_signatureRunners.containsKey(signatureKey)) {
-      signatureRunner = _getSignatureRunner(signatureKey);
-      _signatureRunners[signatureKey] = signatureRunner;
-    } else {
-      signatureRunner = _signatureRunners[signatureKey]!;
-    }
+    final Pointer<TfLiteSignatureRunner> signatureRunner = _getSignatureRunner(
+        signatureKey);
 
     inputs.forEach((key, value) {
       final inputTensor = Tensor(
