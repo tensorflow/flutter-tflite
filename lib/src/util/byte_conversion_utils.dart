@@ -18,8 +18,8 @@ import 'dart:typed_data';
 
 import 'package:tflite_flutter/tflite_flutter.dart';
 
-class ByteConvertionError extends ArgumentError {
-  ByteConvertionError({
+class ByteConversionError extends ArgumentError {
+  ByteConversionError({
     required this.input,
     required this.tensorType,
   }) : super(
@@ -58,7 +58,7 @@ class ByteConversionUtils {
         bdata.setFloat32(0, o.toDouble(), Endian.little);
         return buffer.asUint8List();
       }
-      throw ByteConvertionError(
+      throw ByteConversionError(
         input: o,
         tensorType: tensorType,
       );
@@ -72,7 +72,7 @@ class ByteConversionUtils {
         bdata.setUint8(0, o);
         return buffer.asUint8List();
       }
-      throw ByteConvertionError(
+      throw ByteConversionError(
         input: o,
         tensorType: tensorType,
       );
@@ -86,7 +86,7 @@ class ByteConversionUtils {
         bdata.setInt32(0, o, Endian.little);
         return buffer.asUint8List();
       }
-      throw ByteConvertionError(
+      throw ByteConversionError(
         input: o,
         tensorType: tensorType,
       );
@@ -100,7 +100,7 @@ class ByteConversionUtils {
         bdata.setInt64(0, o, Endian.big);
         return buffer.asUint8List();
       }
-      throw ByteConvertionError(
+      throw ByteConversionError(
         input: o,
         tensorType: tensorType,
       );
@@ -114,7 +114,7 @@ class ByteConversionUtils {
         bdata.setInt16(0, o, Endian.little);
         return buffer.asUint8List();
       }
-      throw ByteConvertionError(
+      throw ByteConversionError(
         input: o,
         tensorType: tensorType,
       );
@@ -125,7 +125,7 @@ class ByteConversionUtils {
       if (o is num) {
         return ByteConversionUtils.floatToFloat16Bytes(o.toDouble());
       }
-      throw ByteConvertionError(
+      throw ByteConversionError(
         input: o,
         tensorType: tensorType,
       );
@@ -139,7 +139,7 @@ class ByteConversionUtils {
         bdata.setInt8(0, o);
         return buffer.asUint8List();
       }
-      throw ByteConvertionError(
+      throw ByteConversionError(
         input: o,
         tensorType: tensorType,
       );

@@ -105,7 +105,7 @@ void main() {
     test('float to int8', () async {
       expect(
           () => ByteConversionUtils.convertObjectToBytes(1.1, TensorType.int8),
-          throwsA(isA<ByteConvertionError>()));
+          throwsA(isA<ByteConversionError>()));
     });
 
     test('float to None', () async {
