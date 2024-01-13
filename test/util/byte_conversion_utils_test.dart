@@ -4,16 +4,20 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 void main() {
   group('convertObjectToBytes and convertBytesToObject', () {
     test('TensorType.float32', () async {
-      var bytes = ByteConversionUtils.convertObjectToBytes(1.1, TensorType.float32);
+      var bytes =
+          ByteConversionUtils.convertObjectToBytes(1.1, TensorType.float32);
       expect(bytes, [205, 204, 140, 63]);
-      var object = ByteConversionUtils.convertBytesToObject(bytes, TensorType.float32, [1]) as List;
+      var object = ByteConversionUtils.convertBytesToObject(
+          bytes, TensorType.float32, [1]) as List;
       expect(object[0], closeTo(1.1, 0.0001));
     });
 
     test('TensorType.float16', () async {
-      var bytes = ByteConversionUtils.convertObjectToBytes(1.1, TensorType.float16);
+      var bytes =
+          ByteConversionUtils.convertObjectToBytes(1.1, TensorType.float16);
       expect(bytes, [102, 60]);
-      var object = ByteConversionUtils.convertBytesToObject(bytes, TensorType.float16, [1]) as List;
+      var object = ByteConversionUtils.convertBytesToObject(
+          bytes, TensorType.float16, [1]) as List;
       expect(object[0], closeTo(1.1, 0.001));
 
       /*
@@ -42,9 +46,11 @@ void main() {
       ];
 
       for (int i = 0; i < values.length; i++) {
-        var bytes = ByteConversionUtils.convertObjectToBytes(values[i], TensorType.float16);
+        var bytes = ByteConversionUtils.convertObjectToBytes(
+            values[i], TensorType.float16);
         expect(bytes, bytesList[i]);
-        var object = ByteConversionUtils.convertBytesToObject(bytes, TensorType.float16, [1]) as List;
+        var object = ByteConversionUtils.convertBytesToObject(
+            bytes, TensorType.float16, [1]) as List;
         expect(object[0], closeTo(values[i], 0.001));
       }
     });
@@ -52,46 +58,61 @@ void main() {
     test('TensorType.int64', () async {
       var bytes = ByteConversionUtils.convertObjectToBytes(1, TensorType.int64);
       expect(bytes, [0, 0, 0, 0, 0, 0, 0, 1]);
-      var object = ByteConversionUtils.convertBytesToObject(bytes, TensorType.int64, [1]) as List;
+      var object =
+          ByteConversionUtils.convertBytesToObject(bytes, TensorType.int64, [1])
+              as List;
       expect(object[0], 1);
     });
 
     test('TensorType.int32', () async {
       var bytes = ByteConversionUtils.convertObjectToBytes(1, TensorType.int32);
       expect(bytes, [1, 0, 0, 0]);
-      var object = ByteConversionUtils.convertBytesToObject(bytes, TensorType.int32, [1]) as List;
+      var object =
+          ByteConversionUtils.convertBytesToObject(bytes, TensorType.int32, [1])
+              as List;
       expect(object[0], 1);
     });
 
     test('TensorType.int16', () async {
       var bytes = ByteConversionUtils.convertObjectToBytes(1, TensorType.int16);
       expect(bytes, [1, 0]);
-      var object = ByteConversionUtils.convertBytesToObject(bytes, TensorType.int16, [1]) as List;
+      var object =
+          ByteConversionUtils.convertBytesToObject(bytes, TensorType.int16, [1])
+              as List;
       expect(object[0], 1);
     });
 
     test('TensorType.int8', () async {
       var bytes = ByteConversionUtils.convertObjectToBytes(1, TensorType.int8);
       expect(bytes, [1]);
-      var object = ByteConversionUtils.convertBytesToObject(bytes, TensorType.int8, [1]) as List;
+      var object =
+          ByteConversionUtils.convertBytesToObject(bytes, TensorType.int8, [1])
+              as List;
       expect(object[0], 1);
     });
 
     test('TensorType.uint8', () async {
       var bytes = ByteConversionUtils.convertObjectToBytes(1, TensorType.uint8);
       expect(bytes, [1]);
-      var object = ByteConversionUtils.convertBytesToObject(bytes, TensorType.uint8, [1]) as List;
+      var object =
+          ByteConversionUtils.convertBytesToObject(bytes, TensorType.uint8, [1])
+              as List;
       expect(object[0], 1);
     });
   });
 
   group('errors', () {
     test('float to int8', () async {
-      expect(() => ByteConversionUtils.convertObjectToBytes(1.1, TensorType.int8), throwsA(isA<ByteConvertionError>()));
+      expect(
+          () => ByteConversionUtils.convertObjectToBytes(1.1, TensorType.int8),
+          throwsA(isA<ByteConvertionError>()));
     });
 
     test('float to None', () async {
-      expect(() => ByteConversionUtils.convertObjectToBytes(1.1, TensorType.noType), throwsA(isA<ArgumentError>()));
+      expect(
+          () =>
+              ByteConversionUtils.convertObjectToBytes(1.1, TensorType.noType),
+          throwsA(isA<ArgumentError>()));
     });
   });
 }

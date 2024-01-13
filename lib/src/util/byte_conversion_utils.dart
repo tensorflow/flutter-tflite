@@ -197,7 +197,8 @@ class ByteConversionUtils {
 
   static Uint8List floatToFloat16Bytes(double value) {
     int float16 = _float32ToFloat16(value);
-    final ByteData byteDataBuffer = ByteData(2)..setUint16(0, float16, Endian.little);
+    final ByteData byteDataBuffer = ByteData(2)
+      ..setUint16(0, float16, Endian.little);
     return Uint8List.fromList(byteDataBuffer.buffer.asUint8List());
   }
 
@@ -226,7 +227,11 @@ class ByteConversionUtils {
 
   static double bytesToFloat32(Uint8List bytes) {
     final ByteData byteDataBuffer = ByteData(2);
-    int float16 = byteDataBuffer.buffer.asUint8List().buffer.asByteData().getUint16(0, Endian.little);
+    int float16 = byteDataBuffer.buffer
+        .asUint8List()
+        .buffer
+        .asByteData()
+        .getUint16(0, Endian.little);
     return _float16ToFloat32(float16);
   }
 
@@ -246,7 +251,9 @@ class ByteConversionUtils {
       }
       exponent += 1;
     } else if (exponent == 31) {
-      if (mantissa == 0) return sign == 0 ? double.infinity : double.negativeInfinity;
+      if (mantissa == 0) {
+        return sign == 0 ? double.infinity : double.negativeInfinity;
+      }
       return double.nan;
     }
 
