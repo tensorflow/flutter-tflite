@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:object_detection_ssd_mobilenet/object_detection.dart';
+import 'package:object_detection_ssd_mobilenet_v2/object_detection.dart';
 import 'dart:io' show Platform;
 
 void main() => runApp(const MyApp());
