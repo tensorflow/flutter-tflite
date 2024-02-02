@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:math' as math;
@@ -61,8 +60,6 @@ class IsolateInference {
     return [imageMatrix];
   }
 
-  //
-
   static void entryPoint(SendPort sendPort) async {
     final port = ReceivePort();
     sendPort.send(port.sendPort);
@@ -91,20 +88,12 @@ class IsolateInference {
       // convert image to input matrix
       final imageData = getImageMatrix(inputImage);
       final inputData = message.inputState;
-      // inputData.entries.iterator;
       inputData[MoviNetHelper.imageInputName] = [imageData];
 
       // prepare output map for model output
       final outputData = message.outputState;
-      // final startTime = DateTime.now().millisecondsSinceEpoch;
-
       interpreter.runSignature(
           inputData, outputData, MoviNetHelper.signatureKey);
-
-      // finish time
-      // final endTime = DateTime.now().millisecondsSinceEpoch;
-      // final inferenceTime = endTime - startTime;
-      // log("inference time: $inferenceTime ms");
       message.responsePort.send(outputData);
     }
   }

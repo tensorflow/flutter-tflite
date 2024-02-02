@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:isolate';
 import 'dart:math';
-import 'dart:developer' as dev;
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
@@ -19,6 +18,7 @@ class MoviNetHelper {
   late List<String> _labels;
   late Map<String, Object> _inputState;
   bool isUpdate = false;
+  late Map<String, Object> _outputState;
 
   clearState() async {
     isUpdate = true;
@@ -46,16 +46,14 @@ class MoviNetHelper {
 
   Future<void> createNewSession() async {
     _inputState = initializeInput(_interpreter);
+    _outputState = initializeOutput(_interpreter);
     _isolateInference = IsolateInference();
     await _isolateInference.start();
-    dev.log("create new session");
   }
 
   Future<Category> classify(CameraImage cameraImage) async {
-    final start = DateTime.now().millisecondsSinceEpoch;
-    final outputState = initializeOutput(_interpreter);
     final isolateModel = InferenceModel(cameraImage, _interpreter.address,
-        _inputShape, _inputState, outputState);
+        _inputShape, _inputState, _outputState);
     ReceivePort responsePort = ReceivePort();
     _isolateInference.sendPort
         ?.send(isolateModel..responsePort = responsePort.sendPort);
@@ -63,7 +61,6 @@ class MoviNetHelper {
     final categories = postprocessOutputLogits(
         (resultOutput[logitsOutputName] as List<Object>).first as List<double>);
     resultOutput.remove(logitsOutputName);
-    dev.log("set output");
     if (isUpdate) {
       isUpdate = false;
       _inputState = initializeInput(_interpreter);
@@ -72,10 +69,6 @@ class MoviNetHelper {
     }
     // sort categories by descending score
     categories.sort((a, b) => b.score.compareTo(a.score));
-    final end = DateTime.now().millisecondsSinceEpoch;
-    dev.log("inference time: ${end - start} ms");
-    // dev.log("message ${categories.first.label}");
-
     return categories.first;
   }
 
@@ -123,30 +116,10 @@ class MoviNetHelper {
       }
       final shape = interpreter.getSignatureInputTensorShape(
           MoviNetHelper.signatureKey, inputName);
-
-      /// debug
-      ///
-      // if (inputName == "state_block3_layer1_stream_buffer") {
-      //   dev.log("debug $shape");
-      // }
       inputs[inputName] = createShapeData(shape);
     }
     return inputs;
   }
-
-  // static ByteBuffer getImageMatrix(CameraImage image) {
-  //   final convertedBytes = ByteData(image.planes[0].bytes.length);
-  //   int pixelIndex = 0;
-  //   for (int i = 0; i < image.height; i++) {
-  //     for (int j = 0; j < image.width; j++, pixelIndex += 3) {
-  //       final int pixel = image.planes[0].bytes[pixelIndex];
-  //       convertedBytes.setUint8(pixelIndex, pixel);
-  //       convertedBytes.setUint8(pixelIndex + 1, pixel);
-  //       convertedBytes.setUint8(pixelIndex + 2, pixel);
-  //     }
-  //   }
-  //   return convertedBytes.buffer;
-  // }
 
   static Uint8List createShapeDataByte(List<int> shape, int byteSize) {
     int dataSize = 1;
@@ -155,7 +128,6 @@ class MoviNetHelper {
     }
     dataSize *= byteSize;
     return Uint8List.fromList(List.filled(dataSize, 0));
-    // return ByteData(dataSize).buffer;
   }
 
   static List<Object> createShapeData(List<int> shape) {
