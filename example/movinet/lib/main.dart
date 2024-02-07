@@ -160,7 +160,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text(widget.title)),
+        title: Image.asset(
+          'assets/images/tfl_logo.png',
+          fit: BoxFit.contain,
+        ),
         backgroundColor: Colors.black.withOpacity(0.5),
       ),
       body: resultWidget(context),

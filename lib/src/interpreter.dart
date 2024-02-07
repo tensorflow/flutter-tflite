@@ -212,10 +212,14 @@ class Interpreter {
       inputTensors.elementAt(i).setTo(inputs[i]);
     }
 
-    var inferenceStartNanos = DateTime.now().microsecondsSinceEpoch;
+    var inferenceStartNanos = DateTime
+        .now()
+        .microsecondsSinceEpoch;
     invoke();
     _lastNativeInferenceDurationMicroSeconds =
-        DateTime.now().microsecondsSinceEpoch - inferenceStartNanos;
+        DateTime
+            .now()
+            .microsecondsSinceEpoch - inferenceStartNanos;
   }
 
   /// Gets all input tensors associated with the model.
@@ -226,8 +230,9 @@ class Interpreter {
 
     var tensors = List.generate(
         tfliteBinding.TfLiteInterpreterGetInputTensorCount(_interpreter),
-        (i) => Tensor(
-            tfliteBinding.TfLiteInterpreterGetInputTensor(_interpreter, i)),
+            (i) =>
+            Tensor(
+                tfliteBinding.TfLiteInterpreterGetInputTensor(_interpreter, i)),
         growable: false);
 
     return tensors;
@@ -241,8 +246,10 @@ class Interpreter {
 
     var tensors = List.generate(
         tfliteBinding.TfLiteInterpreterGetOutputTensorCount(_interpreter),
-        (i) => Tensor(
-            tfliteBinding.TfLiteInterpreterGetOutputTensor(_interpreter, i)),
+            (i) =>
+            Tensor(
+                tfliteBinding.TfLiteInterpreterGetOutputTensor(
+                    _interpreter, i)),
         growable: false);
 
     return tensors;
@@ -253,7 +260,7 @@ class Interpreter {
     final dimensionSize = shape.length;
     final dimensions = calloc<Int>(dimensionSize);
     final externalTypedData =
-        dimensions.cast<Int32>().asTypedList(dimensionSize);
+    dimensions.cast<Int32>().asTypedList(dimensionSize);
     externalTypedData.setRange(0, dimensionSize, shape);
     final status = tfliteBinding.TfLiteInterpreterResizeInputTensor(
         _interpreter, tensorIndex, dimensions, dimensionSize);
@@ -341,7 +348,7 @@ class Interpreter {
     // check if signature key exists
     if (!_signatureRunners.containsKey(signatureKey)) {
       Pointer<Char> signatureKeyPointer =
-          signatureKey.toNativeUtf8() as Pointer<Char>;
+      signatureKey.toNativeUtf8() as Pointer<Char>;
       final signatureRunner = tfliteBinding.TfLiteInterpreterGetSignatureRunner(
           _interpreter, signatureKeyPointer);
       _signatureRunners[signatureKey] = signatureRunner;
@@ -355,7 +362,7 @@ class Interpreter {
   int getSignatureInputCount(String signatureKey) {
     final signatureRunner = _getSignatureRunner(signatureKey);
     final subGraphIndex =
-        tfliteBinding.TfLiteSignatureRunnerGetInputCount(signatureRunner);
+    tfliteBinding.TfLiteSignatureRunnerGetInputCount(signatureRunner);
     return subGraphIndex;
   }
 
@@ -363,7 +370,7 @@ class Interpreter {
   int getSignatureOutputCount(String signatureKey) {
     final signatureRunner = _getSignatureRunner(signatureKey);
     final subGraphIndex =
-        tfliteBinding.TfLiteSignatureRunnerGetOutputCount(signatureRunner);
+    tfliteBinding.TfLiteSignatureRunnerGetOutputCount(signatureRunner);
     return subGraphIndex;
   }
 
@@ -371,7 +378,7 @@ class Interpreter {
   String getSignatureInputName(String signatureKey, int index) {
     final signatureRunner = _getSignatureRunner(signatureKey);
     final inputName =
-        tfliteBinding.TfLiteSignatureRunnerGetInputName(signatureRunner, index);
+    tfliteBinding.TfLiteSignatureRunnerGetInputName(signatureRunner, index);
     return inputName.cast<Utf8>().toDartString();
   }
 
@@ -383,8 +390,8 @@ class Interpreter {
     return outputName.cast<Utf8>().toDartString();
   }
 
-  List<int> getSignatureInputTensorShape(
-      String signatureKey, String inputName) {
+  List<int> getSignatureInputTensorShape(String signatureKey,
+      String inputName) {
     final signatureRunner = _getSignatureRunner(signatureKey);
     final inputTensor = Tensor(
         tfliteBinding.TfLiteSignatureRunnerGetInputTensor(
@@ -393,40 +400,14 @@ class Interpreter {
     return shape;
   }
 
-  List<int> getSignatureOutputTensorShape(
-      String signatureKey, String outputName) {
+  List<int> getSignatureOutputTensorShape(String signatureKey,
+      String outputName) {
     final signatureRunner = _getSignatureRunner(signatureKey);
     final outputTensor = Tensor(
         tfliteBinding.TfLiteSignatureRunnerGetOutputTensor(
             signatureRunner, outputName.toNativeUtf8().cast<Char>()));
     final shape = outputTensor.shape;
     return shape;
-  }
-
-  /// get signature input tensor
-  Map<String, Tensor> getSignatureInputTensors(
-      String signatureKey, List<String> keys) {
-    final signatureRunner = _getSignatureRunner(signatureKey);
-    Map<String, Tensor> tensors = HashMap();
-    keys.forEach((key) {
-      tensors[key] = Tensor(tfliteBinding.TfLiteSignatureRunnerGetInputTensor(
-          signatureRunner, key.toNativeUtf8().cast<Char>()));
-    });
-
-    return tensors;
-  }
-
-  /// get signature output tensor
-  Map<String, Tensor> getSignatureOutputTensors(
-      String signatureKey, List<String> keys) {
-    final signatureRunner = _getSignatureRunner(signatureKey);
-    Map<String, Tensor> tensors = HashMap();
-    keys.forEach((key) {
-      tensors[key] = Tensor(tfliteBinding.TfLiteSignatureRunnerGetOutputTensor(
-          signatureRunner, key.toNativeUtf8().cast<Char>()));
-    });
-
-    return tensors;
   }
 
   /// Run for single input and output
@@ -440,21 +421,22 @@ class Interpreter {
     }
 
     final Pointer<TfLiteSignatureRunner> signatureRunner =
-        _getSignatureRunner(signatureKey);
-
-    var inputTensor =
-        getSignatureInputTensors(signatureKey, inputs.keys.toList());
+    _getSignatureRunner(signatureKey);
 
     inputs.forEach((key, value) {
-      inputTensor[key]?.setTo(value);
+      Tensor inputTensor = Tensor(
+          tfliteBinding.TfLiteSignatureRunnerGetInputTensor(
+              signatureRunner, key.toNativeUtf8().cast<Char>()));
+      inputTensor.setTo(value);
     });
 
     tfliteBinding.TfLiteSignatureRunnerInvoke(signatureRunner);
 
-    var outputTensor =
-        getSignatureOutputTensors(signatureKey, outputs.keys.toList());
     outputs.forEach((key, value) {
-      outputTensor[key]?.copyTo(value);
+      Tensor outputTensor = Tensor(
+          tfliteBinding.TfLiteSignatureRunnerGetOutputTensor(
+              signatureRunner, key.toNativeUtf8().cast<Char>()));
+      outputTensor.copyTo(value);
     });
   }
 
