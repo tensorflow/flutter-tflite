@@ -55,13 +55,13 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 26
+        minSdkVersion 19
     }
 }
 
 
 dependencies {
-    def tflite_version = "2.12.0"
+    def tflite_version = "2.11.0"
     
     implementation("org.tensorflow:tensorflow-lite:${tflite_version}")
     implementation("org.tensorflow:tensorflow-lite-gpu:${tflite_version}")
