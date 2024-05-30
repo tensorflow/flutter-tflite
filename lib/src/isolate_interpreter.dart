@@ -73,7 +73,7 @@ class IsolateInterpreter {
       debugName: debugName,
     );
     final Completer<SendPort> sendPortCompleter = Completer<SendPort>();
-    
+
     _stateSubscription = _receivePort.listen((state) {
       if (state is SendPort) {
         _sendPort = state;
@@ -84,7 +84,7 @@ class IsolateInterpreter {
         _state = state;
       }
     });
-    
+
     await sendPortCompleter.future;
   }
 
