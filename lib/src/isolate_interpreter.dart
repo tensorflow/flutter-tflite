@@ -72,16 +72,20 @@ class IsolateInterpreter {
       _receivePort.sendPort,
       debugName: debugName,
     );
+    final Completer<SendPort> sendPortCompleter = Completer<SendPort>();
 
     _stateSubscription = _receivePort.listen((state) {
       if (state is SendPort) {
         _sendPort = state;
+        sendPortCompleter.complete(_sendPort);
       }
 
       if (state is IsolateInterpreterState) {
         _state = state;
       }
     });
+
+    await sendPortCompleter.future;
   }
 
   // Main function for the spawned isolate.
