@@ -132,16 +132,30 @@ For this, first a `.dll` needs to be built. You can follow the [Bazel build guid
 As a second step, the library needs to be added to your application's project. This is a simple procedure
 
 1. Create a folder called `blobs` in the top level of your project
-2. Copy the `libtensorflowlite_c-win.dll` to this folder
-3. Append following lines to your `windows/CMakeLists.txt`
+2. Copy the `libtensorflowlite_c.dll` to this folder
+3. Rename the file matching you architecture
+   1. arm -> `libtensorflowlite_c_arm64.dll`
+   2. x86 -> `libtensorflowlite_c_x86.dll`
+4. Append following lines to your `windows/CMakeLists.txt`
 
 ``` Make
 ...
 
 # get tf lite binaries
+message(STATUS "TF Lite detected processor architecture: ${CMAKE_SYSTEM_PROCESSOR}")
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "ARM64")
+    set(TF_LITE_DLL ${PROJECT_BUILD_DIR}/../blobs/libtensorflowlite_c_arm64.dll)
+elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
+    set(TF_LITE_DLL ${PROJECT_BUILD_DIR}/../blobs/libtensorflowlite_c_x86.dll)
+endif()
+
 install(
-  FILES ${PROJECT_BUILD_DIR}/../blobs/libtensorflowlite_c-win.dll 
-  DESTINATION ${INSTALL_BUNDLE_DATA_DIR}/../blobs/
+  FILES
+    ${TF_LITE_DLL}
+  DESTINATION
+    ${INSTALL_BUNDLE_DATA_DIR}/../blobs/
+  RENAME
+  libtensorflowlite_c.dll
 )
 ```
 
