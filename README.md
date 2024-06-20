@@ -120,7 +120,7 @@ install(
   DESTINATION
     ${INSTALL_BUNDLE_DATA_DIR}/../blobs/
   RENAME
-  libtensorflowlite_c.so
+  libtensorflowlite_c-linuxlibtensorflowlite_c-linux.so
 )
 ```
 
@@ -155,7 +155,7 @@ install(
   DESTINATION
     ${INSTALL_BUNDLE_DATA_DIR}/../blobs/
   RENAME
-  libtensorflowlite_c.dll
+  libtensorflowlite_c-win.dll
 )
 ```
 

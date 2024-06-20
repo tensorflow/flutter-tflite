@@ -115,5 +115,5 @@ install(
   DESTINATION
     ${INSTALL_BUNDLE_DATA_DIR}/../blobs/
   RENAME
-  libtensorflowlite_c.dll
+  libtensorflowlite_c-win.dll
 )
