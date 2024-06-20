@@ -99,8 +99,8 @@ As a second step, the library needs to be added to your application's project. T
 1. Create a folder called `blobs` in the top level of your project
 2. Copy the `libtensorflowlite_c.so` to this folder
 3. Rename the file matching you architecture
-   1. arm -> libtensorflowlite_c_arm64.so
-   2. x86 -> libtensorflowlite_c_x86.so
+   1. arm -> `libtensorflowlite_c_arm64.so`
+   2. x86 -> `libtensorflowlite_c_x86.so`
 4. Append following lines to your `linux/CMakeLists.txt`
 
 ``` Make
