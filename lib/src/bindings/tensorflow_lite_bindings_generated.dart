@@ -439,8 +439,10 @@ class TensorFlowLiteBindings {
     ffi.Pointer<TfLiteInterpreterOptions> options,
     ffi.Pointer<
             ffi.NativeFunction<
-                ffi.Void Function(ffi.Pointer<ffi.Void> user_data,
-                    ffi.Pointer<ffi.Char> format, va_list args)>>
+                ffi.Void Function(
+                    ffi.Pointer<ffi.Void> user_data,
+                    ffi.Pointer<ffi.Char> format,
+                    ffi.Pointer<__va_list_tag> args)>>
         reporter,
     ffi.Pointer<ffi.Void> user_data,
   ) {
@@ -457,8 +459,10 @@ class TensorFlowLiteBindings {
                   ffi.Pointer<TfLiteInterpreterOptions>,
                   ffi.Pointer<
                       ffi.NativeFunction<
-                          ffi.Void Function(ffi.Pointer<ffi.Void> user_data,
-                              ffi.Pointer<ffi.Char> format, va_list args)>>,
+                          ffi.Void Function(
+                              ffi.Pointer<ffi.Void> user_data,
+                              ffi.Pointer<ffi.Char> format,
+                              ffi.Pointer<__va_list_tag> args)>>,
                   ffi.Pointer<ffi.Void>)>>(
       'TfLiteInterpreterOptionsSetErrorReporter');
   late final _TfLiteInterpreterOptionsSetErrorReporter =
@@ -467,8 +471,10 @@ class TensorFlowLiteBindings {
               ffi.Pointer<TfLiteInterpreterOptions>,
               ffi.Pointer<
                   ffi.NativeFunction<
-                      ffi.Void Function(ffi.Pointer<ffi.Void> user_data,
-                          ffi.Pointer<ffi.Char> format, va_list args)>>,
+                      ffi.Void Function(
+                          ffi.Pointer<ffi.Void> user_data,
+                          ffi.Pointer<ffi.Char> format,
+                          ffi.Pointer<__va_list_tag> args)>>,
               ffi.Pointer<ffi.Void>)>();
 
   /// Adds an op registration to be applied during `TfLiteInterpreter` creation.
@@ -3114,8 +3120,17 @@ abstract class TfLiteBuiltinOperator {
 
 class TfLiteOpaqueNode extends ffi.Opaque {}
 
-typedef va_list = __builtin_va_list;
-typedef __builtin_va_list = ffi.Pointer<ffi.Char>;
+class __va_list_tag extends ffi.Struct {
+  @ffi.UnsignedInt()
+  external int gp_offset;
+
+  @ffi.UnsignedInt()
+  external int fp_offset;
+
+  external ffi.Pointer<ffi.Void> overflow_arg_area;
+
+  external ffi.Pointer<ffi.Void> reg_save_area;
+}
 
 class TfLiteSignatureRunner extends ffi.Opaque {}
 
