@@ -27,3 +27,9 @@ command:
     branch: main
     linkToCommits: true
     workspaceChangelog: true
+
+scripts:
+  ffigen:
+    name: ffigen
+    description: Call ffigen and generate bindings for `src/tensorflow_lite/c_api.h`.
+    run: flutter pub run ffigen --config ffigen_tensorflow_lite.yaml
