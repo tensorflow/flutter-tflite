@@ -32,7 +32,7 @@ dependencies:
   ffi: ^2.0.1
 
 dev_dependencies:
-  ffigen: ^7.2.11
+  ffigen: ^8.0.0
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
