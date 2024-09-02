@@ -1997,25 +1997,6 @@ class TensorFlowLiteBindings {
       _TfLiteXNNPackDelegateWeightsCacheDeletePtr.asFunction<
           void Function(ffi.Pointer<TfLiteXNNPackDelegateWeightsCache>)>();
 
-  /// Populates TfLiteGpuDelegateOptionsV2 as follows:
-  /// is_precision_loss_allowed = false
-  /// inference_preference = TFLITE_GPU_INFERENCE_PREFERENCE_FAST_SINGLE_ANSWER
-  /// priority1 = TFLITE_GPU_INFERENCE_PRIORITY_MAX_PRECISION
-  /// priority2 = TFLITE_GPU_INFERENCE_PRIORITY_AUTO
-  /// priority3 = TFLITE_GPU_INFERENCE_PRIORITY_AUTO
-  /// experimental_flags = TFLITE_GPU_EXPERIMENTAL_FLAGS_ENABLE_QUANT
-  /// max_delegated_partitions = 1
-  TfLiteGpuDelegateOptionsV2 TfLiteGpuDelegateOptionsV2Default() {
-    return _TfLiteGpuDelegateOptionsV2Default();
-  }
-
-  late final _TfLiteGpuDelegateOptionsV2DefaultPtr =
-      _lookup<ffi.NativeFunction<TfLiteGpuDelegateOptionsV2 Function()>>(
-          'TfLiteGpuDelegateOptionsV2Default');
-  late final _TfLiteGpuDelegateOptionsV2Default =
-      _TfLiteGpuDelegateOptionsV2DefaultPtr.asFunction<
-          TfLiteGpuDelegateOptionsV2 Function()>();
-
   /// Creates a new delegate instance that need to be destroyed with
   /// TfLiteGpuDelegateV2Delete when delegate is no longer used by TFLite.
   ///
@@ -2055,14 +2036,33 @@ class TensorFlowLiteBindings {
       'TfLiteGpuDelegateV2Delete');
   late final _TfLiteGpuDelegateV2Delete = _TfLiteGpuDelegateV2DeletePtr
       .asFunction<void Function(ffi.Pointer<TfLiteDelegate>)>();
+
+  /// Populates TfLiteGpuDelegateOptionsV2 as follows:
+  /// is_precision_loss_allowed = false
+  /// inference_preference = TFLITE_GPU_INFERENCE_PREFERENCE_FAST_SINGLE_ANSWER
+  /// priority1 = TFLITE_GPU_INFERENCE_PRIORITY_MAX_PRECISION
+  /// priority2 = TFLITE_GPU_INFERENCE_PRIORITY_AUTO
+  /// priority3 = TFLITE_GPU_INFERENCE_PRIORITY_AUTO
+  /// experimental_flags = TFLITE_GPU_EXPERIMENTAL_FLAGS_ENABLE_QUANT
+  /// max_delegated_partitions = 1
+  TfLiteGpuDelegateOptionsV2 TfLiteGpuDelegateOptionsV2Default() {
+    return _TfLiteGpuDelegateOptionsV2Default();
+  }
+
+  late final _TfLiteGpuDelegateOptionsV2DefaultPtr =
+      _lookup<ffi.NativeFunction<TfLiteGpuDelegateOptionsV2 Function()>>(
+          'TfLiteGpuDelegateOptionsV2Default');
+  late final _TfLiteGpuDelegateOptionsV2Default =
+      _TfLiteGpuDelegateOptionsV2DefaultPtr.asFunction<
+          TfLiteGpuDelegateOptionsV2 Function()>();
 }
 
-class TfLiteModel extends ffi.Opaque {}
+final class TfLiteModel extends ffi.Opaque {}
 
-class TfLiteInterpreterOptions extends ffi.Opaque {}
+final class TfLiteInterpreterOptions extends ffi.Opaque {}
 
 /// WARNING: This is an experimental interface that is subject to change.
-class TfLiteDelegate extends ffi.Struct {
+final class TfLiteDelegate extends ffi.Struct {
   /// Data that delegate needs to identify itself. This data is owned by the
   /// delegate. The delegate is owned in the user code, so the delegate is
   /// responsible for deallocating this when it is destroyed.
@@ -2171,7 +2171,7 @@ abstract class TfLiteStatus {
 
 /// Forward declare so dependent structs and methods can reference these types
 /// prior to the struct definitions.
-class TfLiteContext extends ffi.Struct {
+final class TfLiteContext extends ffi.Struct {
   /// Number of tensors in the context.
   @ffi.Size()
   external int tensors_size;
@@ -2418,9 +2418,16 @@ class TfLiteContext extends ffi.Struct {
 
 /// Fixed size list of integers. Used for dimensions and inputs/outputs tensor
 /// indices
-class TfLiteIntArray extends ffi.Opaque {}
+final class TfLiteIntArray extends ffi.Struct {
+  @ffi.Int()
+  external int size;
 
-class TfLiteTensor extends ffi.Struct {
+  /// Context for why this is needed is in http://b/189926408#comment21
+  @ffi.Array.multi([1])
+  external ffi.Array<ffi.Int> data;
+}
+
+final class TfLiteTensor extends ffi.Struct {
   /// The data type specification for data stored in `data`. This affects
   /// what member of `data` union should be used.
   @ffi.Int32()
@@ -2521,7 +2528,7 @@ abstract class TfLiteType {
 }
 
 /// A union of pointers that points to memory for a given tensor.
-class TfLitePtrUnion extends ffi.Union {
+final class TfLitePtrUnion extends ffi.Union {
   /// Do not access these members directly, if possible, use
   /// GetTensorData<TYPE>(tensor) instead, otherwise only access .data, as other
   /// members are deprecated.
@@ -2562,13 +2569,13 @@ class TfLitePtrUnion extends ffi.Union {
 }
 
 /// Half precision data type compatible with the C99 definition.
-class TfLiteFloat16 extends ffi.Struct {
+final class TfLiteFloat16 extends ffi.Struct {
   @ffi.Uint16()
   external int data;
 }
 
 /// Single-precision complex data type compatible with the C99 definition.
-class TfLiteComplex64 extends ffi.Struct {
+final class TfLiteComplex64 extends ffi.Struct {
   /// real and imaginary parts, respectively.
   @ffi.Float()
   external double re;
@@ -2578,7 +2585,7 @@ class TfLiteComplex64 extends ffi.Struct {
 }
 
 /// Double-precision complex data type compatible with the C99 definition.
-class TfLiteComplex128 extends ffi.Struct {
+final class TfLiteComplex128 extends ffi.Struct {
   /// real and imaginary parts, respectively.
   @ffi.Double()
   external double re;
@@ -2593,7 +2600,7 @@ class TfLiteComplex128 extends ffi.Struct {
 /// Parameters for asymmetric quantization. Quantized values can be converted
 /// back to float using:
 /// real_value = scale * (quantized_value - zero_point)
-class TfLiteQuantizationParams extends ffi.Struct {
+final class TfLiteQuantizationParams extends ffi.Struct {
   @ffi.Float()
   external double scale;
 
@@ -2626,9 +2633,10 @@ abstract class TfLiteAllocationType {
 /// The delegates should use zero or positive integers to represent handles.
 /// -1 is reserved from unallocated status.
 typedef TfLiteBufferHandle = ffi.Int;
+typedef DartTfLiteBufferHandle = int;
 
 /// Structure specifying the quantization used by the tensor, if-any.
-class TfLiteQuantization extends ffi.Struct {
+final class TfLiteQuantization extends ffi.Struct {
   /// The type of quantization held by params.
   @ffi.Int32()
   external int type;
@@ -2651,7 +2659,7 @@ abstract class TfLiteQuantizationType {
 
 /// Parameters used to encode a sparse tensor. For detailed explanation of each
 /// field please refer to lite/schema/schema.fbs.
-class TfLiteSparsity extends ffi.Struct {
+final class TfLiteSparsity extends ffi.Struct {
   external ffi.Pointer<TfLiteIntArray> traversal_order;
 
   external ffi.Pointer<TfLiteIntArray> block_map;
@@ -2663,7 +2671,7 @@ class TfLiteSparsity extends ffi.Struct {
 }
 
 /// Metadata to encode each dimension in a sparse tensor.
-class TfLiteDimensionMetadata extends ffi.Struct {
+final class TfLiteDimensionMetadata extends ffi.Struct {
   @ffi.Int32()
   external int format;
 
@@ -2684,7 +2692,7 @@ abstract class TfLiteDimensionType {
 /// A structure representing an instance of a node.
 /// This structure only exhibits the inputs, outputs, user defined data and some
 /// node properties (like statefulness), not other features like the type.
-class TfLiteNode extends ffi.Struct {
+final class TfLiteNode extends ffi.Struct {
   /// Inputs to this node expressed as indices into the simulator's tensors.
   external ffi.Pointer<TfLiteIntArray> inputs;
 
@@ -2724,7 +2732,7 @@ class TfLiteNode extends ffi.Struct {
   external bool might_have_side_effect;
 }
 
-class TfLiteRegistration extends ffi.Struct {
+final class TfLiteRegistration extends ffi.Struct {
   /// Initializes the op from serialized data.
   /// Called only *once* for the lifetime of the op, so any one-time allocations
   /// should be made here (unless they depend on tensor sizes).
@@ -2810,14 +2818,14 @@ class TfLiteRegistration extends ffi.Struct {
   external ffi.Pointer<TfLiteRegistrationExternal> registration_external;
 }
 
-class TfLiteRegistrationExternal extends ffi.Opaque {}
+final class TfLiteRegistrationExternal extends ffi.Opaque {}
 
 /// An external context is a collection of information unrelated to the TF Lite
 /// framework, but useful to a subset of the ops. TF Lite knows very little
 /// about the actual contexts, but it keeps a list of them, and is able to
 /// refresh them if configurations like the number of recommended threads
 /// change.
-class TfLiteExternalContext extends ffi.Struct {
+final class TfLiteExternalContext extends ffi.Struct {
   @ffi.Int32()
   external int type;
 
@@ -2852,7 +2860,7 @@ abstract class TfLiteExternalContextType {
 /// `TfLiteNode` of the delegate node.
 ///
 /// See also the `CreateDelegateParams` function in `interpreter.cc` details.
-class TfLiteDelegateParams extends ffi.Struct {
+final class TfLiteDelegateParams extends ffi.Struct {
   external ffi.Pointer<TfLiteDelegate> delegate;
 
   external ffi.Pointer<TfLiteIntArray> nodes_to_replace;
@@ -2866,7 +2874,7 @@ class TfLiteDelegateParams extends ffi.Struct {
 /// of information required for a kernel to run during TfLiteRegistration::Eval.
 /// TODO(b/160955687): Move this field into TF_LITE_STATIC_MEMORY when TFLM
 /// builds with this flag by default internally.
-class TfLiteEvalTensor extends ffi.Struct {
+final class TfLiteEvalTensor extends ffi.Struct {
   /// A union of data pointers. The appropriate type should be used for a typed
   /// tensor based on `type`.
   external TfLitePtrUnion data;
@@ -2891,7 +2899,7 @@ class TfLiteEvalTensor extends ffi.Struct {
 /// the same as with `TfLiteDelegate`.
 ///
 /// WARNING: This is an experimental interface that is subject to change.
-class TfLiteOpaqueDelegateBuilder extends ffi.Struct {
+final class TfLiteOpaqueDelegateBuilder extends ffi.Struct {
   /// Data that delegate needs to identify itself. This data is owned by the
   /// delegate. The delegate is owned in the user code, so the delegate is
   /// responsible for deallocating this when it is destroyed.
@@ -2939,13 +2947,13 @@ class TfLiteOpaqueDelegateBuilder extends ffi.Struct {
   external int flags;
 }
 
-class TfLiteOpaqueContext extends ffi.Opaque {}
+final class TfLiteOpaqueContext extends ffi.Opaque {}
 
-class TfLiteOpaqueDelegateStruct extends ffi.Opaque {}
+final class TfLiteOpaqueDelegateStruct extends ffi.Opaque {}
 
-class TfLiteOpaqueTensor extends ffi.Opaque {}
+final class TfLiteOpaqueTensor extends ffi.Opaque {}
 
-class TfLiteInterpreter extends ffi.Opaque {}
+final class TfLiteInterpreter extends ffi.Opaque {}
 
 /// The enum for builtin operators.
 /// Note: CUSTOM, DELEGATE, and PLACEHOLDER_FOR_GREATER_OP_CODES are 3 special
@@ -3112,18 +3120,17 @@ abstract class TfLiteBuiltinOperator {
   static const int kTfLiteBuiltinSign = 158;
 }
 
-class TfLiteOpaqueNode extends ffi.Opaque {}
+final class TfLiteOpaqueNode extends ffi.Opaque {}
 
-typedef va_list = __builtin_va_list;
-typedef __builtin_va_list = ffi.Pointer<ffi.Char>;
+typedef va_list = ffi.Pointer<ffi.Char>;
 
-class TfLiteSignatureRunner extends ffi.Opaque {}
+final class TfLiteSignatureRunner extends ffi.Opaque {}
 
 /// Old version of `TfLiteRegistration` to maintain binary backward
 /// compatibility.
 /// WARNING: This structure is deprecated / not an official part of the API.
 /// It should be only used for binary backward compatibility.
-class TfLiteRegistration_V1 extends ffi.Struct {
+final class TfLiteRegistration_V1 extends ffi.Struct {
   external ffi.Pointer<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Void> Function(ffi.Pointer<TfLiteContext> context,
@@ -3167,7 +3174,7 @@ abstract class TfLiteCoreMlDelegateEnabledDevices {
   static const int TfLiteCoreMlDelegateAllDevices = 1;
 }
 
-class TfLiteCoreMlDelegateOptions extends ffi.Struct {
+final class TfLiteCoreMlDelegateOptions extends ffi.Struct {
   /// Only create delegate when Neural Engine is available on the device.
   @ffi.Int32()
   external int enabled_devices;
@@ -3211,7 +3218,7 @@ abstract class TFLGpuDelegateWaitType {
 
 /// Creates a new delegate instance that need to be destroyed with
 /// DeleteFlowDelegate when delegate is no longer used by tflite.
-class TFLGpuDelegateOptions extends ffi.Struct {
+final class TFLGpuDelegateOptions extends ffi.Struct {
   /// Allows to quantify tensors, downcast values, process in float16 etc.
   @ffi.Bool()
   external bool allow_precision_loss;
@@ -3224,9 +3231,9 @@ class TFLGpuDelegateOptions extends ffi.Struct {
   external bool enable_quantization;
 }
 
-class TfLiteXNNPackDelegateWeightsCache extends ffi.Opaque {}
+final class TfLiteXNNPackDelegateWeightsCache extends ffi.Opaque {}
 
-class TfLiteXNNPackDelegateOptions extends ffi.Struct {
+final class TfLiteXNNPackDelegateOptions extends ffi.Struct {
   /// Number of threads to use in the thread pool.
   /// 0 or negative value means no thread pool used.
   @ffi.Int32()
@@ -3250,57 +3257,10 @@ class TfLiteXNNPackDelegateOptions extends ffi.Struct {
   external bool handle_variable_ops;
 }
 
-/// Encapsulated compilation/runtime tradeoffs.
-abstract class TfLiteGpuInferenceUsage {
-  /// Delegate will be used only once, therefore, bootstrap/init time should
-  /// be taken into account.
-  static const int TFLITE_GPU_INFERENCE_PREFERENCE_FAST_SINGLE_ANSWER = 0;
-
-  /// Prefer maximizing the throughput. Same delegate will be used repeatedly on
-  /// multiple inputs.
-  static const int TFLITE_GPU_INFERENCE_PREFERENCE_SUSTAINED_SPEED = 1;
-}
-
-abstract class TfLiteGpuInferencePriority {
-  /// AUTO priority is needed when a single priority is the most important
-  /// factor. For example,
-  /// priority1 = MIN_LATENCY would result in the configuration that achieves
-  /// maximum performance.
-  static const int TFLITE_GPU_INFERENCE_PRIORITY_AUTO = 0;
-  static const int TFLITE_GPU_INFERENCE_PRIORITY_MAX_PRECISION = 1;
-  static const int TFLITE_GPU_INFERENCE_PRIORITY_MIN_LATENCY = 2;
-  static const int TFLITE_GPU_INFERENCE_PRIORITY_MIN_MEMORY_USAGE = 3;
-}
-
-/// Used to toggle experimental flags used in the delegate. Note that this is a
-/// bitmask, so the values should be 1, 2, 4, 8, ...etc.
-abstract class TfLiteGpuExperimentalFlags {
-  static const int TFLITE_GPU_EXPERIMENTAL_FLAGS_NONE = 0;
-
-  /// Enables inference on quantized models with the delegate.
-  /// NOTE: This is enabled in TfLiteGpuDelegateOptionsV2Default.
-  static const int TFLITE_GPU_EXPERIMENTAL_FLAGS_ENABLE_QUANT = 1;
-
-  /// Enforces execution with the provided backend.
-  static const int TFLITE_GPU_EXPERIMENTAL_FLAGS_CL_ONLY = 2;
-  static const int TFLITE_GPU_EXPERIMENTAL_FLAGS_GL_ONLY = 4;
-
-  /// Enable serialization of GPU kernels & model data. Speeds up initilization
-  /// at the cost of space on disk.
-  /// Delegate performs serialization the first time it is applied with a new
-  /// model or inference params. Later initializations are fast.
-  /// ModifyGraphWithDelegate will fail if data cannot be serialized.
-  ///
-  /// NOTE: User also needs to set serialization_dir & model_token in
-  /// TfLiteGpuDelegateOptionsV2.
-  /// Currently works only if CL backend is used.
-  static const int TFLITE_GPU_EXPERIMENTAL_FLAGS_ENABLE_SERIALIZATION = 8;
-}
-
 /// IMPORTANT: Always use TfLiteGpuDelegateOptionsV2Default() method to create
 /// new instance of TfLiteGpuDelegateOptionsV2, otherwise every new added option
 /// may break inference.
-class TfLiteGpuDelegateOptionsV2 extends ffi.Struct {
+final class TfLiteGpuDelegateOptionsV2 extends ffi.Struct {
   /// When set to zero, computations are carried out in maximal possible
   /// precision. Otherwise, the GPU may quantify tensors, downcast values,
   /// process in FP16 to increase performance. For most models precision loss is
@@ -3369,6 +3329,53 @@ class TfLiteGpuDelegateOptionsV2 extends ffi.Struct {
   /// Set to nullptr in TfLiteGpuDelegateOptionsV2Default(), which implies the
   /// delegate will not try serialization.
   external ffi.Pointer<ffi.Char> model_token;
+}
+
+/// Encapsulated compilation/runtime tradeoffs.
+abstract class TfLiteGpuInferenceUsage {
+  /// Delegate will be used only once, therefore, bootstrap/init time should
+  /// be taken into account.
+  static const int TFLITE_GPU_INFERENCE_PREFERENCE_FAST_SINGLE_ANSWER = 0;
+
+  /// Prefer maximizing the throughput. Same delegate will be used repeatedly on
+  /// multiple inputs.
+  static const int TFLITE_GPU_INFERENCE_PREFERENCE_SUSTAINED_SPEED = 1;
+}
+
+abstract class TfLiteGpuInferencePriority {
+  /// AUTO priority is needed when a single priority is the most important
+  /// factor. For example,
+  /// priority1 = MIN_LATENCY would result in the configuration that achieves
+  /// maximum performance.
+  static const int TFLITE_GPU_INFERENCE_PRIORITY_AUTO = 0;
+  static const int TFLITE_GPU_INFERENCE_PRIORITY_MAX_PRECISION = 1;
+  static const int TFLITE_GPU_INFERENCE_PRIORITY_MIN_LATENCY = 2;
+  static const int TFLITE_GPU_INFERENCE_PRIORITY_MIN_MEMORY_USAGE = 3;
+}
+
+/// Used to toggle experimental flags used in the delegate. Note that this is a
+/// bitmask, so the values should be 1, 2, 4, 8, ...etc.
+abstract class TfLiteGpuExperimentalFlags {
+  static const int TFLITE_GPU_EXPERIMENTAL_FLAGS_NONE = 0;
+
+  /// Enables inference on quantized models with the delegate.
+  /// NOTE: This is enabled in TfLiteGpuDelegateOptionsV2Default.
+  static const int TFLITE_GPU_EXPERIMENTAL_FLAGS_ENABLE_QUANT = 1;
+
+  /// Enforces execution with the provided backend.
+  static const int TFLITE_GPU_EXPERIMENTAL_FLAGS_CL_ONLY = 2;
+  static const int TFLITE_GPU_EXPERIMENTAL_FLAGS_GL_ONLY = 4;
+
+  /// Enable serialization of GPU kernels & model data. Speeds up initilization
+  /// at the cost of space on disk.
+  /// Delegate performs serialization the first time it is applied with a new
+  /// model or inference params. Later initializations are fast.
+  /// ModifyGraphWithDelegate will fail if data cannot be serialized.
+  ///
+  /// NOTE: User also needs to set serialization_dir & model_token in
+  /// TfLiteGpuDelegateOptionsV2.
+  /// Currently works only if CL backend is used.
+  static const int TFLITE_GPU_EXPERIMENTAL_FLAGS_ENABLE_SERIALIZATION = 8;
 }
 
 const int TFLITE_XNNPACK_DELEGATE_FLAG_QS8 = 1;

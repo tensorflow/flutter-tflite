@@ -32,11 +32,11 @@ dependencies:
   ffi: ^2.0.1
 
 dev_dependencies:
-  ffigen: ^7.2.11
-  flutter_lints: ^2.0.1
+  ffigen: ^10.0.0
+  flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
-  melos: ^3.1.0
+  melos: ^6.1.0
   test: ^1.6.4
 
 # For information on the generic Dart part of this file, see the
