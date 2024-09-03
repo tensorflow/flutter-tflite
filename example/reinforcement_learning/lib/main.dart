@@ -28,7 +28,7 @@ class PlaneStrike extends StatefulWidget {
 
   // This widget is the root of your application.
   @override
-  _PlaneStrikeState createState() => _PlaneStrikeState();
+  State<PlaneStrike> createState() => _PlaneStrikeState();
 }
 
 class _PlaneStrikeState extends State<PlaneStrike> {
