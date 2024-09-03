@@ -1,3 +1,6 @@
+## 0.11.0 (September 3, 2024)
+* FFI update, Dart/Flutter version updates
+
 ## 0.10.2 (September 27, 2023)
 * MacOS desktop support added!
 * Additional samples added
