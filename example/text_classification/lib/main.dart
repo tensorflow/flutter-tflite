@@ -16,11 +16,13 @@
 import 'package:flutter/material.dart';
 import 'package:tflite_flutter_plugin_example/classifier.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -90,7 +92,7 @@ class _MyAppState extends State<MyApp> {
                                       "Input: $text",
                                       style: const TextStyle(fontSize: 16),
                                     ),
-                                    Text("Output:"),
+                                    const Text("Output:"),
                                     Text("   Positive: ${prediction[1]}"),
                                     Text("   Negative: ${prediction[0]}"),
                                   ],

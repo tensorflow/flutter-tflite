@@ -1,12 +1,12 @@
 name: super_resolution_esrgan
 description: Super resolution example using esrgan.
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.0 <4.0.0'
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -26,11 +26,11 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-    - assets/esrgan/
+    - assets/models/
     - assets/lr/
 
 flutter_launcher_icons:
-  image_path: 'assets/images/logo.png'
-  android: 'ic_launcher'
+  image_path: "assets/images/logo.png"
+  android: "ic_launcher"
   ios: true
   remove_alpha_ios: true

@@ -19,12 +19,27 @@ import 'dart:isolate';
 
 import 'package:tflite_flutter/tflite_flutter.dart';
 
+/// `IsolateInterpreter` allows for the execution of TensorFlow models within an isolate.
 class IsolateInterpreter {
-  IsolateInterpreter({
+  // Private constructor for the interpreter.
+  IsolateInterpreter._({
     required this.address,
-    this.debugName = 'TfLiteInterpreterIsolate',
-  }) {
-    _init();
+    required this.debugName,
+  });
+
+  // Factory method to create an instance of the IsolateInterpreter.
+  static Future<IsolateInterpreter> create({
+    required int address,
+    String debugName = 'TfLiteInterpreterIsolate',
+  }) async {
+    final interpreter = IsolateInterpreter._(
+      address: address,
+      debugName: debugName,
+    );
+
+    await interpreter._init(); // Initialize the instance.
+
+    return interpreter;
   }
 
   final int address;
@@ -34,12 +49,15 @@ class IsolateInterpreter {
   late final SendPort _sendPort;
   late final Isolate _isolate;
 
+  // Controller to handle state changes.
   final StreamController<IsolateInterpreterState> _stateChanges =
       StreamController.broadcast();
   late final StreamSubscription _stateSubscription;
   Stream<IsolateInterpreterState> get stateChanges => _stateChanges.stream;
   IsolateInterpreterState __state = IsolateInterpreterState.idle;
   IsolateInterpreterState get state => __state;
+
+  // Setter to handle state changes.
   set _state(IsolateInterpreterState value) {
     __state = value;
     if (!_stateChanges.isClosed) {
@@ -47,24 +65,30 @@ class IsolateInterpreter {
     }
   }
 
+  // Initialize the isolate and set up communication.
   Future<void> _init() async {
     _isolate = await Isolate.spawn(
       _mainIsolate,
       _receivePort.sendPort,
       debugName: debugName,
     );
+    final Completer<SendPort> sendPortCompleter = Completer<SendPort>();
 
     _stateSubscription = _receivePort.listen((state) {
       if (state is SendPort) {
         _sendPort = state;
+        sendPortCompleter.complete(_sendPort);
       }
 
       if (state is IsolateInterpreterState) {
         _state = state;
       }
     });
+
+    await sendPortCompleter.future;
   }
 
+  // Main function for the spawned isolate.
   static Future<void> _mainIsolate(SendPort sendPort) async {
     final port = ReceivePort();
 
@@ -78,7 +102,7 @@ class IsolateInterpreter {
     }
   }
 
-  /// Run for single input and output
+  /// Run TensorFlow model for single input and output.
   Future<void> run(Object input, Object output) {
     var map = <int, Object>{};
     map[0] = output;
@@ -86,7 +110,7 @@ class IsolateInterpreter {
     return runForMultipleInputs([input], map);
   }
 
-  /// Run for multiple inputs and outputs
+  /// Run TensorFlow model for multiple inputs and outputs.
   Future<void> runForMultipleInputs(
     List<Object> inputs,
     Map<int, Object> outputs,
@@ -109,6 +133,7 @@ class IsolateInterpreter {
     }
   }
 
+  // Wait for the state to change to idle.
   Future<void> _wait() async {
     if (state == IsolateInterpreterState.loading) {
       await for (final state in stateChanges) {
@@ -117,6 +142,7 @@ class IsolateInterpreter {
     }
   }
 
+  // Close resources and terminate the isolate.
   Future<void> close() async {
     await _stateSubscription.cancel();
     await _stateChanges.close();
@@ -124,11 +150,13 @@ class IsolateInterpreter {
   }
 }
 
+// Represents the state of the IsolateInterpreter.
 enum IsolateInterpreterState {
   idle,
   loading,
 }
 
+// Helper class to encapsulate data for the isolate.
 class _IsolateInterpreterData {
   _IsolateInterpreterData({
     required this.address,

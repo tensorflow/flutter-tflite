@@ -1,11 +1,11 @@
 name: tflite_flutter_plugin_example
 description: Demonstrates how to use the tflite_flutter_plugin plugin.
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.0 <4.0.0'
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -25,6 +25,7 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
+  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -39,6 +40,7 @@ flutter:
   assets:
     - assets/
     - assets/test/
+    - assets/models/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

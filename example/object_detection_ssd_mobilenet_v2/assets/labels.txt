@@ -1,0 +1,8 @@
+french_fries
+sausage
+grilled_chicken
+fish
+scrambled_egg
+pasta
+lettuce
+cantaloupe

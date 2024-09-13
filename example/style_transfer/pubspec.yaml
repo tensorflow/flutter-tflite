@@ -1,18 +1,18 @@
 name: style_transfer
 description: A new Flutter project.
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.0 <4.0.0'
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   image: ^4.0.17
-  image_picker: ^0.8.7+5
+  image_picker: ^0.8.8
   tflite_flutter:
     path: ../../
 
@@ -27,11 +27,11 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-    - assets/magenta/
+    - assets/models/
     - assets/styles/
-    
+
 flutter_launcher_icons:
-  image_path: 'assets/images/logo.png'
-  android: 'ic_launcher'
+  image_path: "assets/images/logo.png"
+  android: "ic_launcher"
   ios: true
   remove_alpha_ios: true

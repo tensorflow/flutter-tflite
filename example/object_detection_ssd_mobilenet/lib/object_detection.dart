@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023 The TensorFlow Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *             http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/services.dart';
@@ -5,9 +20,8 @@ import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart';
 
 class ObjectDetection {
-  static const String _modelPath =
-      'assets/model/lite-model_ssd_mobilenet_v1_1_metadata_2.tflite';
-  static const String _labelPath = 'assets/model/lite-labelmap.txt';
+  static const String _modelPath = 'assets/models/ssd_mobilenet.tflite';
+  static const String _labelPath = 'assets/models/labelmap.txt';
 
   Interpreter? _interpreter;
   List<String>? _labels;

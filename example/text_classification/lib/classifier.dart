@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import 'package:flutter/foundation.dart';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -22,8 +23,8 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 
 class Classifier {
   // name of the model file
-  final _modelFile = 'assets/text_classification.tflite';
-  final _vocabFile = 'assets/text_classification_vocab.txt';
+  final _modelFile = 'assets/models/text_classification.tflite';
+  final _vocabFile = 'assets/models/vocab';
 
   // Maximum length of sentence
   final int _sentenceLen = 256;
@@ -63,7 +64,7 @@ class Classifier {
     // Creating the interpreter using Interpreter.fromAsset
     _interpreter = await Interpreter.fromAsset(_modelFile, options: options);
 
-    print('Interpreter loaded successfully');
+    debugPrint('Interpreter loaded successfully');
   }
 
   void _loadDictionary() async {
@@ -72,10 +73,14 @@ class Classifier {
     final vocabList = vocab.split('\n');
     for (var i = 0; i < vocabList.length; i++) {
       var entry = vocabList[i].trim().split(' ');
-      dict[entry[0]] = int.parse(entry[1]);
+      if (entry.length == 2) {
+        dict[entry[0]] = int.parse(entry[1]);
+      } else if (entry.length == 1) {
+        entry.insert(0, 'bad_char');
+      }
     }
     _dict = dict;
-    print('Dictionary loaded successfully');
+    debugPrint('Dictionary loaded successfully');
   }
 
   List<double> classify(String rawText) {

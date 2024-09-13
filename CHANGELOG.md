@@ -1,5 +1,12 @@
-##
-0.10.0 (May 22, 2023)
+## 0.11.0 (September 3, 2024)
+* FFI update, Dart/Flutter version updates
+
+## 0.10.2 (September 27, 2023)
+* MacOS desktop support added!
+* Additional samples added
+* Various bug fixes
+
+## 0.10.0 (May 22, 2023)
 * Use ffi for binding to iOS dependencies. Use the ios/tflite_flutter.podspec file to specify tensorflow lite library version. Dependencies are automatically downloaded without user intervention (no need for releases/download folder)
 * Use ffi for binding with Android dependencies. Use the android/build.gradle file to specify tensorflow lite library version. Dependencies are automatically downloaded without user intervention (no need for releases/download folder)
 * Use ffigen to generate the binding code in dart
