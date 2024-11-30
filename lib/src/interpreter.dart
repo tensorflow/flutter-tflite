@@ -210,10 +210,10 @@ class Interpreter {
       inputTensors.elementAt(i).setTo(inputs[i]);
     }
 
-    var inferenceStartNanos = DateTime.now().microsecondsSinceEpoch;
+    var inferenceStartMicros = DateTime.now().microsecondsSinceEpoch;
     invoke();
     _lastNativeInferenceDurationMicroSeconds =
-        DateTime.now().microsecondsSinceEpoch - inferenceStartNanos;
+        DateTime.now().microsecondsSinceEpoch - inferenceStartMicros;
   }
 
   /// Gets all input tensors associated with the model.
