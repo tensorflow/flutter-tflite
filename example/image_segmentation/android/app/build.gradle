@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "org.tensorflow.image_segmentation"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -45,8 +45,8 @@ android {
         applicationId "org.tensorflow.image_segmentation"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 21
-        targetSdkVersion flutter.targetSdkVersion
+        minSdkVersion 26
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -64,4 +64,17 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+        def tflite_version = "2.17.0"
+  //  implementation 'org.tensorflow:tensorflow-lite:2.16.1-nightly-SNAPSHOT'
+ //   implementation 'org.tensorflow:tensorflow-lite-select-tf-ops:1.16.1-nightly-SNAPSHOT'
+   implementation("org.tensorflow:tensorflow-lite:${tflite_version}")
+   implementation("org.tensorflow:tensorflow-lite-gpu:${tflite_version}")
+    implementation "androidx.multidex:multidex:2.0.1"
+   implementation ("org.tensorflow:tensorflow-lite-select-tf-ops:2.16.1")
+   implementation 'com.google.mediapipe:tasks-text:latest.release'
+  
+  implementation 'org.tensorflow:tensorflow-lite:0.1.100'
+    implementation 'org.tensorflow:tensorflow-lite-select-tf-ops:0.1.100'
+
+}
