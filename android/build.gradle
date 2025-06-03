@@ -19,6 +19,12 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
+                maven {  // Only for snapshot artifacts
+            name 'ossrh-snapshot'
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+        }
+        mavenLocal()
+
     }
 }
 
@@ -27,7 +33,7 @@ apply plugin: 'com.android.library'
 android {
     // Bumping the plugin compileSdkVersion requires all clients of this plugin
     // to bump the version in their app.
-    compileSdkVersion 31
+    compileSdkVersion 34
     namespace 'org.tensorflow.tflite_flutter'
 
     // Bumping the plugin ndkVersion requires all clients of this plugin to bump
@@ -55,14 +61,39 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 19
+        multiDexEnabled true
+        minSdkVersion 26
+                ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
+
+    }
+
+       buildFeatures {
+        mlModelBinding true
     }
 }
 
 
 dependencies {
-    def tflite_version = "2.11.0"
-    
-    implementation("org.tensorflow:tensorflow-lite:${tflite_version}")
-    implementation("org.tensorflow:tensorflow-lite-gpu:${tflite_version}")
+    def tflite_version = "2.17.0"
+  //  implementation 'org.tensorflow:tensorflow-lite:2.16.1-nightly-SNAPSHOT'
+ //   implementation 'org.tensorflow:tensorflow-lite-select-tf-ops:1.16.1-nightly-SNAPSHOT'
+   implementation("org.tensorflow:tensorflow-lite:${tflite_version}")
+   implementation("org.tensorflow:tensorflow-lite-gpu:${tflite_version}")
+    implementation "androidx.multidex:multidex:2.0.1"
+   implementation ("org.tensorflow:tensorflow-lite-select-tf-ops:2.16.1")
+   implementation 'com.google.mediapipe:tasks-text:latest.release'
+  
+  implementation 'org.tensorflow:tensorflow-lite:0.1.100'
+    implementation 'org.tensorflow:tensorflow-lite-select-tf-ops:0.1.100'
+
+
+  
+
+
+
+//   implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly-SNAPSHOT'
+//     // This dependency adds the necessary TF op support.
+//     implementation 'org.tensorflow:tensorflow-lite-select-tf-ops:0.0.0-nightly-SNAPSHOT'
 }
