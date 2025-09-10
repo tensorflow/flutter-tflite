@@ -39,9 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         useMaterial3: true,
       ),
-      home: const MyHomePage(
-          title:
-              'An end-to-end example of gesture classification using Flutter and TensorFlow Lite'),
+      home: const MyHomePage(title: 'An end-to-end example of gesture classification using Flutter and TensorFlow Lite'),
     );
   }
 }
@@ -64,13 +62,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   // init camera
   _initCamera() {
-    _cameraDescription = _cameras.firstWhere(
-        (element) => element.lensDirection == CameraLensDirection.front);
-    _cameraController = CameraController(
-        _cameraDescription, ResolutionPreset.high,
-        imageFormatGroup: Platform.isIOS
-            ? ImageFormatGroup.bgra8888
-            : ImageFormatGroup.yuv420);
+    _cameraDescription = _cameras.firstWhere((element) => element.lensDirection == CameraLensDirection.front);
+    _cameraController = CameraController(_cameraDescription, ResolutionPreset.high, imageFormatGroup: Platform.isIOS ? ImageFormatGroup.bgra8888 : ImageFormatGroup.yuv420);
     _cameraController!.initialize().then((value) {
       _cameraController!.startImageStream(_imageAnalysis);
       if (mounted) {
@@ -85,8 +78,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       return;
     }
     _isProcessing = true;
-    _classification =
-        await _gestureClassificationHelper.inferenceCameraFrame(cameraImage);
+    _classification = await _gestureClassificationHelper.inferenceCameraFrame(cameraImage);
     _isProcessing = false;
     if (mounted) {
       setState(() {});
@@ -116,8 +108,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         _cameraController?.stopImageStream();
         break;
       case AppLifecycleState.resumed:
-        if (_cameraController != null &&
-            !_cameraController!.value.isStreamingImages) {
+        if (_cameraController != null && !_cameraController!.value.isStreamingImages) {
           await _cameraController!.startImageStream(_imageAnalysis);
         }
         break;
@@ -166,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         title: Center(
           child: Image.asset('assets/images/tfl_logo.png'),
         ),
-        backgroundColor: Colors.black.withOpacity(0.5),
+        backgroundColor: Colors.black.withValues(alpha: 0.5),
       ),
       body: Center(
           // Center is a layout widget. It takes a single child and positions it
@@ -193,11 +184,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                             padding: const EdgeInsets.all(8),
                             color: Colors.white,
                             child: Row(
-                              children: [
-                                Text(e.key),
-                                const Spacer(),
-                                Text(e.value.toStringAsFixed(2))
-                              ],
+                              children: [Text(e.key), const Spacer(), Text(e.value.toStringAsFixed(2))],
                             ),
                           ),
                         ),

@@ -65,15 +65,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _predictNumber() async {
     // capture sketch area
-    RenderRepaintBoundary boundary =
-        _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    RenderRepaintBoundary boundary = _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     ui.Image image = await boundary.toImage();
     final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     final inputImageData = byteData?.buffer.asUint8List();
 
     final stopwatch = Stopwatch()..start();
-    final (number, confidence) =
-        await _digitClassifierHelper.runInference(inputImageData!);
+    final (number, confidence) = await _digitClassifierHelper.runInference(inputImageData!);
     stopwatch.stop();
 
     setState(() {
@@ -91,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Center(
           child: Image.asset('assets/images/tfl_logo.png'),
         ),
-        backgroundColor: Colors.black.withOpacity(0.5),
+        backgroundColor: Colors.black.withValues(alpha: 0.5),
       ),
       body: Center(
         child: Column(
@@ -107,9 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   const Spacer(),
                   const Text("Predicted number:"),
-                  if (_predictedNumber != null && _predictedConfidence != null)
-                    Text(
-                        "$_predictedNumber (${_predictedConfidence?.toStringAsFixed(3)})"),
+                  if (_predictedNumber != null && _predictedConfidence != null) Text("$_predictedNumber (${_predictedConfidence?.toStringAsFixed(3)})"),
                   const Spacer(),
                   Text("Inference Time: $_inferenceTime (ms)"),
                   Padding(
@@ -133,8 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget sketchArea() {
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
       return GestureDetector(
         onPanUpdate: (DragUpdateDetails details) {
           final width = constraints.maxWidth;

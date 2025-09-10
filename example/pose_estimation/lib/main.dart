@@ -66,14 +66,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   // init camera
   _initCamera() {
-    _cameraDescription = _cameras.firstWhere(
-        (element) => element.lensDirection == CameraLensDirection.back);
-    _cameraController = CameraController(
-        _cameraDescription, ResolutionPreset.low,
-        enableAudio: false,
-        imageFormatGroup: Platform.isIOS
-            ? ImageFormatGroup.bgra8888
-            : ImageFormatGroup.yuv420);
+    _cameraDescription = _cameras.firstWhere((element) => element.lensDirection == CameraLensDirection.back);
+    _cameraController = CameraController(_cameraDescription, ResolutionPreset.low, enableAudio: false, imageFormatGroup: Platform.isIOS ? ImageFormatGroup.bgra8888 : ImageFormatGroup.yuv420);
     _cameraController!.initialize().then((value) {
       _cameraController!.startImageStream(_imageAnalysis);
       if (mounted) {
@@ -120,8 +114,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         _cameraController?.stopImageStream();
         break;
       case AppLifecycleState.resumed:
-        if (_cameraController != null &&
-            !_cameraController!.value.isStreamingImages) {
+        if (_cameraController != null && !_cameraController!.value.isStreamingImages) {
           await _cameraController!.startImageStream(_imageAnalysis);
         }
         break;
@@ -142,8 +135,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   Widget resultWidget(context) {
     if (_cameraController == null) return Container();
 
-    final scale = MediaQuery.of(context).size.width /
-        _cameraController!.value.previewSize!.height;
+    final scale = MediaQuery.of(context).size.width / _cameraController!.value.previewSize!.height;
 
     return Stack(
       children: [
@@ -180,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         title: Center(
           child: Image.asset('assets/images/tfl_logo.png'),
         ),
-        backgroundColor: Colors.black.withOpacity(0.5),
+        backgroundColor: Colors.black.withValues(alpha: 0.5),
       ),
       body: resultWidget(context),
     );
@@ -233,19 +225,14 @@ class OverlayView extends CustomPainter {
     // draw circles
     if (_persons!.score > _minConfidence) {
       _persons?.keyPoints.forEach((element) {
-        canvas.drawCircle(
-            Offset(
-                element.coordinate.dx * _scale, element.coordinate.dy * _scale),
-            5,
-            _circlePaint);
+        canvas.drawCircle(Offset(element.coordinate.dx * _scale, element.coordinate.dy * _scale), 5, _circlePaint);
       });
       for (var index in _bodyJoints) {
         final pointA = _persons?.keyPoints[index[0].index].coordinate;
         final pointB = _persons?.keyPoints[index[1].index].coordinate;
         // drawLine
         if (pointA != null && pointB != null) {
-          canvas.drawLine(Offset(pointA.dx * _scale, pointA.dy * _scale),
-              Offset(pointB.dx * _scale, pointB.dy * _scale), _strokePaint);
+          canvas.drawLine(Offset(pointA.dx * _scale, pointA.dy * _scale), Offset(pointB.dx * _scale, pointB.dy * _scale), _strokePaint);
         }
       }
     }

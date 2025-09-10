@@ -52,16 +52,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static const platform =
-      MethodChannel('org.tensorflow.audio_classification/audio_record');
+  static const platform = MethodChannel('org.tensorflow.audio_classification/audio_record');
 
   // The YAMNet/classifier model used in this code example accepts data that
   // represent single-channel, or mono, audio clips recorded at 16kHz in 0.975
   // second clips (15600 samples).
   static const _sampleRate = 16000; // 16kHz
   static const _expectAudioLength = 975; // milliseconds
-  final int _requiredInputBuffer =
-      (16000 * (_expectAudioLength / 1000)).toInt();
+  final int _requiredInputBuffer = (16000 * (_expectAudioLength / 1000)).toInt();
   late AudioClassificationHelper _helper;
   List<MapEntry<String, double>> _classification = List.empty();
   final List<Color> _primaryProgressColorList = [
@@ -102,10 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<bool> _requestPermission() async {
     try {
-      return await platform.invokeMethod('requestPermissionAndCreateRecorder', {
-        "sampleRate": _sampleRate,
-        "requiredInputBuffer": _requiredInputBuffer
-      });
+      return await platform.invokeMethod('requestPermissionAndCreateRecorder', {"sampleRate": _sampleRate, "requiredInputBuffer": _requiredInputBuffer});
     } on Exception catch (e) {
       log("Failed to create recorder: '${e.toString()}'.");
       return false;
@@ -115,8 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<Float32List> _getAudioFloatArray() async {
     var audioFloatArray = Float32List(0);
     try {
-      final Float32List result =
-          await platform.invokeMethod('getAudioFloatArray');
+      final Float32List result = await platform.invokeMethod('getAudioFloatArray');
       audioFloatArray = result;
     } on PlatformException catch (e) {
       log("Failed to get audio array: '${e.message}'.");
@@ -160,8 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _runInference() async {
     Float32List inputArray = await _getAudioFloatArray();
-    final result =
-        await _helper.inference(inputArray.sublist(0, _requiredInputBuffer));
+    final result = await _helper.inference(inputArray.sublist(0, _requiredInputBuffer));
     setState(() {
       // take top 3 classification
       _classification = (result.entries.toList()
@@ -186,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Image.asset('assets/images/tfl_logo.png'),
-        backgroundColor: Colors.black.withOpacity(0.5),
+        backgroundColor: Colors.black.withValues(alpha: 0.5),
       ),
       body: _buildBody(),
     );
@@ -216,10 +209,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Flexible(
                   child: LinearProgressIndicator(
-                backgroundColor: _backgroundProgressColorList[
-                    index % _backgroundProgressColorList.length],
-                color: _primaryProgressColorList[
-                    index % _primaryProgressColorList.length],
+                backgroundColor: _backgroundProgressColorList[index % _backgroundProgressColorList.length],
+                color: _primaryProgressColorList[index % _primaryProgressColorList.length],
                 value: item.value,
                 minHeight: 20,
               ))

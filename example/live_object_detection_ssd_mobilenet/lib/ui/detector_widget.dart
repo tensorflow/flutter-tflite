@@ -18,8 +18,7 @@ class DetectorWidget extends StatefulWidget {
   State<DetectorWidget> createState() => _DetectorWidgetState();
 }
 
-class _DetectorWidgetState extends State<DetectorWidget>
-    with WidgetsBindingObserver {
+class _DetectorWidgetState extends State<DetectorWidget> with WidgetsBindingObserver {
   /// List of available cameras
   late List<CameraDescription> cameras;
 
@@ -114,14 +113,12 @@ class _DetectorWidgetState extends State<DetectorWidget>
       ? Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            color: Colors.white.withAlpha(150),
+            color: Colors.white.withValues(alpha: 150),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: stats!.entries
-                    .map((e) => StatsWidget(e.key, e.value))
-                    .toList(),
+                children: stats!.entries.map((e) => StatsWidget(e.key, e.value)).toList(),
               ),
             ),
           ),
@@ -133,8 +130,7 @@ class _DetectorWidgetState extends State<DetectorWidget>
     if (results == null) {
       return const SizedBox.shrink();
     }
-    return Stack(
-        children: results!.map((box) => BoxWidget(result: box)).toList());
+    return Stack(children: results!.map((box) => BoxWidget(result: box)).toList());
   }
 
   /// Callback to receive each frame [CameraImage] perform inference on it

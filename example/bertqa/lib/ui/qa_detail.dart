@@ -19,11 +19,7 @@ import 'package:bertqa/ml/qa_client.dart';
 import 'package:flutter/material.dart';
 
 class QaDetail extends StatefulWidget {
-  const QaDetail(
-      {super.key,
-      required this.title,
-      required this.content,
-      required this.questions});
+  const QaDetail({super.key, required this.title, required this.content, required this.questions});
 
   final String title;
   final String content;
@@ -66,8 +62,7 @@ class _QaDetailState extends State<QaDetail> {
     if (!trimQuestion.endsWith("?")) {
       trimQuestion += "?";
     }
-    List<QaAnswer> answers =
-        await _qaClient.runInference(trimQuestion, widget.content);
+    List<QaAnswer> answers = await _qaClient.runInference(trimQuestion, widget.content);
     // Highlight the answer here
     _highlightAnswer(answers.first);
   }
@@ -115,36 +110,15 @@ class _QaDetailState extends State<QaDetail> {
                           style: Theme.of(context).textTheme.bodyMedium,
                         )
                       : RichText(
-                          text: TextSpan(
-                              style: Theme.of(context).textTheme.bodyMedium,
-                              children: [
-                                if (_answerIndex > 0)
-                                  TextSpan(
-                                      text: widget.content
-                                          .substring(0, _answerIndex)),
-                                TextSpan(
-                                    style: TextStyle(
-                                        background: Paint()
-                                          ..color = Colors.yellow),
-                                    text: widget.content.substring(_answerIndex,
-                                        _answerIndex + _qaAnswer!.text.length)),
-                                if ((_answerIndex + _qaAnswer!.text.length) <
-                                    widget.content.length)
-                                  TextSpan(
-                                      text: widget.content.substring(
-                                          _answerIndex + _qaAnswer!.text.length,
-                                          widget.content.length))
-                              ]),
+                          text: TextSpan(style: Theme.of(context).textTheme.bodyMedium, children: [
+                            if (_answerIndex > 0) TextSpan(text: widget.content.substring(0, _answerIndex)),
+                            TextSpan(style: TextStyle(background: Paint()..color = Colors.yellow), text: widget.content.substring(_answerIndex, _answerIndex + _qaAnswer!.text.length)),
+                            if ((_answerIndex + _qaAnswer!.text.length) < widget.content.length) TextSpan(text: widget.content.substring(_answerIndex + _qaAnswer!.text.length, widget.content.length))
+                          ]),
                         ))),
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: Colors.white, boxShadow: [
-              BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: const Offset(0, 3))
-            ]),
+            decoration: BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(color: Colors.grey.withValues(alpha: 0.5), spreadRadius: 2, blurRadius: 5, offset: const Offset(0, 3))]),
             // color: Colors.white,
             child: Column(
               children: [
@@ -157,8 +131,7 @@ class _QaDetailState extends State<QaDetail> {
                     child: ListView.separated(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const Divider(
+                      separatorBuilder: (BuildContext context, int index) => const Divider(
                         indent: 16,
                       ),
                       itemCount: widget.questions.length,
@@ -175,9 +148,7 @@ class _QaDetailState extends State<QaDetail> {
                     Expanded(
                       child: TextField(
                         controller: _controller,
-                        decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: "Text query"),
+                        decoration: const InputDecoration(border: UnderlineInputBorder(), labelText: "Text query"),
                         onChanged: (text) {
                           setState(() {
                             _currentQuestion = text;
@@ -194,9 +165,7 @@ class _QaDetailState extends State<QaDetail> {
                               _answerQuestion();
                             }
                           : null,
-                      style: ElevatedButton.styleFrom(
-                          disabledBackgroundColor: Colors.grey,
-                          backgroundColor: const Color(0xFFFFA800)),
+                      style: ElevatedButton.styleFrom(disabledBackgroundColor: Colors.grey, backgroundColor: const Color(0xFFFFA800)),
                       child: const Icon(
                         Icons.east,
                         color: Colors.white,
