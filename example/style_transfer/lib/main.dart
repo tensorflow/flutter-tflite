@@ -51,10 +51,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  static const predictionModelPath =
-      'assets/models/magenta_arbitrary-image-stylization-v1-256_int8_prediction_1.tflite';
-  static const transferModelPath =
-      'assets/models/magenta_arbitrary-image-stylization-v1-256_int8_transfer_1.tflite';
+  static const predictionModelPath = 'assets/models/magenta_arbitrary-image-stylization-v1-256_int8_prediction_1.tflite';
+  static const transferModelPath = 'assets/models/magenta_arbitrary-image-stylization-v1-256_int8_transfer_1.tflite';
 
   late final Interpreter predictionInterpreter;
   late final IsolateInterpreter predictionIsolateInterpreter;
@@ -121,16 +119,14 @@ class _HomeState extends State<Home> {
       options: predictionOptions,
     );
 
-    predictionIsolateInterpreter =
-        await IsolateInterpreter.create(address: predictionInterpreter.address);
+    predictionIsolateInterpreter = await IsolateInterpreter.create(address: predictionInterpreter.address);
 
     transferInterpreter = await Interpreter.fromAsset(
       transferModelPath,
       options: transferOptions,
     );
 
-    transferIsolateInterpreter =
-        await IsolateInterpreter.create(address: transferInterpreter.address);
+    transferIsolateInterpreter = await IsolateInterpreter.create(address: transferInterpreter.address);
 
     setState(() {});
 
@@ -278,8 +274,7 @@ class _HomeState extends State<Home> {
       );
 
       // Encode image in jpeg format
-      img.Image resized =
-          img.copyResize(image, width: widthOrg, height: heightOrg);
+      img.Image resized = img.copyResize(image, width: widthOrg, height: heightOrg);
       imageResult = img.encodeJpg(resized);
 
       setState(() {});
@@ -291,7 +286,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Image.asset('assets/images/tfl_logo.png'),
-        backgroundColor: Colors.black.withOpacity(0.5),
+        backgroundColor: Colors.black.withValues(alpha: 0.5),
       ),
       body: SafeArea(
         child: Center(
@@ -310,9 +305,7 @@ class _HomeState extends State<Home> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(24),
-                                child: imageResult != null
-                                    ? Image.memory(imageResult!)
-                                    : Image.file(File(imagePath!)),
+                                child: imageResult != null ? Image.memory(imageResult!) : Image.file(File(imagePath!)),
                               ),
                               if (stylePath != null)
                                 Positioned(

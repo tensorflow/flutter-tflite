@@ -41,12 +41,10 @@ class BottomNavigationBarExample extends StatefulWidget {
   const BottomNavigationBarExample({super.key});
 
   @override
-  State<BottomNavigationBarExample> createState() =>
-      _BottomNavigationBarExampleState();
+  State<BottomNavigationBarExample> createState() => _BottomNavigationBarExampleState();
 }
 
-class _BottomNavigationBarExampleState
-    extends State<BottomNavigationBarExample> {
+class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample> {
   late CameraDescription cameraDescription;
   int _selectedIndex = 0;
   List<Widget>? _widgetOptions;
@@ -88,7 +86,7 @@ class _BottomNavigationBarExampleState
     return Scaffold(
       appBar: AppBar(
         title: Image.asset('assets/images/tfl_logo.png'),
-        backgroundColor: Colors.black.withOpacity(0.5),
+        backgroundColor: Colors.black.withValues(alpha: 0.5),
       ),
       body: Center(
         child: _widgetOptions?.elementAt(_selectedIndex),
