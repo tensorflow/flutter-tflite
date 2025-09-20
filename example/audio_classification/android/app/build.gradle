@@ -53,6 +53,13 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        // Support for 16KB page sizes on Android 15+
+        ndk {
+            // Enable 16KB page size support
+            cppFlags += ["-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"]
+            ldFlags += ["-Wl,-z,max-page-size=16384"]
+        }
     }
 
     buildTypes {
