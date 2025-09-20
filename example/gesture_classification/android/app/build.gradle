@@ -45,17 +45,11 @@ android {
         applicationId "org.tensorflow.gesture_classification"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 21
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 
-        // Support for 16KB page sizes on Android 15+
-        ndk {
-            // Enable 16KB page size support
-            cppFlags += ["-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"]
-            ldFlags += ["-Wl,-z,max-page-size=16384"]
-        }
     }
 
     buildTypes {
