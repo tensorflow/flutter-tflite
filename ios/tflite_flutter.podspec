@@ -22,7 +22,7 @@ TensorFlow Lite plugin for Flutter apps.
   
   s.dependency 'Flutter'
   
-  tflite_version = '2.16.1'
+  tflite_version = '2.12.0'
   s.dependency 'TensorFlowLiteSwift', tflite_version
   s.dependency 'TensorFlowLiteSwift/Metal', tflite_version
   s.dependency 'TensorFlowLiteSwift/CoreML', tflite_version
