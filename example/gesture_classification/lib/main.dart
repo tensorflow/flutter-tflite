@@ -166,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         title: Center(
           child: Image.asset('assets/images/tfl_logo.png'),
         ),
-        backgroundColor: Colors.black.withOpacity(0.5),
+        backgroundColor: Colors.black.withValues(alpha: 0.5),
       ),
       body: Center(
           // Center is a layout widget. It takes a single child and positions it
