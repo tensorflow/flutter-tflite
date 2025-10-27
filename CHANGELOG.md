@@ -1,3 +1,12 @@
+## 0.12.0 (October 27, 2025)
+* Android 16KB page size support for Google Play 2025 compliance
+* Updated Android Gradle Plugin to 8.6.1
+* Updated Compile SDK to 36 (Android 15+)
+* Modernized Gradle build system with plugins DSL
+* Updated Kotlin to 1.8.10
+* Fixed deprecated withOpacity warnings across examples
+* All 14 example projects verified working
+
 ## 0.11.0 (September 3, 2024)
 * FFI update, Dart/Flutter version updates
 
