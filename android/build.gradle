@@ -11,7 +11,7 @@ buildscript {
 
     dependencies {
         // The Android Gradle Plugin knows how to build native code with the NDK.
-        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath 'com.android.tools.build:gradle:8.6.1'
     }
 }
 
@@ -27,12 +27,13 @@ apply plugin: 'com.android.library'
 android {
     // Bumping the plugin compileSdkVersion requires all clients of this plugin
     // to bump the version in their app.
-    compileSdkVersion 31
+    compileSdkVersion 36
     namespace 'org.tensorflow.tflite_flutter'
 
     // Bumping the plugin ndkVersion requires all clients of this plugin to bump
     // the version in their app and to download a newer version of the NDK.
-    // ndkVersion "23.1.7779620"
+    // Use NDK r27 or higher for 16KB page size support
+    // ndkVersion "28.0.12433566"
 
     // Invoke the shared CMake build with the Android Gradle Plugin.
     externalNativeBuild {
@@ -56,13 +57,14 @@ android {
 
     defaultConfig {
         minSdkVersion 19
+
     }
 }
 
 
 dependencies {
-    def litert_version = "1.4.0"
-    
-    implementation("com.google.ai.edge.litert:litert:${litert_version}")
-    implementation("com.google.ai.edge.litert:litert-gpu:${litert_version}")
+    def tflite_version = "2.12.0"
+
+    implementation("org.tensorflow:tensorflow-lite:${tflite_version}")
+    implementation("org.tensorflow:tensorflow-lite-gpu:${tflite_version}")
 }
