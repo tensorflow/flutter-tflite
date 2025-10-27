@@ -226,7 +226,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     // parse color from label color
                     color: Color(ImageSegmentationHelper
                             .labelColors[_labelsIndex![index]])
-                        .withOpacity(0.5),
+                        .withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
@@ -251,7 +251,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         title: Center(
           child: Image.asset('assets/images/tfl_logo.png'),
         ),
-        backgroundColor: Colors.black.withOpacity(0.5),
+        backgroundColor: Colors.black.withValues(alpha: 0.5),
       ),
       body: cameraWidget(context),
     );
