@@ -1,5 +1,12 @@
+## 0.12.1 (October 28, 2025)
+* **CRITICAL FIX**: Properly implement Android 16KB page size support
+* Migrated from TensorFlow Lite 2.12.0 to Google AI Edge LiteRT 1.4.0
+* LiteRT provides native libraries with 16KB page alignment required by Google Play
+* Added verification script (scripts/verify_16kb.sh) to check page size alignment
+* Note: Version 0.12.0 claimed 16KB support but used TensorFlow Lite 2.12.0 (incompatible)
+
 ## 0.12.0 (October 27, 2025)
-* Android 16KB page size support for Google Play 2025 compliance
+* Android 16KB page size support attempted (incomplete - fixed in 0.12.1)
 * Updated Android Gradle Plugin to 8.6.1
 * Updated Compile SDK to 36 (Android 15+)
 * Modernized Gradle build system with plugins DSL
