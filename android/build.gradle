@@ -12,6 +12,7 @@ buildscript {
     dependencies {
         // The Android Gradle Plugin knows how to build native code with the NDK.
         classpath 'com.android.tools.build:gradle:8.6.1'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20'
     }
 }
 
@@ -23,6 +24,7 @@ rootProject.allprojects {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     // Bumping the plugin compileSdkVersion requires all clients of this plugin
@@ -55,6 +57,10 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
 
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+
     defaultConfig {
         minSdkVersion 19
 
@@ -65,6 +71,7 @@ android {
 dependencies {
     def litert_version = "1.4.0"
 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.20"
     implementation("com.google.ai.edge.litert:litert:${litert_version}")
     implementation("com.google.ai.edge.litert:litert-gpu:${litert_version}")
 }

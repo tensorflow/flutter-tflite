@@ -1,3 +1,7 @@
+## 0.12.2 (June 5, 2026)
+* **CRITICAL FIX**: Flutter kotlin capability issue fixed
+* Flutter `3.44.0` Android support added
+
 ## 0.12.1 (October 28, 2025)
 * **CRITICAL FIX**: Properly implement Android 16KB page size support
 * Migrated from TensorFlow Lite 2.12.0 to Google AI Edge LiteRT 1.4.0

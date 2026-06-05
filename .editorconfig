@@ -1,0 +1,3 @@
+[*.md]
+indent_style = space
+markdown_list_style = asterisk
