@@ -1,6 +1,8 @@
-## 0.12.2 (June 5, 2026)
-* **CRITICAL FIX**: Flutter kotlin capability issue fixed
-* Flutter `3.44.0` Android support added
+## 0.12.2 (June 6, 2026)
+- **Critical**: Resolved Flutter Kotlin capability issues causing build failures.
+- **Critical**: Added full Swift Package Manager (SPM) support for iOS/macOS plugins.
+- Verified support for Flutter `3.44.0` across Android and iOS.
+
 
 ## 0.12.1 (October 28, 2025)
 * **CRITICAL FIX**: Properly implement Android 16KB page size support
