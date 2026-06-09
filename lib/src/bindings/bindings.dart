@@ -29,8 +29,22 @@ final DynamicLibrary _dylib = () {
   }
 
   if (Platform.isMacOS) {
-    return DynamicLibrary.open(
-        '${Directory(Platform.resolvedExecutable).parent.parent.path}/resources/libtensorflowlite_c-mac.dylib');
+    // When linked via SPM (binaryTarget xcframework), the dynamic framework is
+    // loaded by dyld at launch and its symbols are resolvable via process().
+    // When linked via CocoaPods (vendored .dylib), the library is NOT in the
+    // dyld image list at startup, so we must open it by its bundled path.
+    // Try process() first (SPM); fall back to the CocoaPods .dylib path.
+    try {
+      final lib = DynamicLibrary.process();
+      // Probe for a known TFLite symbol to confirm it was actually linked in.
+      lib.lookup('TfLiteModelCreate');
+      return lib;
+    } catch (_) {
+      // CocoaPods path: Flutter embeds the .dylib at
+      // <app>.app/Contents/resources/libtensorflowlite_c-mac.dylib
+      return DynamicLibrary.open(
+          '${Directory(Platform.resolvedExecutable).parent.parent.path}/resources/libtensorflowlite_c-mac.dylib');
+    }
   }
 
   if (Platform.isLinux) {

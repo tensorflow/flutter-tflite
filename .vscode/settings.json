@@ -3,10 +3,14 @@
     "cSpell.words": [
         "ARCHS",
         "argmax",
+        "codesign",
+        "dlsym",
+        "dyld",
         "esrgan",
         "ffigen",
         "initialising",
         "iphonesimulator",
+        "kewlbear",
         "libtensorflowlite",
         "logit",
         "logits",
@@ -17,6 +21,7 @@
         "Relu",
         "Rfft",
         "Rsqrt",
+        "RTLD",
         "Schyler",
         "Softmax",
         "statefulness",
@@ -24,6 +29,7 @@
         "Svdf",
         "tflite",
         "TFLM",
-        "xcconfig"
+        "xcconfig",
+        "xcframework"
     ]
 }
