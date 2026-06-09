@@ -1,6 +1,4 @@
 // swift-tools-version: 5.9
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
 import PackageDescription
 
 let package = Package(
@@ -9,21 +7,19 @@ let package = Package(
         .macOS("10.11"),
     ],
     products: [
-        .library(
-            name: "tflite_flutter",
-            targets: ["tflite_flutter"]
-        ),
-        .library(
-            name: "tflite-flutter",
-            targets: ["tflite_flutter"]
-        ),
+        .library(name: "tflite_flutter",  targets: ["tflite_flutter"]),
+        .library(name: "tflite-flutter",  targets: ["tflite_flutter"]),
     ],
-    dependencies: [],
     targets: [
+        .binaryTarget(
+            name: "TensorFlowLiteC",
+            path: "TensorFlowLiteCMac.xcframework"
+        ),
         .target(
             name: "tflite_flutter",
-            path: "Sources", 
-            resources: []
+            dependencies: ["TensorFlowLiteC"],
+            path: "Sources",
+            publicHeadersPath: "."
         ),
     ]
 )
