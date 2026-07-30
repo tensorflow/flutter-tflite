@@ -1,4 +1,7 @@
-## 0.12.2 (June 6, 2026)
+## 0.12.4 (July 30, 2026)
+- **Critical**: Resolved Flutter Kotlin Gradle Plugin (KGP) deprecated warning.
+
+## 0.12.3 (June 6, 2026)
 - **Critical**: Resolved Flutter Kotlin capability issues causing build failures.
 - **Critical**: Added full Swift Package Manager (SPM) support for iOS/macOS plugins.
 - Verified support for Flutter `3.44.0` across Android and iOS.
