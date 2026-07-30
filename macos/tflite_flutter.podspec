@@ -15,7 +15,7 @@ A new Flutter plugin project.
 
   s.source           = { :path => '.' }
   #s.source           = { :http => 'https://github.com/CaptainDario/DaKanji-Dependencies/releases/download/v3.0.0/libtensorflowlite_c-mac.dylib.zip' }
-  s.source_files     = 'Classes/**/*'
+    s.source_files     = 'tflite_flutter/Sources/**/*'
   s.dependency 'FlutterMacOS'
 
   s.platform = :osx, '10.11'
