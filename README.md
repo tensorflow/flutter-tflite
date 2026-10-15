@@ -9,11 +9,11 @@
      <img src="https://img.shields.io/badge/Platform-Flutter-02569B?logo=flutter"
        alt="Platform" />
    </a>
-   <a href="https://pub.dartlang.org/packages/tflite_flutter">
-     <img src="https://img.shields.io/pub/v/tflite_flutter.svg"
+   <a href="https://pub.dev/packages/tflite_core">
+     <img src="https://img.shields.io/pub/v/tflite_core.svg"
        alt="Pub Package" />
    </a>
-    <a href="https://pub.dev/documentation/tflite_flutter/latest/tflite_flutter/tflite_flutter-library.html">
+    <a href="https://pub.dev/documentation/tflite_core/latest/tflite_flutter/tflite_flutter-library.html">
         <img alt="Docs" src="https://readthedocs.org/projects/hubdb/badge/?version=latest">
     </a>
     <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"></a>
@@ -135,14 +135,14 @@ The helper library has been deprecated. New development underway for a replaceme
 ## Import
 
 ```dart
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_core/tflite_flutter.dart';
 ```
 
 ## Usage instructions
 
 ### Import the libraries
 
-In the dependency section of `pubspec.yaml` file, add `tflite_flutter: ^0.10.1` (adjust the version accordingly based on the latest release)
+In the dependency section of `pubspec.yaml` file, add `tflite_core: ^0.12.5` (adjust the version accordingly based on the latest release)
 
 ### Creating the Interpreter
 
