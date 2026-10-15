@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   image: ^4.0.17
-  tflite_flutter:
+  tflite_core:
     path: ../../
 
 dev_dependencies:

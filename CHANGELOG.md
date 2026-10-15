@@ -1,3 +1,6 @@
+## 0.12.7 (October 16, 2026)
+- Example references updated.
+
 ## 0.12.6 (October 15, 2026)
 - Package documentation updated.
 

@@ -6,7 +6,7 @@
 
 ## Overview
 
-This basic Text Classification app demonstrates the usage of tflite_flutter_plugin.
+This basic Text Classification app demonstrates the usage of tflite_core.
 
 ![DEMO GIF](demo.gif)
 

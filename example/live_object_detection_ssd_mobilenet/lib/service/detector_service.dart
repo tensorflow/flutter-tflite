@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:image/image.dart' as image_lib;
 import 'package:live_object_detection_ssd_mobilenet/models/recognition.dart';
 import 'package:live_object_detection_ssd_mobilenet/utils/image_utils.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_core/tflite_flutter.dart';
 
 ///////////////////////////////////////////////////////////////////////////////
 // **WARNING:** This is not production code and is only intended to be used for

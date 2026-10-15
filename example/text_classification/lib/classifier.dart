@@ -19,7 +19,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 // Import tflite_flutter
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_core/tflite_flutter.dart';
 
 class Classifier {
   // name of the model file

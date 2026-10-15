@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  tflite_flutter:
+  tflite_core:
     path: ../../
   image: ^4.0.17
   camera: ^0.10.5+2

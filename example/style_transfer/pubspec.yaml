@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
   image: ^4.0.17
   image_picker: ^0.8.8
-  tflite_flutter:
+  tflite_core:
     path: ../../
 
 dev_dependencies:

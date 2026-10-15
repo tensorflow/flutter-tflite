@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_core/tflite_flutter.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -75,29 +75,15 @@ void main() {
       const numIntents = 11;
       const numEntities = 15;
 
-      final input = [
-        List.filled(maxLen, 0)
-      ];
-      final intentOut = List.filled(numIntents, 0.0).reshape([
-        1,
-        numIntents
-      ]);
-      final entityOut = List.filled(maxLen * numEntities, 0.0).reshape([
-        1,
-        maxLen,
-        numEntities
-      ]);
+      final input = [List.filled(maxLen, 0)];
+      final intentOut = List.filled(numIntents, 0.0).reshape([1, numIntents]);
+      final entityOut = List.filled(maxLen * numEntities, 0.0).reshape([1, maxLen, numEntities]);
 
       Object? error;
       try {
         interpreter.runForMultipleInputs(
-          [
-            input
-          ],
-          {
-            0: intentOut,
-            1: entityOut
-          },
+          [input],
+          {0: intentOut, 1: entityOut},
         );
       } catch (e) {
         error = e;

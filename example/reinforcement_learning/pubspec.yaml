@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  tflite_flutter:
+  tflite_core:
     path: ../../
   path_provider: ^2.0.1
   # The following adds the Cupertino Icons font to your application.

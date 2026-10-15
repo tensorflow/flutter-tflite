@@ -1,6 +1,6 @@
 ## How to use this Integration Test
 
-- Install the  package `tflite_flutter: ^0.12.3`,
+- Install the package `tflite_core: ^0.12.6`,
 - First copy this `integration_test` folder into flutter project root.
 
 - Run this command into your project ROOT (iOS/MacOS)

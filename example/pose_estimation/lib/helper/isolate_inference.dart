@@ -20,7 +20,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:image/image.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_core/tflite_flutter.dart';
 
 import '../image_utils.dart';
 import '../models/body_part.dart';

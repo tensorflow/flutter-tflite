@@ -19,7 +19,7 @@ import 'dart:isolate';
 import 'package:camera/camera.dart';
 import 'package:image/image.dart' as image_lib;
 import 'package:gesture_classification/image_utils.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_core/tflite_flutter.dart';
 
 class IsolateInference {
   static const String _debugName = "TFLITE_INFERENCE";
