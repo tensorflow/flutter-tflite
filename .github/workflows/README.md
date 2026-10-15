@@ -8,12 +8,13 @@
 
 The `publish.yml` workflow publishes `tflite_core` when a `v<version>` tag is pushed. It checks that the tag matches the package version, runs formatting, analysis, tests, and a pub.dev dry run, then publishes using GitHub Actions OIDC trusted publishing. No pub.dev token is stored in GitHub secrets.
 
-Before using the workflow:
+Before using the workflow for releases:
 
-1. Set up and verify the `kmmhanan.com` publisher on pub.dev, and make sure your account is a publisher admin.
-2. Publish the first `tflite_core` version manually while signed into pub.dev, associating it with the `kmmhanan.com` publisher.
-3. Open `https://pub.dev/packages/tflite_core/admin`, find **Automated publishing**, and enable publishing from GitHub Actions. Use repository `kmmhanan/tflite-core` and tag pattern `v{{version}}`.
-4. Update the package version and changelog, then push a matching version tag. For example, with `version: 0.12.5` in `pubspec.yaml`, push `v0.12.5`.
+1. Set up and verify the `kmmhanan.com` publisher on pub.dev.
+2. Publish the first `tflite_core` version manually from a signed-in user account with `flutter pub publish`. Pub does not currently allow the first version of a new package to be published directly to a verified publisher.
+3. Transfer the package from your user account to the `kmmhanan.com` publisher in the package's pub.dev admin page. This transfer is irreversible.
+4. Enable GitHub Actions automated publishing from the package's **Admin** page. Use repository `kmmhanan/tflite-core` and tag pattern `v{{version}}`.
+5. For later versions, update the package version and changelog, then push a matching version tag. For example, with `version: 0.12.6` in `pubspec.yaml`, push `v0.12.6`.
 
 The GitHub repository and tag pattern are configured on pub.dev; no workflow filename, GitHub secret, pub.dev API key, or GitHub environment is required for this workflow. See the [pub.dev automated publishing guide](https://dart.dev/tools/pub/automated-publishing).
 
