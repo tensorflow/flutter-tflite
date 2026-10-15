@@ -35,6 +35,8 @@ jobs:
           cache-key: flutter-:os:-:channel:-:version:-:arch:-
 
       - uses: dart-lang/setup-dart@23b5a66dd43e5c8366051dd2dde53e89fa2ef1ea
+        with:
+          problem-matcher: false
 
       - name: Install dependencies
         run: flutter pub get
