@@ -17,8 +17,8 @@ import 'dart:ffi';
 
 import 'package:ffi/ffi.dart';
 import 'package:quiver/check.dart';
-import 'package:tflite_flutter/src/bindings/bindings.dart';
-import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
+import 'package:tflite_core/src/bindings/bindings.dart';
+import 'package:tflite_core/src/bindings/tensorflow_lite_bindings_generated.dart';
 
 import '../delegate.dart';
 
@@ -38,8 +38,7 @@ class XNNPackDelegate implements Delegate {
         tfliteBinding.TfLiteXNNPackDelegateCreate(nullptr),
       );
     }
-    return XNNPackDelegate._(
-        tfliteBinding.TfLiteXNNPackDelegateCreate(options.base));
+    return XNNPackDelegate._(tfliteBinding.TfLiteXNNPackDelegateCreate(options.base));
   }
 
   @override

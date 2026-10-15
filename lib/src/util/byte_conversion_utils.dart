@@ -18,7 +18,7 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:typed_data';
 
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_core/tflite_flutter.dart';
 
 class ByteConversionError extends ArgumentError {
   ByteConversionError({
@@ -158,21 +158,14 @@ class ByteConversionUtils {
     List<String> decodedStrings = [];
 
     /// get the first 32bit int representing num of strings
-    int numStrings = ByteData.view(bytes.sublist(0, sizeOf<Int32>()).buffer)
-        .getInt32(0, Endian.little);
+    int numStrings = ByteData.view(bytes.sublist(0, sizeOf<Int32>()).buffer).getInt32(0, Endian.little);
 
     /// parse subsequent string position and sizes
     for (int s = 0; s < numStrings; s++) {
       // get current str index
-      int startIdx = ByteData.view(bytes
-              .sublist((1 + s) * sizeOf<Int32>(), (2 + s) * sizeOf<Int32>())
-              .buffer)
-          .getInt32(0, Endian.little);
+      int startIdx = ByteData.view(bytes.sublist((1 + s) * sizeOf<Int32>(), (2 + s) * sizeOf<Int32>()).buffer).getInt32(0, Endian.little);
       // get next str index, or in last case the ending byte position
-      int endIdx = ByteData.view(bytes
-              .sublist((2 + s) * sizeOf<Int32>(), (3 + s) * sizeOf<Int32>())
-              .buffer)
-          .getInt32(0, Endian.little);
+      int endIdx = ByteData.view(bytes.sublist((2 + s) * sizeOf<Int32>(), (3 + s) * sizeOf<Int32>()).buffer).getInt32(0, Endian.little);
 
       decodedStrings.add(utf8.decode(bytes.sublist(startIdx, endIdx)));
     }
@@ -180,8 +173,7 @@ class ByteConversionUtils {
     return decodedStrings;
   }
 
-  static Object convertBytesToObject(
-      Uint8List bytes, TensorType tensorType, List<int> shape) {
+  static Object convertBytesToObject(Uint8List bytes, TensorType tensorType, List<int> shape) {
     // stores flattened data
     List<dynamic> list = [];
     if (tensorType.value == TfLiteType.kTfLiteInt32) {
@@ -230,8 +222,7 @@ class ByteConversionUtils {
 
   static Uint8List floatToFloat16Bytes(double value) {
     int float16 = _float32ToFloat16(value);
-    final ByteData byteDataBuffer = ByteData(2)
-      ..setUint16(0, float16, Endian.little);
+    final ByteData byteDataBuffer = ByteData(2)..setUint16(0, float16, Endian.little);
     return Uint8List.fromList(byteDataBuffer.buffer.asUint8List());
   }
 
@@ -260,11 +251,7 @@ class ByteConversionUtils {
 
   static double bytesToFloat32(Uint8List bytes) {
     final ByteData byteDataBuffer = ByteData(2);
-    int float16 = byteDataBuffer.buffer
-        .asUint8List()
-        .buffer
-        .asByteData()
-        .getUint16(0, Endian.little);
+    int float16 = byteDataBuffer.buffer.asUint8List().buffer.asByteData().getUint16(0, Endian.little);
     return _float16ToFloat32(float16);
   }
 

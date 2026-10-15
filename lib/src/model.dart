@@ -18,8 +18,8 @@ import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
 import 'package:quiver/check.dart';
-import 'package:tflite_flutter/src/bindings/bindings.dart';
-import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
+import 'package:tflite_core/src/bindings/bindings.dart';
+import 'package:tflite_core/src/bindings/tensorflow_lite_bindings_generated.dart';
 
 import 'ffi/helper.dart';
 
@@ -37,8 +37,7 @@ class Model {
     final cpath = path.toNativeUtf8().cast<Char>();
     final model = tfliteBinding.TfLiteModelCreateFromFile(cpath);
     calloc.free(cpath);
-    checkArgument(isNotNull(model),
-        message: 'Unable to create model from file');
+    checkArgument(isNotNull(model), message: 'Unable to create model from file');
     return Model._(model);
   }
 
@@ -49,8 +48,7 @@ class Model {
     final externalTypedData = ptr.asTypedList(size);
     externalTypedData.setRange(0, buffer.length, buffer);
     final model = tfliteBinding.TfLiteModelCreate(ptr.cast(), buffer.length);
-    checkArgument(isNotNull(model),
-        message: 'Unable to create model from buffer');
+    checkArgument(isNotNull(model), message: 'Unable to create model from buffer');
     return Model._(model);
   }
 

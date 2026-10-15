@@ -17,9 +17,9 @@ import 'dart:ffi';
 
 import 'package:ffi/ffi.dart';
 import 'package:quiver/check.dart';
-import 'package:tflite_flutter/src/bindings/bindings.dart';
-import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_core/src/bindings/bindings.dart';
+import 'package:tflite_core/src/bindings/tensorflow_lite_bindings_generated.dart';
+import 'package:tflite_core/tflite_flutter.dart';
 
 /// GPU delegate for Android
 class GpuDelegateV2 implements Delegate {
@@ -40,8 +40,7 @@ class GpuDelegateV2 implements Delegate {
         tfliteBindingGpu.TfLiteGpuDelegateV2Create(nullptr),
       );
     }
-    return GpuDelegateV2._(
-        tfliteBindingGpu.TfLiteGpuDelegateV2Create(options.base));
+    return GpuDelegateV2._(tfliteBindingGpu.TfLiteGpuDelegateV2Create(options.base));
   }
   @override
   void delete() {
@@ -107,14 +106,10 @@ class GpuDelegateOptionsV2 {
   /// it's set to 1 in TfLiteGpuDelegateOptionsV2Default().
   factory GpuDelegateOptionsV2({
     bool isPrecisionLossAllowed = false,
-    int inferencePreference = TfLiteGpuInferenceUsage
-        .TFLITE_GPU_INFERENCE_PREFERENCE_FAST_SINGLE_ANSWER,
-    int inferencePriority1 =
-        TfLiteGpuInferencePriority.TFLITE_GPU_INFERENCE_PRIORITY_MAX_PRECISION,
-    int inferencePriority2 =
-        TfLiteGpuInferencePriority.TFLITE_GPU_INFERENCE_PRIORITY_AUTO,
-    int inferencePriority3 =
-        TfLiteGpuInferencePriority.TFLITE_GPU_INFERENCE_PRIORITY_AUTO,
+    int inferencePreference = TfLiteGpuInferenceUsage.TFLITE_GPU_INFERENCE_PREFERENCE_FAST_SINGLE_ANSWER,
+    int inferencePriority1 = TfLiteGpuInferencePriority.TFLITE_GPU_INFERENCE_PRIORITY_MAX_PRECISION,
+    int inferencePriority2 = TfLiteGpuInferencePriority.TFLITE_GPU_INFERENCE_PRIORITY_AUTO,
+    int inferencePriority3 = TfLiteGpuInferencePriority.TFLITE_GPU_INFERENCE_PRIORITY_AUTO,
     List<int> experimentalFlags = const [
       TfLiteGpuExperimentalFlags.TFLITE_GPU_EXPERIMENTAL_FLAGS_ENABLE_QUANT
     ],
@@ -127,8 +122,7 @@ class GpuDelegateOptionsV2 {
       ..inference_priority1 = inferencePriority1
       ..inference_priority2 = inferencePriority2
       ..inference_priority3 = inferencePriority3
-      ..experimental_flags =
-          _TfLiteGpuExperimentalFlagsUtil.getBitmask(experimentalFlags)
+      ..experimental_flags = _TfLiteGpuExperimentalFlagsUtil.getBitmask(experimentalFlags)
       ..max_delegated_partitions = maxDelegatePartitions;
 
     return GpuDelegateOptionsV2._(options);
@@ -149,8 +143,7 @@ class _TfLiteGpuExperimentalFlagsUtil {
 
   static int value(int flag) {
     switch (flag) {
-      case TfLiteGpuExperimentalFlags
-            .TFLITE_GPU_EXPERIMENTAL_FLAGS_ENABLE_QUANT:
+      case TfLiteGpuExperimentalFlags.TFLITE_GPU_EXPERIMENTAL_FLAGS_ENABLE_QUANT:
         return enableQuant;
       case TfLiteGpuExperimentalFlags.TFLITE_GPU_EXPERIMENTAL_FLAGS_CL_ONLY:
         return clOnly;

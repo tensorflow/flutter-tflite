@@ -1,3 +1,6 @@
+## 0.12.5 (October 15, 2026)
+- **NEW IDENTITY**: This package converted from "tflite_flutter" to "tflite_core".
+
 ## 0.12.4 (July 30, 2026)
 - **Critical**: Resolved Flutter Kotlin Gradle Plugin (KGP) deprecated warning.
 

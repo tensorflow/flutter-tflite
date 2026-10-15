@@ -1,0 +1,55 @@
+name: Publish to pub.dev
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+      - name: Verify release tag
+        shell: bash
+        run: |
+          package_version=$(sed -n 's/^version: *//p' pubspec.yaml | tr -d "\"'")
+          if [[ -z "$package_version" || "$GITHUB_REF_NAME" != "v$package_version" ]]; then
+            echo "Release tag '$GITHUB_REF_NAME' must match pubspec.yaml version 'v$package_version'."
+            exit 1
+          fi
+
+      - uses: subosito/flutter-action@48cafc24713cca54bbe03cdc3a423187d413aafa
+        with:
+          channel: stable
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-
+
+      - uses: dart-lang/setup-dart@23b5a66dd43e5c8366051dd2dde53e89fa2ef1ea
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed lib test
+
+      - name: Analyze
+        run: flutter analyze lib test
+
+      - name: Test
+        run: flutter test
+
+      - name: Validate package
+        run: flutter pub publish --dry-run
+
+      - name: Publish to pub.dev
+        run: flutter pub publish --force

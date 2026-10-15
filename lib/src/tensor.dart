@@ -19,9 +19,9 @@ import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
 import 'package:quiver/check.dart';
-import 'package:tflite_flutter/src/bindings/bindings.dart';
-import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
-import 'package:tflite_flutter/src/util/byte_conversion_utils.dart';
+import 'package:tflite_core/src/bindings/bindings.dart';
+import 'package:tflite_core/src/bindings/tensorflow_lite_bindings_generated.dart';
+import 'package:tflite_core/src/util/byte_conversion_utils.dart';
 import 'package:flutter/foundation.dart';
 
 import 'ffi/helper.dart';
@@ -39,8 +39,7 @@ class Tensor {
   }
 
   /// Name of the tensor element.
-  String get name =>
-      tfliteBinding.TfLiteTensorName(_tensor).cast<Utf8>().toDartString();
+  String get name => tfliteBinding.TfLiteTensorName(_tensor).cast<Utf8>().toDartString();
 
   /// Data type of the tensor element.
   TensorType get type => TensorType.fromValue(
@@ -48,16 +47,12 @@ class Tensor {
       );
 
   /// Dimensions of the tensor.
-  List<int> get shape => List.generate(
-      tfliteBinding.TfLiteTensorNumDims(_tensor),
-      (i) => tfliteBinding.TfLiteTensorDim(_tensor, i));
+  List<int> get shape => List.generate(tfliteBinding.TfLiteTensorNumDims(_tensor), (i) => tfliteBinding.TfLiteTensorDim(_tensor, i));
 
   /// Underlying data buffer as bytes.
   Uint8List get data {
     final data = cast<Uint8>(tfliteBinding.TfLiteTensorData(_tensor));
-    return data
-        .asTypedList(tfliteBinding.TfLiteTensorByteSize(_tensor))
-        .asUnmodifiableView();
+    return data.asTypedList(tfliteBinding.TfLiteTensorByteSize(_tensor)).asUnmodifiableView();
   }
 
   /// Quantization Params associated with the model, [only Android]
@@ -130,8 +125,7 @@ class Tensor {
     if (shape[dim] == 0) {
       shape[dim] = len;
     } else if (shape[dim] != len) {
-      throw ArgumentError(
-          'Mismatched lengths ${shape[dim]} and $len in dimension $dim');
+      throw ArgumentError('Mismatched lengths ${shape[dim]} and $len in dimension $dim');
     }
     for (var i = 0; i < len; ++i) {
       fillShape(o.elementAt(0), dim + 1, shape);
@@ -153,8 +147,7 @@ class Tensor {
     } else if (c is bool) {
       return TfLiteType.kTfLiteBool;
     }
-    throw ArgumentError(
-        'DataType error: cannot resolve DataType of ${o.runtimeType}');
+    throw ArgumentError('DataType error: cannot resolve DataType of ${o.runtimeType}');
   }
 
   void setTo(Object src) {
@@ -165,9 +158,7 @@ class Tensor {
     final externalTypedData = ptr.asTypedList(size);
     externalTypedData.setRange(0, bytes.length, bytes);
     try {
-      checkState(tfliteBinding.TfLiteTensorCopyFromBuffer(
-              _tensor, ptr.cast(), bytes.length) ==
-          TfLiteStatus.kTfLiteOk);
+      checkState(tfliteBinding.TfLiteTensorCopyFromBuffer(_tensor, ptr.cast(), bytes.length) == TfLiteStatus.kTfLiteOk);
     } catch (_) {
       rethrow;
     } finally {
@@ -180,9 +171,7 @@ class Tensor {
     final ptr = calloc<Uint8>(size);
     checkState(isNotNull(ptr), message: 'unallocated');
     final externalTypedData = ptr.asTypedList(size);
-    checkState(
-        tfliteBinding.TfLiteTensorCopyToBuffer(_tensor, ptr.cast(), size) ==
-            TfLiteStatus.kTfLiteOk);
+    checkState(tfliteBinding.TfLiteTensorCopyToBuffer(_tensor, ptr.cast(), size) == TfLiteStatus.kTfLiteOk);
     // Clone the data, because once `free(ptr)`, `externalTypedData` will be
     // volatile
     final bytes = externalTypedData.sublist(0);
@@ -231,8 +220,7 @@ class Tensor {
       equal = false;
     }
     if (equal == false) {
-      throw ArgumentError(
-          'Output object shape mismatch, interpreter returned output of shape: ${obj.shape} while shape of output provided as argument in run is: ${dst.shape}');
+      throw ArgumentError('Output object shape mismatch, interpreter returned output of shape: ${obj.shape} while shape of output provided as argument in run is: ${dst.shape}');
     }
     for (var i = 0; i < obj.length; i++) {
       dst[i] = obj[i];

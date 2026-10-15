@@ -17,7 +17,7 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_core/tflite_flutter.dart';
 
 /// `IsolateInterpreter` allows for the execution of TensorFlow models within an isolate.
 class IsolateInterpreter {
@@ -50,8 +50,7 @@ class IsolateInterpreter {
   late final Isolate _isolate;
 
   // Controller to handle state changes.
-  final StreamController<IsolateInterpreterState> _stateChanges =
-      StreamController.broadcast();
+  final StreamController<IsolateInterpreterState> _stateChanges = StreamController.broadcast();
   late final StreamSubscription _stateSubscription;
   Stream<IsolateInterpreterState> get stateChanges => _stateChanges.stream;
   IsolateInterpreterState __state = IsolateInterpreterState.idle;
@@ -107,7 +106,9 @@ class IsolateInterpreter {
     var map = <int, Object>{};
     map[0] = output;
 
-    return runForMultipleInputs([input], map);
+    return runForMultipleInputs([
+      input
+    ], map);
   }
 
   /// Run TensorFlow model for multiple inputs and outputs.

@@ -17,9 +17,9 @@ import 'dart:ffi';
 
 import 'package:ffi/ffi.dart';
 import 'package:quiver/check.dart';
-import 'package:tflite_flutter/src/bindings/bindings.dart';
-import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_core/src/bindings/bindings.dart';
+import 'package:tflite_core/src/bindings/tensorflow_lite_bindings_generated.dart';
+import 'package:tflite_core/tflite_flutter.dart';
 
 /// CoreMl Delegate
 class CoreMlDelegate implements Delegate {
@@ -57,8 +57,7 @@ class CoreMlDelegateOptions {
   CoreMlDelegateOptions._(this._options);
 
   factory CoreMlDelegateOptions({
-    int enabledDevices = TfLiteCoreMlDelegateEnabledDevices
-        .TfLiteCoreMlDelegateDevicesWithNeuralEngine,
+    int enabledDevices = TfLiteCoreMlDelegateEnabledDevices.TfLiteCoreMlDelegateDevicesWithNeuralEngine,
     int coremlVersion = 0,
     int maxDelegatedPartitions = 0,
     int minNodesPerPartition = 2,

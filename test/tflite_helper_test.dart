@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tflite_flutter/tflite_flutter_platform_interface.dart';
-import 'package:tflite_flutter/tflite_flutter_method_channel.dart';
+import 'package:tflite_core/tflite_flutter_platform_interface.dart';
+import 'package:tflite_core/tflite_flutter_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 // ── Mock ───────────────────────────────────────────────────────────────────
@@ -19,7 +19,9 @@ class MockTfliteFlutterPlatform with MockPlatformInterfaceMixin implements Tflit
 List<int> _tokenize(String text, Map<String, int> vocab, int maxLen) {
   final tokens = text.toLowerCase().trim().split(RegExp(r'\s+'));
   final ids = tokens.take(maxLen).map((w) => vocab[w] ?? 1).toList();
-  while (ids.length < maxLen) ids.add(0);
+  while (ids.length < maxLen) {
+    ids.add(0);
+  }
   return ids;
 }
 

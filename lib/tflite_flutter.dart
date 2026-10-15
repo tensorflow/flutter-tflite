@@ -6,7 +6,7 @@
 library tflite_flutter;
 
 import 'package:ffi/ffi.dart';
-import 'package:tflite_flutter/src/bindings/bindings.dart';
+import 'package:tflite_core/src/bindings/bindings.dart';
 
 export 'src/delegate.dart';
 export 'src/delegates/gpu_delegate.dart';

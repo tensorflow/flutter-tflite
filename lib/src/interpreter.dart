@@ -20,8 +20,8 @@ import 'dart:io';
 import 'package:ffi/ffi.dart';
 import 'package:flutter/services.dart';
 import 'package:quiver/check.dart';
-import 'package:tflite_flutter/src/bindings/bindings.dart';
-import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
+import 'package:tflite_core/src/bindings/bindings.dart';
+import 'package:tflite_core/src/bindings/tensorflow_lite_bindings_generated.dart';
 
 import 'ffi/helper.dart';
 import 'interpreter_options.dart';
@@ -41,8 +41,7 @@ class Interpreter {
   int? _inputTensorsCount;
   int? _outputTensorsCount;
 
-  int get lastNativeInferenceDurationMicroSeconds =>
-      _lastNativeInferenceDurationMicroSeconds;
+  int get lastNativeInferenceDurationMicroSeconds => _lastNativeInferenceDurationMicroSeconds;
 
   Interpreter._(this._interpreter) {
     // Allocate tensors when interpreter is created
@@ -53,10 +52,8 @@ class Interpreter {
   ///
   /// Throws [ArgumentError] is unsuccessful.
   factory Interpreter._create(Model model, {InterpreterOptions? options}) {
-    final interpreter = tfliteBinding.TfLiteInterpreterCreate(
-        model.base, options?.base ?? cast<TfLiteInterpreterOptions>(nullptr));
-    checkArgument(isNotNull(interpreter),
-        message: 'Unable to create interpreter.');
+    final interpreter = tfliteBinding.TfLiteInterpreterCreate(model.base, options?.base ?? cast<TfLiteInterpreterOptions>(nullptr));
+    checkArgument(isNotNull(interpreter), message: 'Unable to create interpreter.');
     return Interpreter._(interpreter);
   }
 
@@ -103,8 +100,7 @@ class Interpreter {
   ///       return rawBytes;
   ///   }
   /// ```
-  factory Interpreter.fromBuffer(Uint8List buffer,
-      {InterpreterOptions? options}) {
+  factory Interpreter.fromBuffer(Uint8List buffer, {InterpreterOptions? options}) {
     final model = Model.fromBuffer(buffer);
     final interpreter = Interpreter._create(model, options: options);
     model.delete();
@@ -120,8 +116,7 @@ class Interpreter {
   /// ```dart
   /// final interpreter = await tfl.Interpreter.fromAsset('assets/your_model.tflite');
   /// ```
-  static Future<Interpreter> fromAsset(String assetName,
-      {InterpreterOptions? options}) async {
+  static Future<Interpreter> fromAsset(String assetName, {InterpreterOptions? options}) async {
     Uint8List buffer = await _getBuffer(assetName);
     return Interpreter.fromBuffer(buffer, options: options);
   }
@@ -136,8 +131,7 @@ class Interpreter {
   /// Creates interpreter from an address.
   ///
   /// Typically used for passing interpreter between isolates.
-  factory Interpreter.fromAddress(int address,
-      {bool allocated = false, bool deleted = false}) {
+  factory Interpreter.fromAddress(int address, {bool allocated = false, bool deleted = false}) {
     final interpreter = Pointer<TfLiteInterpreter>.fromAddress(address);
     return Interpreter._(interpreter)
       .._deleted = deleted
@@ -153,23 +147,23 @@ class Interpreter {
 
   /// Updates allocations for all tensors.
   void allocateTensors() {
-    checkState(tfliteBinding.TfLiteInterpreterAllocateTensors(_interpreter) ==
-        TfLiteStatus.kTfLiteOk);
+    checkState(tfliteBinding.TfLiteInterpreterAllocateTensors(_interpreter) == TfLiteStatus.kTfLiteOk);
     _allocated = true;
   }
 
   /// Runs inference for the loaded graph.
   void invoke() {
     checkState(_allocated, message: 'Interpreter not allocated.');
-    checkState(tfliteBinding.TfLiteInterpreterInvoke(_interpreter) ==
-        TfLiteStatus.kTfLiteOk);
+    checkState(tfliteBinding.TfLiteInterpreterInvoke(_interpreter) == TfLiteStatus.kTfLiteOk);
   }
 
   /// Run for single input and output
   void run(Object input, Object output) {
     var map = <int, Object>{};
     map[0] = output;
-    runForMultipleInputs([input], map);
+    runForMultipleInputs([
+      input
+    ], map);
   }
 
   /// Run for multiple inputs and outputs
@@ -212,8 +206,7 @@ class Interpreter {
 
     var inferenceStartNanos = DateTime.now().microsecondsSinceEpoch;
     invoke();
-    _lastNativeInferenceDurationMicroSeconds =
-        DateTime.now().microsecondsSinceEpoch - inferenceStartNanos;
+    _lastNativeInferenceDurationMicroSeconds = DateTime.now().microsecondsSinceEpoch - inferenceStartNanos;
   }
 
   /// Gets all input tensors associated with the model.
@@ -222,11 +215,7 @@ class Interpreter {
       return _inputTensors!;
     }
 
-    var tensors = List.generate(
-        tfliteBinding.TfLiteInterpreterGetInputTensorCount(_interpreter),
-        (i) => Tensor(
-            tfliteBinding.TfLiteInterpreterGetInputTensor(_interpreter, i)),
-        growable: false);
+    var tensors = List.generate(tfliteBinding.TfLiteInterpreterGetInputTensorCount(_interpreter), (i) => Tensor(tfliteBinding.TfLiteInterpreterGetInputTensor(_interpreter, i)), growable: false);
 
     return tensors;
   }
@@ -237,11 +226,7 @@ class Interpreter {
       return _outputTensors!;
     }
 
-    var tensors = List.generate(
-        tfliteBinding.TfLiteInterpreterGetOutputTensorCount(_interpreter),
-        (i) => Tensor(
-            tfliteBinding.TfLiteInterpreterGetOutputTensor(_interpreter, i)),
-        growable: false);
+    var tensors = List.generate(tfliteBinding.TfLiteInterpreterGetOutputTensorCount(_interpreter), (i) => Tensor(tfliteBinding.TfLiteInterpreterGetOutputTensor(_interpreter, i)), growable: false);
 
     return tensors;
   }
@@ -250,11 +235,9 @@ class Interpreter {
   void resizeInputTensor(int tensorIndex, List<int> shape) {
     final dimensionSize = shape.length;
     final dimensions = calloc<Int>(dimensionSize);
-    final externalTypedData =
-        dimensions.cast<Int32>().asTypedList(dimensionSize);
+    final externalTypedData = dimensions.cast<Int32>().asTypedList(dimensionSize);
     externalTypedData.setRange(0, dimensionSize, shape);
-    final status = tfliteBinding.TfLiteInterpreterResizeInputTensor(
-        _interpreter, tensorIndex, dimensions, dimensionSize);
+    final status = tfliteBinding.TfLiteInterpreterResizeInputTensor(_interpreter, tensorIndex, dimensions, dimensionSize);
     calloc.free(dimensions);
     checkState(status == TfLiteStatus.kTfLiteOk);
     _inputTensors = null;
@@ -264,8 +247,7 @@ class Interpreter {
 
   /// Gets the input Tensor for the provided input index.
   Tensor getInputTensor(int index) {
-    _inputTensorsCount ??=
-        tfliteBinding.TfLiteInterpreterGetInputTensorCount(_interpreter);
+    _inputTensorsCount ??= tfliteBinding.TfLiteInterpreterGetInputTensorCount(_interpreter);
     if (index < 0 || index >= _inputTensorsCount!) {
       throw ArgumentError('Invalid input Tensor index: $index');
     }
@@ -273,23 +255,20 @@ class Interpreter {
       return _inputTensors![index];
     }
 
-    final inputTensor = Tensor(
-        tfliteBinding.TfLiteInterpreterGetInputTensor(_interpreter, index));
+    final inputTensor = Tensor(tfliteBinding.TfLiteInterpreterGetInputTensor(_interpreter, index));
     return inputTensor;
   }
 
   /// Gets the output Tensor for the provided output index.
   Tensor getOutputTensor(int index) {
-    _outputTensorsCount ??=
-        tfliteBinding.TfLiteInterpreterGetOutputTensorCount(_interpreter);
+    _outputTensorsCount ??= tfliteBinding.TfLiteInterpreterGetOutputTensorCount(_interpreter);
     if (index < 0 || index >= _outputTensorsCount!) {
       throw ArgumentError('Invalid output Tensor index: $index');
     }
     if (_outputTensors != null) {
       return _outputTensors![index];
     }
-    final outputTensor = Tensor(
-        tfliteBinding.TfLiteInterpreterGetOutputTensor(_interpreter, index));
+    final outputTensor = Tensor(tfliteBinding.TfLiteInterpreterGetOutputTensor(_interpreter, index));
     return outputTensor;
   }
 
@@ -303,8 +282,7 @@ class Interpreter {
     if (inputTensorsIndex.containsKey(opName)) {
       return inputTensorsIndex[opName]!;
     } else {
-      throw ArgumentError(
-          "Input error: $opName' is not a valid name for any input. Names of inputs and their indexes are $inputTensorsIndex");
+      throw ArgumentError("Input error: $opName' is not a valid name for any input. Names of inputs and their indexes are $inputTensorsIndex");
     }
   }
 
@@ -318,15 +296,13 @@ class Interpreter {
     if (outputTensorsIndex.containsKey(opName)) {
       return outputTensorsIndex[opName]!;
     } else {
-      throw ArgumentError(
-          "Output error: $opName' is not a valid name for any output. Names of outputs and their indexes are $outputTensorsIndex");
+      throw ArgumentError("Output error: $opName' is not a valid name for any output. Names of outputs and their indexes are $outputTensorsIndex");
     }
   }
 
   // Resets all variable tensors to the defaul value
   void resetVariableTensors() {
-    checkState(_deleted,
-        message: 'Should not acces delegate after it has been closed.');
+    checkState(_deleted, message: 'Should not acces delegate after it has been closed.');
     tfliteBinding.TfLiteInterpreterResetVariableTensors(_interpreter);
   }
 

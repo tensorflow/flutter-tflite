@@ -18,9 +18,9 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:quiver/check.dart';
-import 'package:tflite_flutter/src/bindings/bindings.dart';
-import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_core/src/bindings/bindings.dart';
+import 'package:tflite_core/src/bindings/tensorflow_lite_bindings_generated.dart';
+import 'package:tflite_core/tflite_flutter.dart';
 
 /// TensorFlowLite interpreter options.
 class InterpreterOptions {
@@ -32,8 +32,7 @@ class InterpreterOptions {
   InterpreterOptions._(this._options);
 
   /// Creates a new options instance.
-  factory InterpreterOptions() =>
-      InterpreterOptions._(tfliteBinding.TfLiteInterpreterOptionsCreate());
+  factory InterpreterOptions() => InterpreterOptions._(tfliteBinding.TfLiteInterpreterOptionsCreate());
 
   /// Destroys the options instance.
   void delete() {
@@ -43,8 +42,7 @@ class InterpreterOptions {
   }
 
   /// Sets the number of CPU threads to use.
-  set threads(int threads) =>
-      tfliteBinding.TfLiteInterpreterOptionsSetNumThreads(_options, threads);
+  set threads(int threads) => tfliteBinding.TfLiteInterpreterOptionsSetNumThreads(_options, threads);
 
   /// TensorFlow version >= v2.2
   /// Set true to use NnApi Delegate for Android
