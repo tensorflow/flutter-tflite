@@ -57,7 +57,8 @@ class CoreMlDelegateOptions {
   CoreMlDelegateOptions._(this._options);
 
   factory CoreMlDelegateOptions({
-    int enabledDevices = TfLiteCoreMlDelegateEnabledDevices.TfLiteCoreMlDelegateDevicesWithNeuralEngine,
+    int enabledDevices =
+        TfLiteCoreMlDelegateEnabledDevices.TfLiteCoreMlDelegateDevicesWithNeuralEngine,
     int coremlVersion = 0,
     int maxDelegatedPartitions = 0,
     int minNodesPerPartition = 2,

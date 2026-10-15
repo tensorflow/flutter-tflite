@@ -40,7 +40,8 @@ int _argmax(List<double> v) {
   return best;
 }
 
-String _extractCommand(String transcript, String wakeWord) => transcript.replaceFirst(wakeWord, '').trim();
+String _extractCommand(String transcript, String wakeWord) =>
+    transcript.replaceFirst(wakeWord, '').trim();
 
 // ── Tests ──────────────────────────────────────────────────────────────────
 
@@ -140,85 +141,42 @@ void main() {
 
   group('NluEngine math helpers', () {
     test('softmax outputs sum to ~1.0', () {
-      final probs = _softmax([
-        1.0,
-        2.0,
-        3.0
-      ]);
+      final probs = _softmax([1.0, 2.0, 3.0]);
       expect(probs.reduce((a, b) => a + b), closeTo(1.0, 1e-6));
     });
 
     test('softmax largest logit gets highest probability', () {
-      final probs = _softmax([
-        1.0,
-        5.0,
-        2.0
-      ]);
+      final probs = _softmax([1.0, 5.0, 2.0]);
       expect(_argmax(probs), 1);
     });
 
     test('argmax returns index of maximum value', () {
-      expect(
-          _argmax([
-            0.1,
-            0.8,
-            0.1
-          ]),
-          1);
-      expect(
-          _argmax([
-            0.9,
-            0.05,
-            0.05
-          ]),
-          0);
-      expect(
-          _argmax([
-            0.1,
-            0.1,
-            0.8
-          ]),
-          2);
+      expect(_argmax([0.1, 0.8, 0.1]), 1);
+      expect(_argmax([0.9, 0.05, 0.05]), 0);
+      expect(_argmax([0.1, 0.1, 0.8]), 2);
     });
 
     test('softmax is numerically stable for large logit differences', () {
-      final probs = _softmax([
-        1000.0,
-        0.0,
-        0.0
-      ]);
+      final probs = _softmax([1000.0, 0.0, 0.0]);
       expect(probs[0], closeTo(1.0, 1e-6));
     });
 
     test('equal logits produce uniform distribution', () {
-      final probs = _softmax([
-        1.0,
-        1.0,
-        1.0
-      ]);
+      final probs = _softmax([1.0, 1.0, 1.0]);
       for (final p in probs) {
         expect(p, closeTo(1 / 3, 1e-6));
       }
     });
 
     test('all softmax values are between 0 and 1', () {
-      final probs = _softmax([
-        -1.0,
-        0.0,
-        1.0,
-        2.0
-      ]);
+      final probs = _softmax([-1.0, 0.0, 1.0, 2.0]);
       for (final p in probs) {
         expect(p, inInclusiveRange(0.0, 1.0));
       }
     });
 
     test('argmax with single element returns 0', () {
-      expect(
-          _argmax([
-            0.99
-          ]),
-          0);
+      expect(_argmax([0.99]), 0);
     });
   });
 

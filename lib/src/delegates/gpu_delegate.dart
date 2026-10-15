@@ -106,7 +106,8 @@ class GpuDelegateOptionsV2 {
   /// it's set to 1 in TfLiteGpuDelegateOptionsV2Default().
   factory GpuDelegateOptionsV2({
     bool isPrecisionLossAllowed = false,
-    int inferencePreference = TfLiteGpuInferenceUsage.TFLITE_GPU_INFERENCE_PREFERENCE_FAST_SINGLE_ANSWER,
+    int inferencePreference =
+        TfLiteGpuInferenceUsage.TFLITE_GPU_INFERENCE_PREFERENCE_FAST_SINGLE_ANSWER,
     int inferencePriority1 = TfLiteGpuInferencePriority.TFLITE_GPU_INFERENCE_PRIORITY_MAX_PRECISION,
     int inferencePriority2 = TfLiteGpuInferencePriority.TFLITE_GPU_INFERENCE_PRIORITY_AUTO,
     int inferencePriority3 = TfLiteGpuInferencePriority.TFLITE_GPU_INFERENCE_PRIORITY_AUTO,

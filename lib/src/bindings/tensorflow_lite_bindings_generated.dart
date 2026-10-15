@@ -14,17 +14,14 @@ import 'dart:ffi' as ffi;
 ///
 class TensorFlowLiteBindings {
   /// Holds the symbol lookup function.
-  final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-      _lookup;
+  final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
-  TensorFlowLiteBindings(ffi.DynamicLibrary dynamicLibrary)
-      : _lookup = dynamicLibrary.lookup;
+  TensorFlowLiteBindings(ffi.DynamicLibrary dynamicLibrary) : _lookup = dynamicLibrary.lookup;
 
   /// The symbols are looked up with [lookup].
   TensorFlowLiteBindings.fromLookup(
-      ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-          lookup)
+      ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup)
       : _lookup = lookup;
 
   /// --------------------------------------------------------------------------
@@ -35,10 +32,8 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteVersionPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>(
-          'TfLiteVersion');
-  late final _TfLiteVersion =
-      _TfLiteVersionPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>('TfLiteVersion');
+  late final _TfLiteVersion = _TfLiteVersionPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
 
   /// Returns a model from the provided buffer, or null on failure.
   ///
@@ -58,9 +53,8 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteModelCreatePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TfLiteModel> Function(
-              ffi.Pointer<ffi.Void>, ffi.Size)>>('TfLiteModelCreate');
+          ffi.NativeFunction<ffi.Pointer<TfLiteModel> Function(ffi.Pointer<ffi.Void>, ffi.Size)>>(
+      'TfLiteModelCreate');
   late final _TfLiteModelCreate = _TfLiteModelCreatePtr.asFunction<
       ffi.Pointer<TfLiteModel> Function(ffi.Pointer<ffi.Void>, int)>();
 
@@ -77,12 +71,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteModelCreateFromFilePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TfLiteModel> Function(
-              ffi.Pointer<ffi.Char>)>>('TfLiteModelCreateFromFile');
-  late final _TfLiteModelCreateFromFile = _TfLiteModelCreateFromFilePtr
-      .asFunction<ffi.Pointer<TfLiteModel> Function(ffi.Pointer<ffi.Char>)>();
+  late final _TfLiteModelCreateFromFilePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<TfLiteModel> Function(ffi.Pointer<ffi.Char>)>>(
+          'TfLiteModelCreateFromFile');
+  late final _TfLiteModelCreateFromFile = _TfLiteModelCreateFromFilePtr.asFunction<
+      ffi.Pointer<TfLiteModel> Function(ffi.Pointer<ffi.Char>)>();
 
   /// Destroys the model instance.
   void TfLiteModelDelete(
@@ -94,10 +87,9 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteModelDeletePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteModel>)>>(
-          'TfLiteModelDelete');
-  late final _TfLiteModelDelete = _TfLiteModelDeletePtr.asFunction<
-      void Function(ffi.Pointer<TfLiteModel>)>();
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteModel>)>>('TfLiteModelDelete');
+  late final _TfLiteModelDelete =
+      _TfLiteModelDeletePtr.asFunction<void Function(ffi.Pointer<TfLiteModel>)>();
 
   /// Returns a new TfLiteRegistrationExternal instance.
   ///
@@ -120,13 +112,9 @@ class TensorFlowLiteBindings {
   late final _TfLiteRegistrationExternalCreatePtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<TfLiteRegistrationExternal> Function(
-              ffi.Int32,
-              ffi.Pointer<ffi.Char>,
-              ffi.Int)>>('TfLiteRegistrationExternalCreate');
-  late final _TfLiteRegistrationExternalCreate =
-      _TfLiteRegistrationExternalCreatePtr.asFunction<
-          ffi.Pointer<TfLiteRegistrationExternal> Function(
-              int, ffi.Pointer<ffi.Char>, int)>();
+              ffi.Int32, ffi.Pointer<ffi.Char>, ffi.Int)>>('TfLiteRegistrationExternalCreate');
+  late final _TfLiteRegistrationExternalCreate = _TfLiteRegistrationExternalCreatePtr.asFunction<
+      ffi.Pointer<TfLiteRegistrationExternal> Function(int, ffi.Pointer<ffi.Char>, int)>();
 
   /// Return the builtin op code of the provided external 'registration'.
   ///
@@ -139,10 +127,9 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteRegistrationExternalGetBuiltInCodePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int32 Function(ffi.Pointer<TfLiteRegistrationExternal>)>>(
-      'TfLiteRegistrationExternalGetBuiltInCode');
+  late final _TfLiteRegistrationExternalGetBuiltInCodePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteRegistrationExternal>)>>(
+          'TfLiteRegistrationExternalGetBuiltInCode');
   late final _TfLiteRegistrationExternalGetBuiltInCode =
       _TfLiteRegistrationExternalGetBuiltInCodePtr.asFunction<
           int Function(ffi.Pointer<TfLiteRegistrationExternal>)>();
@@ -157,13 +144,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteRegistrationExternalDeletePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(ffi.Pointer<TfLiteRegistrationExternal>)>>(
-      'TfLiteRegistrationExternalDelete');
-  late final _TfLiteRegistrationExternalDelete =
-      _TfLiteRegistrationExternalDeletePtr.asFunction<
-          void Function(ffi.Pointer<TfLiteRegistrationExternal>)>();
+  late final _TfLiteRegistrationExternalDeletePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteRegistrationExternal>)>>(
+          'TfLiteRegistrationExternalDelete');
+  late final _TfLiteRegistrationExternalDelete = _TfLiteRegistrationExternalDeletePtr.asFunction<
+      void Function(ffi.Pointer<TfLiteRegistrationExternal>)>();
 
   /// Sets the initialization callback for the registration.
   ///
@@ -174,10 +159,8 @@ class TensorFlowLiteBindings {
     ffi.Pointer<TfLiteRegistrationExternal> registration,
     ffi.Pointer<
             ffi.NativeFunction<
-                ffi.Pointer<ffi.Void> Function(
-                    ffi.Pointer<TfLiteOpaqueContext> context,
-                    ffi.Pointer<ffi.Char> buffer,
-                    ffi.Size length)>>
+                ffi.Pointer<ffi.Void> Function(ffi.Pointer<TfLiteOpaqueContext> context,
+                    ffi.Pointer<ffi.Char> buffer, ffi.Size length)>>
         init,
   ) {
     return _TfLiteRegistrationExternalSetInit(
@@ -187,26 +170,22 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteRegistrationExternalSetInitPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(
-                  ffi.Pointer<TfLiteRegistrationExternal>,
-                  ffi.Pointer<
-                      ffi.NativeFunction<
-                          ffi.Pointer<ffi.Void> Function(
-                              ffi.Pointer<TfLiteOpaqueContext> context,
-                              ffi.Pointer<ffi.Char> buffer,
-                              ffi.Size length)>>)>>(
-      'TfLiteRegistrationExternalSetInit');
-  late final _TfLiteRegistrationExternalSetInit =
-      _TfLiteRegistrationExternalSetInitPtr.asFunction<
-          void Function(
+      ffi.NativeFunction<
+          ffi.Void Function(
               ffi.Pointer<TfLiteRegistrationExternal>,
               ffi.Pointer<
                   ffi.NativeFunction<
                       ffi.Pointer<ffi.Void> Function(
                           ffi.Pointer<TfLiteOpaqueContext> context,
                           ffi.Pointer<ffi.Char> buffer,
-                          ffi.Size length)>>)>();
+                          ffi.Size length)>>)>>('TfLiteRegistrationExternalSetInit');
+  late final _TfLiteRegistrationExternalSetInit = _TfLiteRegistrationExternalSetInitPtr.asFunction<
+      void Function(
+          ffi.Pointer<TfLiteRegistrationExternal>,
+          ffi.Pointer<
+              ffi.NativeFunction<
+                  ffi.Pointer<ffi.Void> Function(ffi.Pointer<TfLiteOpaqueContext> context,
+                      ffi.Pointer<ffi.Char> buffer, ffi.Size length)>>)>();
 
   /// Sets the deallocation callback for the registration.
   ///
@@ -219,8 +198,8 @@ class TensorFlowLiteBindings {
     ffi.Pointer<TfLiteRegistrationExternal> registration,
     ffi.Pointer<
             ffi.NativeFunction<
-                ffi.Void Function(ffi.Pointer<TfLiteOpaqueContext> context,
-                    ffi.Pointer<ffi.Void> data)>>
+                ffi.Void Function(
+                    ffi.Pointer<TfLiteOpaqueContext> context, ffi.Pointer<ffi.Void> data)>>
         free,
   ) {
     return _TfLiteRegistrationExternalSetFree(
@@ -230,24 +209,20 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteRegistrationExternalSetFreePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(
-                  ffi.Pointer<TfLiteRegistrationExternal>,
-                  ffi.Pointer<
-                      ffi.NativeFunction<
-                          ffi.Void Function(
-                              ffi.Pointer<TfLiteOpaqueContext> context,
-                              ffi.Pointer<ffi.Void> data)>>)>>(
-      'TfLiteRegistrationExternalSetFree');
-  late final _TfLiteRegistrationExternalSetFree =
-      _TfLiteRegistrationExternalSetFreePtr.asFunction<
-          void Function(
+      ffi.NativeFunction<
+          ffi.Void Function(
               ffi.Pointer<TfLiteRegistrationExternal>,
               ffi.Pointer<
                   ffi.NativeFunction<
-                      ffi.Void Function(
-                          ffi.Pointer<TfLiteOpaqueContext> context,
-                          ffi.Pointer<ffi.Void> data)>>)>();
+                      ffi.Void Function(ffi.Pointer<TfLiteOpaqueContext> context,
+                          ffi.Pointer<ffi.Void> data)>>)>>('TfLiteRegistrationExternalSetFree');
+  late final _TfLiteRegistrationExternalSetFree = _TfLiteRegistrationExternalSetFreePtr.asFunction<
+      void Function(
+          ffi.Pointer<TfLiteRegistrationExternal>,
+          ffi.Pointer<
+              ffi.NativeFunction<
+                  ffi.Void Function(
+                      ffi.Pointer<TfLiteOpaqueContext> context, ffi.Pointer<ffi.Void> data)>>)>();
 
   /// Sets the preparation callback for the registration.
   ///
@@ -258,8 +233,8 @@ class TensorFlowLiteBindings {
     ffi.Pointer<TfLiteRegistrationExternal> registration,
     ffi.Pointer<
             ffi.NativeFunction<
-                ffi.Int32 Function(ffi.Pointer<TfLiteOpaqueContext> context,
-                    ffi.Pointer<TfLiteOpaqueNode> node)>>
+                ffi.Int32 Function(
+                    ffi.Pointer<TfLiteOpaqueContext> context, ffi.Pointer<TfLiteOpaqueNode> node)>>
         prepare,
   ) {
     return _TfLiteRegistrationExternalSetPrepare(
@@ -274,8 +249,7 @@ class TensorFlowLiteBindings {
                   ffi.Pointer<TfLiteRegistrationExternal>,
                   ffi.Pointer<
                       ffi.NativeFunction<
-                          ffi.Int32 Function(
-                              ffi.Pointer<TfLiteOpaqueContext> context,
+                          ffi.Int32 Function(ffi.Pointer<TfLiteOpaqueContext> context,
                               ffi.Pointer<TfLiteOpaqueNode> node)>>)>>(
       'TfLiteRegistrationExternalSetPrepare');
   late final _TfLiteRegistrationExternalSetPrepare =
@@ -284,8 +258,7 @@ class TensorFlowLiteBindings {
               ffi.Pointer<TfLiteRegistrationExternal>,
               ffi.Pointer<
                   ffi.NativeFunction<
-                      ffi.Int32 Function(
-                          ffi.Pointer<TfLiteOpaqueContext> context,
+                      ffi.Int32 Function(ffi.Pointer<TfLiteOpaqueContext> context,
                           ffi.Pointer<TfLiteOpaqueNode> node)>>)>();
 
   /// Sets the invocation callback for the registration.
@@ -297,8 +270,8 @@ class TensorFlowLiteBindings {
     ffi.Pointer<TfLiteRegistrationExternal> registration,
     ffi.Pointer<
             ffi.NativeFunction<
-                ffi.Int32 Function(ffi.Pointer<TfLiteOpaqueContext> context,
-                    ffi.Pointer<TfLiteOpaqueNode> node)>>
+                ffi.Int32 Function(
+                    ffi.Pointer<TfLiteOpaqueContext> context, ffi.Pointer<TfLiteOpaqueNode> node)>>
         invoke,
   ) {
     return _TfLiteRegistrationExternalSetInvoke(
@@ -313,8 +286,7 @@ class TensorFlowLiteBindings {
                   ffi.Pointer<TfLiteRegistrationExternal>,
                   ffi.Pointer<
                       ffi.NativeFunction<
-                          ffi.Int32 Function(
-                              ffi.Pointer<TfLiteOpaqueContext> context,
+                          ffi.Int32 Function(ffi.Pointer<TfLiteOpaqueContext> context,
                               ffi.Pointer<TfLiteOpaqueNode> node)>>)>>(
       'TfLiteRegistrationExternalSetInvoke');
   late final _TfLiteRegistrationExternalSetInvoke =
@@ -323,8 +295,7 @@ class TensorFlowLiteBindings {
               ffi.Pointer<TfLiteRegistrationExternal>,
               ffi.Pointer<
                   ffi.NativeFunction<
-                      ffi.Int32 Function(
-                          ffi.Pointer<TfLiteOpaqueContext> context,
+                      ffi.Int32 Function(ffi.Pointer<TfLiteOpaqueContext> context,
                           ffi.Pointer<TfLiteOpaqueNode> node)>>)>();
 
   /// Returns a new interpreter options instances.
@@ -332,12 +303,11 @@ class TensorFlowLiteBindings {
     return _TfLiteInterpreterOptionsCreate();
   }
 
-  late final _TfLiteInterpreterOptionsCreatePtr = _lookup<
-          ffi.NativeFunction<ffi.Pointer<TfLiteInterpreterOptions> Function()>>(
-      'TfLiteInterpreterOptionsCreate');
-  late final _TfLiteInterpreterOptionsCreate =
-      _TfLiteInterpreterOptionsCreatePtr.asFunction<
-          ffi.Pointer<TfLiteInterpreterOptions> Function()>();
+  late final _TfLiteInterpreterOptionsCreatePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<TfLiteInterpreterOptions> Function()>>(
+          'TfLiteInterpreterOptionsCreate');
+  late final _TfLiteInterpreterOptionsCreate = _TfLiteInterpreterOptionsCreatePtr.asFunction<
+      ffi.Pointer<TfLiteInterpreterOptions> Function()>();
 
   /// Destroys the interpreter options instance.
   void TfLiteInterpreterOptionsDelete(
@@ -348,13 +318,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteInterpreterOptionsDeletePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(ffi.Pointer<TfLiteInterpreterOptions>)>>(
-      'TfLiteInterpreterOptionsDelete');
-  late final _TfLiteInterpreterOptionsDelete =
-      _TfLiteInterpreterOptionsDeletePtr.asFunction<
-          void Function(ffi.Pointer<TfLiteInterpreterOptions>)>();
+  late final _TfLiteInterpreterOptionsDeletePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteInterpreterOptions>)>>(
+          'TfLiteInterpreterOptionsDelete');
+  late final _TfLiteInterpreterOptionsDelete = _TfLiteInterpreterOptionsDeletePtr.asFunction<
+      void Function(ffi.Pointer<TfLiteInterpreterOptions>)>();
 
   /// Sets the number of CPU threads to use for the interpreter.
   void TfLiteInterpreterOptionsSetNumThreads(
@@ -368,12 +336,10 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterOptionsSetNumThreadsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TfLiteInterpreterOptions>,
-              ffi.Int32)>>('TfLiteInterpreterOptionsSetNumThreads');
-  late final _TfLiteInterpreterOptionsSetNumThreads =
-      _TfLiteInterpreterOptionsSetNumThreadsPtr.asFunction<
-          void Function(ffi.Pointer<TfLiteInterpreterOptions>, int)>();
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteInterpreterOptions>, ffi.Int32)>>(
+      'TfLiteInterpreterOptionsSetNumThreads');
+  late final _TfLiteInterpreterOptionsSetNumThreads = _TfLiteInterpreterOptionsSetNumThreadsPtr
+      .asFunction<void Function(ffi.Pointer<TfLiteInterpreterOptions>, int)>();
 
   /// Adds a delegate to be applied during `TfLiteInterpreter` creation.
   ///
@@ -393,14 +359,12 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterOptionsAddDelegatePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(ffi.Pointer<TfLiteInterpreterOptions>,
-                  ffi.Pointer<TfLiteDelegate>)>>(
-      'TfLiteInterpreterOptionsAddDelegate');
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<TfLiteInterpreterOptions>,
+              ffi.Pointer<TfLiteDelegate>)>>('TfLiteInterpreterOptionsAddDelegate');
   late final _TfLiteInterpreterOptionsAddDelegate =
       _TfLiteInterpreterOptionsAddDelegatePtr.asFunction<
-          void Function(ffi.Pointer<TfLiteInterpreterOptions>,
-              ffi.Pointer<TfLiteDelegate>)>();
+          void Function(ffi.Pointer<TfLiteInterpreterOptions>, ffi.Pointer<TfLiteDelegate>)>();
 
   /// Adds an opaque delegate to be applied during `TfLiteInterpreter` creation.
   ///
@@ -421,13 +385,13 @@ class TensorFlowLiteBindings {
 
   late final _TfLiteInterpreterOptionsAddOpaqueDelegatePtr = _lookup<
           ffi.NativeFunction<
-              ffi.Void Function(ffi.Pointer<TfLiteInterpreterOptions>,
-                  ffi.Pointer<TfLiteOpaqueDelegateStruct>)>>(
+              ffi.Void Function(
+                  ffi.Pointer<TfLiteInterpreterOptions>, ffi.Pointer<TfLiteOpaqueDelegateStruct>)>>(
       'TfLiteInterpreterOptionsAddOpaqueDelegate');
   late final _TfLiteInterpreterOptionsAddOpaqueDelegate =
       _TfLiteInterpreterOptionsAddOpaqueDelegatePtr.asFunction<
-          void Function(ffi.Pointer<TfLiteInterpreterOptions>,
-              ffi.Pointer<TfLiteOpaqueDelegateStruct>)>();
+          void Function(
+              ffi.Pointer<TfLiteInterpreterOptions>, ffi.Pointer<TfLiteOpaqueDelegateStruct>)>();
 
   /// Sets a custom error reporter for interpreter execution.
   ///
@@ -439,8 +403,8 @@ class TensorFlowLiteBindings {
     ffi.Pointer<TfLiteInterpreterOptions> options,
     ffi.Pointer<
             ffi.NativeFunction<
-                ffi.Void Function(ffi.Pointer<ffi.Void> user_data,
-                    ffi.Pointer<ffi.Char> format, va_list args)>>
+                ffi.Void Function(
+                    ffi.Pointer<ffi.Void> user_data, ffi.Pointer<ffi.Char> format, va_list args)>>
         reporter,
     ffi.Pointer<ffi.Void> user_data,
   ) {
@@ -452,15 +416,14 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterOptionsSetErrorReporterPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(
-                  ffi.Pointer<TfLiteInterpreterOptions>,
-                  ffi.Pointer<
-                      ffi.NativeFunction<
-                          ffi.Void Function(ffi.Pointer<ffi.Void> user_data,
-                              ffi.Pointer<ffi.Char> format, va_list args)>>,
-                  ffi.Pointer<ffi.Void>)>>(
-      'TfLiteInterpreterOptionsSetErrorReporter');
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<TfLiteInterpreterOptions>,
+              ffi.Pointer<
+                  ffi.NativeFunction<
+                      ffi.Void Function(ffi.Pointer<ffi.Void> user_data,
+                          ffi.Pointer<ffi.Char> format, va_list args)>>,
+              ffi.Pointer<ffi.Void>)>>('TfLiteInterpreterOptionsSetErrorReporter');
   late final _TfLiteInterpreterOptionsSetErrorReporter =
       _TfLiteInterpreterOptionsSetErrorReporterPtr.asFunction<
           void Function(
@@ -495,13 +458,13 @@ class TensorFlowLiteBindings {
 
   late final _TfLiteInterpreterOptionsAddRegistrationExternalPtr = _lookup<
           ffi.NativeFunction<
-              ffi.Void Function(ffi.Pointer<TfLiteInterpreterOptions>,
-                  ffi.Pointer<TfLiteRegistrationExternal>)>>(
+              ffi.Void Function(
+                  ffi.Pointer<TfLiteInterpreterOptions>, ffi.Pointer<TfLiteRegistrationExternal>)>>(
       'TfLiteInterpreterOptionsAddRegistrationExternal');
   late final _TfLiteInterpreterOptionsAddRegistrationExternal =
       _TfLiteInterpreterOptionsAddRegistrationExternalPtr.asFunction<
-          void Function(ffi.Pointer<TfLiteInterpreterOptions>,
-              ffi.Pointer<TfLiteRegistrationExternal>)>();
+          void Function(
+              ffi.Pointer<TfLiteInterpreterOptions>, ffi.Pointer<TfLiteRegistrationExternal>)>();
 
   /// Returns a new interpreter using the provided model and options, or null on
   /// failure.
@@ -532,10 +495,9 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterCreatePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Pointer<TfLiteInterpreter> Function(ffi.Pointer<TfLiteModel>,
-                  ffi.Pointer<TfLiteInterpreterOptions>)>>(
-      'TfLiteInterpreterCreate');
+      ffi.NativeFunction<
+          ffi.Pointer<TfLiteInterpreter> Function(ffi.Pointer<TfLiteModel>,
+              ffi.Pointer<TfLiteInterpreterOptions>)>>('TfLiteInterpreterCreate');
   late final _TfLiteInterpreterCreate = _TfLiteInterpreterCreatePtr.asFunction<
       ffi.Pointer<TfLiteInterpreter> Function(
           ffi.Pointer<TfLiteModel>, ffi.Pointer<TfLiteInterpreterOptions>)>();
@@ -549,12 +511,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteInterpreterDeletePtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteInterpreter>)>>(
-      'TfLiteInterpreterDelete');
-  late final _TfLiteInterpreterDelete = _TfLiteInterpreterDeletePtr.asFunction<
-      void Function(ffi.Pointer<TfLiteInterpreter>)>();
+  late final _TfLiteInterpreterDeletePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteInterpreter>)>>(
+          'TfLiteInterpreterDelete');
+  late final _TfLiteInterpreterDelete =
+      _TfLiteInterpreterDeletePtr.asFunction<void Function(ffi.Pointer<TfLiteInterpreter>)>();
 
   /// Returns the number of input tensors associated with the model.
   int TfLiteInterpreterGetInputTensorCount(
@@ -565,13 +526,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteInterpreterGetInputTensorCountPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
-      'TfLiteInterpreterGetInputTensorCount');
-  late final _TfLiteInterpreterGetInputTensorCount =
-      _TfLiteInterpreterGetInputTensorCountPtr.asFunction<
-          int Function(ffi.Pointer<TfLiteInterpreter>)>();
+  late final _TfLiteInterpreterGetInputTensorCountPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
+          'TfLiteInterpreterGetInputTensorCount');
+  late final _TfLiteInterpreterGetInputTensorCount = _TfLiteInterpreterGetInputTensorCountPtr
+      .asFunction<int Function(ffi.Pointer<TfLiteInterpreter>)>();
 
   /// Returns the tensor associated with the input index.
   /// REQUIRES: 0 <= input_index < TfLiteInterpreterGetInputTensorCount(tensor)
@@ -587,12 +546,10 @@ class TensorFlowLiteBindings {
 
   late final _TfLiteInterpreterGetInputTensorPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<TfLiteTensor> Function(ffi.Pointer<TfLiteInterpreter>,
-              ffi.Int32)>>('TfLiteInterpreterGetInputTensor');
-  late final _TfLiteInterpreterGetInputTensor =
-      _TfLiteInterpreterGetInputTensorPtr.asFunction<
           ffi.Pointer<TfLiteTensor> Function(
-              ffi.Pointer<TfLiteInterpreter>, int)>();
+              ffi.Pointer<TfLiteInterpreter>, ffi.Int32)>>('TfLiteInterpreterGetInputTensor');
+  late final _TfLiteInterpreterGetInputTensor = _TfLiteInterpreterGetInputTensorPtr.asFunction<
+      ffi.Pointer<TfLiteTensor> Function(ffi.Pointer<TfLiteInterpreter>, int)>();
 
   /// Resizes the specified input tensor.
   ///
@@ -619,15 +576,10 @@ class TensorFlowLiteBindings {
 
   late final _TfLiteInterpreterResizeInputTensorPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<TfLiteInterpreter>,
-              ffi.Int32,
-              ffi.Pointer<ffi.Int>,
+          ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>, ffi.Int32, ffi.Pointer<ffi.Int>,
               ffi.Int32)>>('TfLiteInterpreterResizeInputTensor');
-  late final _TfLiteInterpreterResizeInputTensor =
-      _TfLiteInterpreterResizeInputTensorPtr.asFunction<
-          int Function(ffi.Pointer<TfLiteInterpreter>, int,
-              ffi.Pointer<ffi.Int>, int)>();
+  late final _TfLiteInterpreterResizeInputTensor = _TfLiteInterpreterResizeInputTensorPtr
+      .asFunction<int Function(ffi.Pointer<TfLiteInterpreter>, int, ffi.Pointer<ffi.Int>, int)>();
 
   /// Updates allocations for all tensors, resizing dependent tensors using the
   /// specified input tensor dimensionality.
@@ -642,13 +594,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteInterpreterAllocateTensorsPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
-      'TfLiteInterpreterAllocateTensors');
-  late final _TfLiteInterpreterAllocateTensors =
-      _TfLiteInterpreterAllocateTensorsPtr.asFunction<
-          int Function(ffi.Pointer<TfLiteInterpreter>)>();
+  late final _TfLiteInterpreterAllocateTensorsPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
+          'TfLiteInterpreterAllocateTensors');
+  late final _TfLiteInterpreterAllocateTensors = _TfLiteInterpreterAllocateTensorsPtr.asFunction<
+      int Function(ffi.Pointer<TfLiteInterpreter>)>();
 
   /// Runs inference for the loaded graph.
   ///
@@ -687,12 +637,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteInterpreterInvokePtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
-      'TfLiteInterpreterInvoke');
-  late final _TfLiteInterpreterInvoke = _TfLiteInterpreterInvokePtr.asFunction<
-      int Function(ffi.Pointer<TfLiteInterpreter>)>();
+  late final _TfLiteInterpreterInvokePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
+          'TfLiteInterpreterInvoke');
+  late final _TfLiteInterpreterInvoke =
+      _TfLiteInterpreterInvokePtr.asFunction<int Function(ffi.Pointer<TfLiteInterpreter>)>();
 
   /// Returns the number of output tensors associated with the model.
   int TfLiteInterpreterGetOutputTensorCount(
@@ -703,13 +652,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteInterpreterGetOutputTensorCountPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
-      'TfLiteInterpreterGetOutputTensorCount');
-  late final _TfLiteInterpreterGetOutputTensorCount =
-      _TfLiteInterpreterGetOutputTensorCountPtr.asFunction<
-          int Function(ffi.Pointer<TfLiteInterpreter>)>();
+  late final _TfLiteInterpreterGetOutputTensorCountPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
+          'TfLiteInterpreterGetOutputTensorCount');
+  late final _TfLiteInterpreterGetOutputTensorCount = _TfLiteInterpreterGetOutputTensorCountPtr
+      .asFunction<int Function(ffi.Pointer<TfLiteInterpreter>)>();
 
   /// Returns the tensor associated with the output index.
   /// REQUIRES: 0 <= output_index < TfLiteInterpreterGetOutputTensorCount(tensor)
@@ -730,12 +677,10 @@ class TensorFlowLiteBindings {
 
   late final _TfLiteInterpreterGetOutputTensorPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<TfLiteTensor> Function(ffi.Pointer<TfLiteInterpreter>,
-              ffi.Int32)>>('TfLiteInterpreterGetOutputTensor');
-  late final _TfLiteInterpreterGetOutputTensor =
-      _TfLiteInterpreterGetOutputTensorPtr.asFunction<
           ffi.Pointer<TfLiteTensor> Function(
-              ffi.Pointer<TfLiteInterpreter>, int)>();
+              ffi.Pointer<TfLiteInterpreter>, ffi.Int32)>>('TfLiteInterpreterGetOutputTensor');
+  late final _TfLiteInterpreterGetOutputTensor = _TfLiteInterpreterGetOutputTensorPtr.asFunction<
+      ffi.Pointer<TfLiteTensor> Function(ffi.Pointer<TfLiteInterpreter>, int)>();
 
   /// Returns the type of a tensor element.
   int TfLiteTensorType(
@@ -746,11 +691,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteTensorTypePtr = _lookup<
-          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteTensor>)>>(
-      'TfLiteTensorType');
-  late final _TfLiteTensorType = _TfLiteTensorTypePtr.asFunction<
-      int Function(ffi.Pointer<TfLiteTensor>)>();
+  late final _TfLiteTensorTypePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteTensor>)>>(
+          'TfLiteTensorType');
+  late final _TfLiteTensorType =
+      _TfLiteTensorTypePtr.asFunction<int Function(ffi.Pointer<TfLiteTensor>)>();
 
   /// Returns the number of dimensions that the tensor has.
   int TfLiteTensorNumDims(
@@ -761,11 +706,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteTensorNumDimsPtr = _lookup<
-          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteTensor>)>>(
-      'TfLiteTensorNumDims');
-  late final _TfLiteTensorNumDims = _TfLiteTensorNumDimsPtr.asFunction<
-      int Function(ffi.Pointer<TfLiteTensor>)>();
+  late final _TfLiteTensorNumDimsPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteTensor>)>>(
+          'TfLiteTensorNumDims');
+  late final _TfLiteTensorNumDims =
+      _TfLiteTensorNumDimsPtr.asFunction<int Function(ffi.Pointer<TfLiteTensor>)>();
 
   /// Returns the length of the tensor in the "dim_index" dimension.
   /// REQUIRES: 0 <= dim_index < TFLiteTensorNumDims(tensor)
@@ -779,12 +724,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteTensorDimPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<TfLiteTensor>, ffi.Int32)>>('TfLiteTensorDim');
-  late final _TfLiteTensorDim = _TfLiteTensorDimPtr.asFunction<
-      int Function(ffi.Pointer<TfLiteTensor>, int)>();
+  late final _TfLiteTensorDimPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteTensor>, ffi.Int32)>>(
+          'TfLiteTensorDim');
+  late final _TfLiteTensorDim =
+      _TfLiteTensorDimPtr.asFunction<int Function(ffi.Pointer<TfLiteTensor>, int)>();
 
   /// Returns the size of the underlying data in bytes.
   int TfLiteTensorByteSize(
@@ -798,8 +742,8 @@ class TensorFlowLiteBindings {
   late final _TfLiteTensorByteSizePtr =
       _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<TfLiteTensor>)>>(
           'TfLiteTensorByteSize');
-  late final _TfLiteTensorByteSize = _TfLiteTensorByteSizePtr.asFunction<
-      int Function(ffi.Pointer<TfLiteTensor>)>();
+  late final _TfLiteTensorByteSize =
+      _TfLiteTensorByteSizePtr.asFunction<int Function(ffi.Pointer<TfLiteTensor>)>();
 
   /// Returns a pointer to the underlying data buffer.
   ///
@@ -815,12 +759,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteTensorDataPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<TfLiteTensor>)>>('TfLiteTensorData');
-  late final _TfLiteTensorData = _TfLiteTensorDataPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<TfLiteTensor>)>();
+  late final _TfLiteTensorDataPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<TfLiteTensor>)>>(
+          'TfLiteTensorData');
+  late final _TfLiteTensorData =
+      _TfLiteTensorDataPtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<TfLiteTensor>)>();
 
   /// Returns the (null-terminated) name of the tensor.
   ffi.Pointer<ffi.Char> TfLiteTensorName(
@@ -831,12 +774,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteTensorNamePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<TfLiteTensor>)>>('TfLiteTensorName');
-  late final _TfLiteTensorName = _TfLiteTensorNamePtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(ffi.Pointer<TfLiteTensor>)>();
+  late final _TfLiteTensorNamePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<TfLiteTensor>)>>(
+          'TfLiteTensorName');
+  late final _TfLiteTensorName =
+      _TfLiteTensorNamePtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<TfLiteTensor>)>();
 
   /// Returns the parameters for asymmetric quantization. The quantization
   /// parameters are only valid when the tensor type is `kTfLiteUInt8` and the
@@ -850,13 +792,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteTensorQuantizationParamsPtr = _lookup<
-      ffi.NativeFunction<
-          TfLiteQuantizationParams Function(
-              ffi.Pointer<TfLiteTensor>)>>('TfLiteTensorQuantizationParams');
-  late final _TfLiteTensorQuantizationParams =
-      _TfLiteTensorQuantizationParamsPtr.asFunction<
-          TfLiteQuantizationParams Function(ffi.Pointer<TfLiteTensor>)>();
+  late final _TfLiteTensorQuantizationParamsPtr =
+      _lookup<ffi.NativeFunction<TfLiteQuantizationParams Function(ffi.Pointer<TfLiteTensor>)>>(
+          'TfLiteTensorQuantizationParams');
+  late final _TfLiteTensorQuantizationParams = _TfLiteTensorQuantizationParamsPtr.asFunction<
+      TfLiteQuantizationParams Function(ffi.Pointer<TfLiteTensor>)>();
 
   /// Copies from the provided input buffer into the tensor's buffer.
   /// REQUIRES: input_data_size == TfLiteTensorByteSize(tensor)
@@ -876,10 +816,8 @@ class TensorFlowLiteBindings {
       ffi.NativeFunction<
           ffi.Int32 Function(ffi.Pointer<TfLiteTensor>, ffi.Pointer<ffi.Void>,
               ffi.Size)>>('TfLiteTensorCopyFromBuffer');
-  late final _TfLiteTensorCopyFromBuffer =
-      _TfLiteTensorCopyFromBufferPtr.asFunction<
-          int Function(
-              ffi.Pointer<TfLiteTensor>, ffi.Pointer<ffi.Void>, int)>();
+  late final _TfLiteTensorCopyFromBuffer = _TfLiteTensorCopyFromBufferPtr.asFunction<
+      int Function(ffi.Pointer<TfLiteTensor>, ffi.Pointer<ffi.Void>, int)>();
 
   /// Copies to the provided output buffer from the tensor's buffer.
   /// REQUIRES: output_data_size == TfLiteTensorByteSize(tensor)
@@ -899,10 +837,8 @@ class TensorFlowLiteBindings {
       ffi.NativeFunction<
           ffi.Int32 Function(ffi.Pointer<TfLiteTensor>, ffi.Pointer<ffi.Void>,
               ffi.Size)>>('TfLiteTensorCopyToBuffer');
-  late final _TfLiteTensorCopyToBuffer =
-      _TfLiteTensorCopyToBufferPtr.asFunction<
-          int Function(
-              ffi.Pointer<TfLiteTensor>, ffi.Pointer<ffi.Void>, int)>();
+  late final _TfLiteTensorCopyToBuffer = _TfLiteTensorCopyToBufferPtr.asFunction<
+      int Function(ffi.Pointer<TfLiteTensor>, ffi.Pointer<ffi.Void>, int)>();
 
   /// --------------------------------------------------------------------------
   /// Resets all variable tensors to zero.
@@ -916,13 +852,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteInterpreterResetVariableTensorsPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
-      'TfLiteInterpreterResetVariableTensors');
-  late final _TfLiteInterpreterResetVariableTensors =
-      _TfLiteInterpreterResetVariableTensorsPtr.asFunction<
-          int Function(ffi.Pointer<TfLiteInterpreter>)>();
+  late final _TfLiteInterpreterResetVariableTensorsPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
+          'TfLiteInterpreterResetVariableTensors');
+  late final _TfLiteInterpreterResetVariableTensors = _TfLiteInterpreterResetVariableTensorsPtr
+      .asFunction<int Function(ffi.Pointer<TfLiteInterpreter>)>();
 
   /// Adds an op registration for a builtin operator.
   ///
@@ -964,8 +898,8 @@ class TensorFlowLiteBindings {
               ffi.Int32)>>('TfLiteInterpreterOptionsAddBuiltinOp');
   late final _TfLiteInterpreterOptionsAddBuiltinOp =
       _TfLiteInterpreterOptionsAddBuiltinOpPtr.asFunction<
-          void Function(ffi.Pointer<TfLiteInterpreterOptions>, int,
-              ffi.Pointer<TfLiteRegistration>, int, int)>();
+          void Function(ffi.Pointer<TfLiteInterpreterOptions>, int, ffi.Pointer<TfLiteRegistration>,
+              int, int)>();
 
   /// Adds an op registration for a custom operator.
   ///
@@ -1010,12 +944,8 @@ class TensorFlowLiteBindings {
               ffi.Int32)>>('TfLiteInterpreterOptionsAddCustomOp');
   late final _TfLiteInterpreterOptionsAddCustomOp =
       _TfLiteInterpreterOptionsAddCustomOpPtr.asFunction<
-          void Function(
-              ffi.Pointer<TfLiteInterpreterOptions>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<TfLiteRegistration>,
-              int,
-              int)>();
+          void Function(ffi.Pointer<TfLiteInterpreterOptions>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<TfLiteRegistration>, int, int)>();
 
   /// Registers callbacks for resolving builtin or custom operators.
   ///
@@ -1038,16 +968,12 @@ class TensorFlowLiteBindings {
     ffi.Pointer<
             ffi.NativeFunction<
                 ffi.Pointer<TfLiteRegistration> Function(
-                    ffi.Pointer<ffi.Void> user_data,
-                    ffi.Int32 op,
-                    ffi.Int version)>>
+                    ffi.Pointer<ffi.Void> user_data, ffi.Int32 op, ffi.Int version)>>
         find_builtin_op,
     ffi.Pointer<
             ffi.NativeFunction<
-                ffi.Pointer<TfLiteRegistration> Function(
-                    ffi.Pointer<ffi.Void> user_data,
-                    ffi.Pointer<ffi.Char> custom_op,
-                    ffi.Int version)>>
+                ffi.Pointer<TfLiteRegistration> Function(ffi.Pointer<ffi.Void> user_data,
+                    ffi.Pointer<ffi.Char> custom_op, ffi.Int version)>>
         find_custom_op,
     ffi.Pointer<ffi.Void> op_resolver_user_data,
   ) {
@@ -1066,15 +992,11 @@ class TensorFlowLiteBindings {
               ffi.Pointer<
                   ffi.NativeFunction<
                       ffi.Pointer<TfLiteRegistration> Function(
-                          ffi.Pointer<ffi.Void> user_data,
-                          ffi.Int32 op,
-                          ffi.Int version)>>,
+                          ffi.Pointer<ffi.Void> user_data, ffi.Int32 op, ffi.Int version)>>,
               ffi.Pointer<
                   ffi.NativeFunction<
-                      ffi.Pointer<TfLiteRegistration> Function(
-                          ffi.Pointer<ffi.Void> user_data,
-                          ffi.Pointer<ffi.Char> custom_op,
-                          ffi.Int version)>>,
+                      ffi.Pointer<TfLiteRegistration> Function(ffi.Pointer<ffi.Void> user_data,
+                          ffi.Pointer<ffi.Char> custom_op, ffi.Int version)>>,
               ffi.Pointer<ffi.Void>)>>('TfLiteInterpreterOptionsSetOpResolver');
   late final _TfLiteInterpreterOptionsSetOpResolver =
       _TfLiteInterpreterOptionsSetOpResolverPtr.asFunction<
@@ -1083,15 +1005,11 @@ class TensorFlowLiteBindings {
               ffi.Pointer<
                   ffi.NativeFunction<
                       ffi.Pointer<TfLiteRegistration> Function(
-                          ffi.Pointer<ffi.Void> user_data,
-                          ffi.Int32 op,
-                          ffi.Int version)>>,
+                          ffi.Pointer<ffi.Void> user_data, ffi.Int32 op, ffi.Int version)>>,
               ffi.Pointer<
                   ffi.NativeFunction<
-                      ffi.Pointer<TfLiteRegistration> Function(
-                          ffi.Pointer<ffi.Void> user_data,
-                          ffi.Pointer<ffi.Char> custom_op,
-                          ffi.Int version)>>,
+                      ffi.Pointer<TfLiteRegistration> Function(ffi.Pointer<ffi.Void> user_data,
+                          ffi.Pointer<ffi.Char> custom_op, ffi.Int version)>>,
               ffi.Pointer<ffi.Void>)>();
 
   /// \private
@@ -1104,16 +1022,12 @@ class TensorFlowLiteBindings {
     ffi.Pointer<
             ffi.NativeFunction<
                 ffi.Pointer<TfLiteRegistration_V1> Function(
-                    ffi.Pointer<ffi.Void> user_data,
-                    ffi.Int32 op,
-                    ffi.Int version)>>
+                    ffi.Pointer<ffi.Void> user_data, ffi.Int32 op, ffi.Int version)>>
         find_builtin_op_v1,
     ffi.Pointer<
             ffi.NativeFunction<
                 ffi.Pointer<TfLiteRegistration_V1> Function(
-                    ffi.Pointer<ffi.Void> user_data,
-                    ffi.Pointer<ffi.Char> op,
-                    ffi.Int version)>>
+                    ffi.Pointer<ffi.Void> user_data, ffi.Pointer<ffi.Char> op, ffi.Int version)>>
         find_custom_op_v1,
     ffi.Pointer<ffi.Void> op_resolver_user_data,
   ) {
@@ -1126,23 +1040,18 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterOptionsSetOpResolverV1Ptr = _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(
-                  ffi.Pointer<TfLiteInterpreterOptions>,
-                  ffi.Pointer<
-                      ffi.NativeFunction<
-                          ffi.Pointer<TfLiteRegistration_V1> Function(
-                              ffi.Pointer<ffi.Void> user_data,
-                              ffi.Int32 op,
-                              ffi.Int version)>>,
-                  ffi.Pointer<
-                      ffi.NativeFunction<
-                          ffi.Pointer<TfLiteRegistration_V1> Function(
-                              ffi.Pointer<ffi.Void> user_data,
-                              ffi.Pointer<ffi.Char> op,
-                              ffi.Int version)>>,
-                  ffi.Pointer<ffi.Void>)>>(
-      'TfLiteInterpreterOptionsSetOpResolverV1');
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<TfLiteInterpreterOptions>,
+              ffi.Pointer<
+                  ffi.NativeFunction<
+                      ffi.Pointer<TfLiteRegistration_V1> Function(
+                          ffi.Pointer<ffi.Void> user_data, ffi.Int32 op, ffi.Int version)>>,
+              ffi.Pointer<
+                  ffi.NativeFunction<
+                      ffi.Pointer<TfLiteRegistration_V1> Function(ffi.Pointer<ffi.Void> user_data,
+                          ffi.Pointer<ffi.Char> op, ffi.Int version)>>,
+              ffi.Pointer<ffi.Void>)>>('TfLiteInterpreterOptionsSetOpResolverV1');
   late final _TfLiteInterpreterOptionsSetOpResolverV1 =
       _TfLiteInterpreterOptionsSetOpResolverV1Ptr.asFunction<
           void Function(
@@ -1150,15 +1059,11 @@ class TensorFlowLiteBindings {
               ffi.Pointer<
                   ffi.NativeFunction<
                       ffi.Pointer<TfLiteRegistration_V1> Function(
-                          ffi.Pointer<ffi.Void> user_data,
-                          ffi.Int32 op,
-                          ffi.Int version)>>,
+                          ffi.Pointer<ffi.Void> user_data, ffi.Int32 op, ffi.Int version)>>,
               ffi.Pointer<
                   ffi.NativeFunction<
-                      ffi.Pointer<TfLiteRegistration_V1> Function(
-                          ffi.Pointer<ffi.Void> user_data,
-                          ffi.Pointer<ffi.Char> op,
-                          ffi.Int version)>>,
+                      ffi.Pointer<TfLiteRegistration_V1> Function(ffi.Pointer<ffi.Void> user_data,
+                          ffi.Pointer<ffi.Char> op, ffi.Int version)>>,
               ffi.Pointer<ffi.Void>)>();
 
   /// Returns a new interpreter using the provided model and options, or null on
@@ -1191,14 +1096,13 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterCreateWithSelectedOpsPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Pointer<TfLiteInterpreter> Function(ffi.Pointer<TfLiteModel>,
-                  ffi.Pointer<TfLiteInterpreterOptions>)>>(
-      'TfLiteInterpreterCreateWithSelectedOps');
+      ffi.NativeFunction<
+          ffi.Pointer<TfLiteInterpreter> Function(ffi.Pointer<TfLiteModel>,
+              ffi.Pointer<TfLiteInterpreterOptions>)>>('TfLiteInterpreterCreateWithSelectedOps');
   late final _TfLiteInterpreterCreateWithSelectedOps =
       _TfLiteInterpreterCreateWithSelectedOpsPtr.asFunction<
-          ffi.Pointer<TfLiteInterpreter> Function(ffi.Pointer<TfLiteModel>,
-              ffi.Pointer<TfLiteInterpreterOptions>)>();
+          ffi.Pointer<TfLiteInterpreter> Function(
+              ffi.Pointer<TfLiteModel>, ffi.Pointer<TfLiteInterpreterOptions>)>();
 
   /// Enable or disable the NN API delegate for the interpreter (true to enable).
   ///
@@ -1214,12 +1118,10 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterOptionsSetUseNNAPIPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TfLiteInterpreterOptions>,
-              ffi.Bool)>>('TfLiteInterpreterOptionsSetUseNNAPI');
-  late final _TfLiteInterpreterOptionsSetUseNNAPI =
-      _TfLiteInterpreterOptionsSetUseNNAPIPtr.asFunction<
-          void Function(ffi.Pointer<TfLiteInterpreterOptions>, bool)>();
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteInterpreterOptions>, ffi.Bool)>>(
+      'TfLiteInterpreterOptionsSetUseNNAPI');
+  late final _TfLiteInterpreterOptionsSetUseNNAPI = _TfLiteInterpreterOptionsSetUseNNAPIPtr
+      .asFunction<void Function(ffi.Pointer<TfLiteInterpreterOptions>, bool)>();
 
   /// Enable or disable CPU fallback for the interpreter (true to enable).
   /// If enabled, TfLiteInterpreterInvoke will do automatic fallback from
@@ -1256,9 +1158,8 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterOptionsSetEnableDelegateFallbackPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TfLiteInterpreterOptions>,
-              ffi.Bool)>>('TfLiteInterpreterOptionsSetEnableDelegateFallback');
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteInterpreterOptions>, ffi.Bool)>>(
+      'TfLiteInterpreterOptionsSetEnableDelegateFallback');
   late final _TfLiteInterpreterOptionsSetEnableDelegateFallback =
       _TfLiteInterpreterOptionsSetEnableDelegateFallbackPtr.asFunction<
           void Function(ffi.Pointer<TfLiteInterpreterOptions>, bool)>();
@@ -1281,13 +1182,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteSetAllowBufferHandleOutputPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TfLiteInterpreter>,
-              ffi.Bool)>>('TfLiteSetAllowBufferHandleOutput');
-  late final _TfLiteSetAllowBufferHandleOutput =
-      _TfLiteSetAllowBufferHandleOutputPtr.asFunction<
-          void Function(ffi.Pointer<TfLiteInterpreter>, bool)>();
+  late final _TfLiteSetAllowBufferHandleOutputPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteInterpreter>, ffi.Bool)>>(
+          'TfLiteSetAllowBufferHandleOutput');
+  late final _TfLiteSetAllowBufferHandleOutput = _TfLiteSetAllowBufferHandleOutputPtr.asFunction<
+      void Function(ffi.Pointer<TfLiteInterpreter>, bool)>();
 
   /// Allow a delegate to look at the graph and modify the graph to handle
   /// parts of the graph themselves. After this is called, the graph may
@@ -1313,14 +1212,12 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteInterpreterModifyGraphWithDelegatePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>,
-                  ffi.Pointer<TfLiteDelegate>)>>(
-      'TfLiteInterpreterModifyGraphWithDelegate');
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>,
+              ffi.Pointer<TfLiteDelegate>)>>('TfLiteInterpreterModifyGraphWithDelegate');
   late final _TfLiteInterpreterModifyGraphWithDelegate =
       _TfLiteInterpreterModifyGraphWithDelegatePtr.asFunction<
-          int Function(
-              ffi.Pointer<TfLiteInterpreter>, ffi.Pointer<TfLiteDelegate>)>();
+          int Function(ffi.Pointer<TfLiteInterpreter>, ffi.Pointer<TfLiteDelegate>)>();
 
   /// Returns the tensor index corresponding to the input tensor
   ///
@@ -1335,13 +1232,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteInterpreterGetInputTensorIndexPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>,
-              ffi.Int32)>>('TfLiteInterpreterGetInputTensorIndex');
-  late final _TfLiteInterpreterGetInputTensorIndex =
-      _TfLiteInterpreterGetInputTensorIndexPtr.asFunction<
-          int Function(ffi.Pointer<TfLiteInterpreter>, int)>();
+  late final _TfLiteInterpreterGetInputTensorIndexPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>, ffi.Int32)>>(
+          'TfLiteInterpreterGetInputTensorIndex');
+  late final _TfLiteInterpreterGetInputTensorIndex = _TfLiteInterpreterGetInputTensorIndexPtr
+      .asFunction<int Function(ffi.Pointer<TfLiteInterpreter>, int)>();
 
   /// Returns the tensor index corresponding to the output tensor
   ///
@@ -1356,13 +1251,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteInterpreterGetOutputTensorIndexPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>,
-              ffi.Int32)>>('TfLiteInterpreterGetOutputTensorIndex');
-  late final _TfLiteInterpreterGetOutputTensorIndex =
-      _TfLiteInterpreterGetOutputTensorIndexPtr.asFunction<
-          int Function(ffi.Pointer<TfLiteInterpreter>, int)>();
+  late final _TfLiteInterpreterGetOutputTensorIndexPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>, ffi.Int32)>>(
+          'TfLiteInterpreterGetOutputTensorIndex');
+  late final _TfLiteInterpreterGetOutputTensorIndex = _TfLiteInterpreterGetOutputTensorIndexPtr
+      .asFunction<int Function(ffi.Pointer<TfLiteInterpreter>, int)>();
 
   /// Returns the number of signatures defined in the model.
   ///
@@ -1375,13 +1268,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteInterpreterGetSignatureCountPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
-      'TfLiteInterpreterGetSignatureCount');
-  late final _TfLiteInterpreterGetSignatureCount =
-      _TfLiteInterpreterGetSignatureCountPtr.asFunction<
-          int Function(ffi.Pointer<TfLiteInterpreter>)>();
+  late final _TfLiteInterpreterGetSignatureCountPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteInterpreter>)>>(
+          'TfLiteInterpreterGetSignatureCount');
+  late final _TfLiteInterpreterGetSignatureCount = _TfLiteInterpreterGetSignatureCountPtr
+      .asFunction<int Function(ffi.Pointer<TfLiteInterpreter>)>();
 
   /// Returns the key of the Nth signature in the model, where N is specified as
   /// `signature_index`.
@@ -1402,12 +1293,10 @@ class TensorFlowLiteBindings {
 
   late final _TfLiteInterpreterGetSignatureKeyPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<TfLiteInterpreter>,
-              ffi.Int32)>>('TfLiteInterpreterGetSignatureKey');
-  late final _TfLiteInterpreterGetSignatureKey =
-      _TfLiteInterpreterGetSignatureKeyPtr.asFunction<
           ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<TfLiteInterpreter>, int)>();
+              ffi.Pointer<TfLiteInterpreter>, ffi.Int32)>>('TfLiteInterpreterGetSignatureKey');
+  late final _TfLiteInterpreterGetSignatureKey = _TfLiteInterpreterGetSignatureKeyPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<TfLiteInterpreter>, int)>();
 
   /// Returns a new signature runner using the provided interpreter and signature
   /// key, or nullptr on failure.
@@ -1431,8 +1320,7 @@ class TensorFlowLiteBindings {
 
   late final _TfLiteInterpreterGetSignatureRunnerPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<TfLiteSignatureRunner> Function(
-              ffi.Pointer<TfLiteInterpreter>,
+          ffi.Pointer<TfLiteSignatureRunner> Function(ffi.Pointer<TfLiteInterpreter>,
               ffi.Pointer<ffi.Char>)>>('TfLiteInterpreterGetSignatureRunner');
   late final _TfLiteInterpreterGetSignatureRunner =
       _TfLiteInterpreterGetSignatureRunnerPtr.asFunction<
@@ -1450,13 +1338,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteSignatureRunnerGetInputCountPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Size Function(ffi.Pointer<TfLiteSignatureRunner>)>>(
-      'TfLiteSignatureRunnerGetInputCount');
-  late final _TfLiteSignatureRunnerGetInputCount =
-      _TfLiteSignatureRunnerGetInputCountPtr.asFunction<
-          int Function(ffi.Pointer<TfLiteSignatureRunner>)>();
+  late final _TfLiteSignatureRunnerGetInputCountPtr =
+      _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<TfLiteSignatureRunner>)>>(
+          'TfLiteSignatureRunnerGetInputCount');
+  late final _TfLiteSignatureRunnerGetInputCount = _TfLiteSignatureRunnerGetInputCountPtr
+      .asFunction<int Function(ffi.Pointer<TfLiteSignatureRunner>)>();
 
   /// Returns the (null-terminated) name of the Nth input in a signature, where N
   /// is specified as `input_index`.
@@ -1477,12 +1363,10 @@ class TensorFlowLiteBindings {
 
   late final _TfLiteSignatureRunnerGetInputNamePtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<TfLiteSignatureRunner>,
-              ffi.Int32)>>('TfLiteSignatureRunnerGetInputName');
-  late final _TfLiteSignatureRunnerGetInputName =
-      _TfLiteSignatureRunnerGetInputNamePtr.asFunction<
           ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<TfLiteSignatureRunner>, int)>();
+              ffi.Pointer<TfLiteSignatureRunner>, ffi.Int32)>>('TfLiteSignatureRunnerGetInputName');
+  late final _TfLiteSignatureRunnerGetInputName = _TfLiteSignatureRunnerGetInputNamePtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<TfLiteSignatureRunner>, int)>();
 
   /// Resizes the input tensor identified as `input_name` to be the dimensions
   /// specified by `input_dims` and `input_dims_size`. Only unknown dimensions can
@@ -1518,15 +1402,12 @@ class TensorFlowLiteBindings {
 
   late final _TfLiteSignatureRunnerResizeInputTensorPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<TfLiteSignatureRunner>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Int32)>>('TfLiteSignatureRunnerResizeInputTensor');
+          ffi.Int32 Function(ffi.Pointer<TfLiteSignatureRunner>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Int>, ffi.Int32)>>('TfLiteSignatureRunnerResizeInputTensor');
   late final _TfLiteSignatureRunnerResizeInputTensor =
       _TfLiteSignatureRunnerResizeInputTensorPtr.asFunction<
-          int Function(ffi.Pointer<TfLiteSignatureRunner>,
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Int>, int)>();
+          int Function(ffi.Pointer<TfLiteSignatureRunner>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Int>, int)>();
 
   /// Updates allocations for tensors associated with a signature and resizes
   /// dependent tensors using the specified input tensor dimensionality.
@@ -1542,13 +1423,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteSignatureRunnerAllocateTensorsPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int32 Function(ffi.Pointer<TfLiteSignatureRunner>)>>(
-      'TfLiteSignatureRunnerAllocateTensors');
-  late final _TfLiteSignatureRunnerAllocateTensors =
-      _TfLiteSignatureRunnerAllocateTensorsPtr.asFunction<
-          int Function(ffi.Pointer<TfLiteSignatureRunner>)>();
+  late final _TfLiteSignatureRunnerAllocateTensorsPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteSignatureRunner>)>>(
+          'TfLiteSignatureRunnerAllocateTensors');
+  late final _TfLiteSignatureRunnerAllocateTensors = _TfLiteSignatureRunnerAllocateTensorsPtr
+      .asFunction<int Function(ffi.Pointer<TfLiteSignatureRunner>)>();
 
   /// Returns the input tensor identified by `input_name` in the given signature.
   /// Returns nullptr if the given name is not valid.
@@ -1592,12 +1471,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteSignatureRunnerInvokePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int32 Function(ffi.Pointer<TfLiteSignatureRunner>)>>(
-      'TfLiteSignatureRunnerInvoke');
-  late final _TfLiteSignatureRunnerInvoke = _TfLiteSignatureRunnerInvokePtr
-      .asFunction<int Function(ffi.Pointer<TfLiteSignatureRunner>)>();
+  late final _TfLiteSignatureRunnerInvokePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteSignatureRunner>)>>(
+          'TfLiteSignatureRunnerInvoke');
+  late final _TfLiteSignatureRunnerInvoke = _TfLiteSignatureRunnerInvokePtr.asFunction<
+      int Function(ffi.Pointer<TfLiteSignatureRunner>)>();
 
   /// Returns the number of output tensors associated with the signature.
   ///
@@ -1610,13 +1488,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteSignatureRunnerGetOutputCountPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Size Function(ffi.Pointer<TfLiteSignatureRunner>)>>(
-      'TfLiteSignatureRunnerGetOutputCount');
-  late final _TfLiteSignatureRunnerGetOutputCount =
-      _TfLiteSignatureRunnerGetOutputCountPtr.asFunction<
-          int Function(ffi.Pointer<TfLiteSignatureRunner>)>();
+  late final _TfLiteSignatureRunnerGetOutputCountPtr =
+      _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<TfLiteSignatureRunner>)>>(
+          'TfLiteSignatureRunnerGetOutputCount');
+  late final _TfLiteSignatureRunnerGetOutputCount = _TfLiteSignatureRunnerGetOutputCountPtr
+      .asFunction<int Function(ffi.Pointer<TfLiteSignatureRunner>)>();
 
   /// Returns the (null-terminated) name of the Nth output in a signature, where
   /// N is specified as `output_index`.
@@ -1639,10 +1515,8 @@ class TensorFlowLiteBindings {
       ffi.NativeFunction<
           ffi.Pointer<ffi.Char> Function(ffi.Pointer<TfLiteSignatureRunner>,
               ffi.Int32)>>('TfLiteSignatureRunnerGetOutputName');
-  late final _TfLiteSignatureRunnerGetOutputName =
-      _TfLiteSignatureRunnerGetOutputNamePtr.asFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<TfLiteSignatureRunner>, int)>();
+  late final _TfLiteSignatureRunnerGetOutputName = _TfLiteSignatureRunnerGetOutputNamePtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<TfLiteSignatureRunner>, int)>();
 
   /// Returns the output tensor identified by `output_name` in the given
   /// signature. Returns nullptr if the given name is not valid.
@@ -1681,12 +1555,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteSignatureRunnerDeletePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(ffi.Pointer<TfLiteSignatureRunner>)>>(
-      'TfLiteSignatureRunnerDelete');
-  late final _TfLiteSignatureRunnerDelete = _TfLiteSignatureRunnerDeletePtr
-      .asFunction<void Function(ffi.Pointer<TfLiteSignatureRunner>)>();
+  late final _TfLiteSignatureRunnerDeletePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteSignatureRunner>)>>(
+          'TfLiteSignatureRunnerDelete');
+  late final _TfLiteSignatureRunnerDelete = _TfLiteSignatureRunnerDeletePtr.asFunction<
+      void Function(ffi.Pointer<TfLiteSignatureRunner>)>();
 
   /// Return a delegate that uses CoreML for ops execution.
   /// Must outlive the interpreter.
@@ -1699,14 +1572,11 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteCoreMlDelegateCreatePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Pointer<TfLiteDelegate> Function(
-                  ffi.Pointer<TfLiteCoreMlDelegateOptions>)>>(
-      'TfLiteCoreMlDelegateCreate');
-  late final _TfLiteCoreMlDelegateCreate =
-      _TfLiteCoreMlDelegateCreatePtr.asFunction<
+      ffi.NativeFunction<
           ffi.Pointer<TfLiteDelegate> Function(
-              ffi.Pointer<TfLiteCoreMlDelegateOptions>)>();
+              ffi.Pointer<TfLiteCoreMlDelegateOptions>)>>('TfLiteCoreMlDelegateCreate');
+  late final _TfLiteCoreMlDelegateCreate = _TfLiteCoreMlDelegateCreatePtr.asFunction<
+      ffi.Pointer<TfLiteDelegate> Function(ffi.Pointer<TfLiteCoreMlDelegateOptions>)>();
 
   /// Do any needed cleanup and delete 'delegate'.
   void TfLiteCoreMlDelegateDelete(
@@ -1717,11 +1587,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteCoreMlDelegateDeletePtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteDelegate>)>>(
-      'TfLiteCoreMlDelegateDelete');
-  late final _TfLiteCoreMlDelegateDelete = _TfLiteCoreMlDelegateDeletePtr
-      .asFunction<void Function(ffi.Pointer<TfLiteDelegate>)>();
+  late final _TfLiteCoreMlDelegateDeletePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteDelegate>)>>(
+          'TfLiteCoreMlDelegateDelete');
+  late final _TfLiteCoreMlDelegateDelete =
+      _TfLiteCoreMlDelegateDeletePtr.asFunction<void Function(ffi.Pointer<TfLiteDelegate>)>();
 
   /// Populates TFLGpuDelegateOptions as follows:
   /// allow_precision_loss = false;
@@ -1732,10 +1602,9 @@ class TensorFlowLiteBindings {
   }
 
   late final _TFLGpuDelegateOptionsDefaultPtr =
-      _lookup<ffi.NativeFunction<TFLGpuDelegateOptions Function()>>(
-          'TFLGpuDelegateOptionsDefault');
-  late final _TFLGpuDelegateOptionsDefault = _TFLGpuDelegateOptionsDefaultPtr
-      .asFunction<TFLGpuDelegateOptions Function()>();
+      _lookup<ffi.NativeFunction<TFLGpuDelegateOptions Function()>>('TFLGpuDelegateOptionsDefault');
+  late final _TFLGpuDelegateOptionsDefault =
+      _TFLGpuDelegateOptionsDefaultPtr.asFunction<TFLGpuDelegateOptions Function()>();
 
   /// Creates a new delegate instance that need to be destroyed with
   /// `TFLDeleteTfLiteGpuDelegate` when delegate is no longer used by TFLite.
@@ -1755,8 +1624,7 @@ class TensorFlowLiteBindings {
           ffi.Pointer<TfLiteDelegate> Function(
               ffi.Pointer<TFLGpuDelegateOptions>)>>('TFLGpuDelegateCreate');
   late final _TFLGpuDelegateCreate = _TFLGpuDelegateCreatePtr.asFunction<
-      ffi.Pointer<TfLiteDelegate> Function(
-          ffi.Pointer<TFLGpuDelegateOptions>)>();
+      ffi.Pointer<TfLiteDelegate> Function(ffi.Pointer<TFLGpuDelegateOptions>)>();
 
   /// Destroys a delegate created with `TFLGpuDelegateCreate` call.
   void TFLGpuDelegateDelete(
@@ -1767,11 +1635,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TFLGpuDelegateDeletePtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteDelegate>)>>(
-      'TFLGpuDelegateDelete');
-  late final _TFLGpuDelegateDelete = _TFLGpuDelegateDeletePtr.asFunction<
-      void Function(ffi.Pointer<TfLiteDelegate>)>();
+  late final _TFLGpuDelegateDeletePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteDelegate>)>>(
+          'TFLGpuDelegateDelete');
+  late final _TFLGpuDelegateDelete =
+      _TFLGpuDelegateDeletePtr.asFunction<void Function(ffi.Pointer<TfLiteDelegate>)>();
 
   /// Binds Metal buffer to an input or an output tensor in the initialized
   /// delegate. Bound buffer should have sufficient storage to accommodate all
@@ -1793,13 +1661,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TFLGpuDelegateBindMetalBufferToTensorPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Bool Function(ffi.Pointer<TfLiteDelegate>, ffi.Int,
-              ffi.Int)>>('TFLGpuDelegateBindMetalBufferToTensor');
-  late final _TFLGpuDelegateBindMetalBufferToTensor =
-      _TFLGpuDelegateBindMetalBufferToTensorPtr.asFunction<
-          bool Function(ffi.Pointer<TfLiteDelegate>, int, int)>();
+  late final _TFLGpuDelegateBindMetalBufferToTensorPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TfLiteDelegate>, ffi.Int, ffi.Int)>>(
+          'TFLGpuDelegateBindMetalBufferToTensor');
+  late final _TFLGpuDelegateBindMetalBufferToTensor = _TFLGpuDelegateBindMetalBufferToTensorPtr
+      .asFunction<bool Function(ffi.Pointer<TfLiteDelegate>, int, int)>();
 
   /// Returns a structure with the default XNNPack delegate options.
   TfLiteXNNPackDelegateOptions TfLiteXNNPackDelegateOptionsDefault() {
@@ -1810,8 +1676,7 @@ class TensorFlowLiteBindings {
       _lookup<ffi.NativeFunction<TfLiteXNNPackDelegateOptions Function()>>(
           'TfLiteXNNPackDelegateOptionsDefault');
   late final _TfLiteXNNPackDelegateOptionsDefault =
-      _TfLiteXNNPackDelegateOptionsDefaultPtr.asFunction<
-          TfLiteXNNPackDelegateOptions Function()>();
+      _TfLiteXNNPackDelegateOptionsDefaultPtr.asFunction<TfLiteXNNPackDelegateOptions Function()>();
 
   /// Creates a new delegate instance that need to be destroyed with
   /// `TfLiteXNNPackDelegateDelete` when delegate is no longer used by TFLite.
@@ -1827,14 +1692,11 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteXNNPackDelegateCreatePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Pointer<TfLiteDelegate> Function(
-                  ffi.Pointer<TfLiteXNNPackDelegateOptions>)>>(
-      'TfLiteXNNPackDelegateCreate');
-  late final _TfLiteXNNPackDelegateCreate =
-      _TfLiteXNNPackDelegateCreatePtr.asFunction<
+      ffi.NativeFunction<
           ffi.Pointer<TfLiteDelegate> Function(
-              ffi.Pointer<TfLiteXNNPackDelegateOptions>)>();
+              ffi.Pointer<TfLiteXNNPackDelegateOptions>)>>('TfLiteXNNPackDelegateCreate');
+  late final _TfLiteXNNPackDelegateCreate = _TfLiteXNNPackDelegateCreatePtr.asFunction<
+      ffi.Pointer<TfLiteDelegate> Function(ffi.Pointer<TfLiteXNNPackDelegateOptions>)>();
 
   /// Performs the same task as TfLiteXNNPackDelegateCreate, with one exception.
   /// If the context passed contains a non-null xnnpack_threadpool field,
@@ -1850,16 +1712,13 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteXNNPackDelegateCreateWithThreadpoolPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Pointer<TfLiteDelegate> Function(
-                  ffi.Pointer<TfLiteXNNPackDelegateOptions>,
-                  ffi.Pointer<TfLiteContext>)>>(
-      'TfLiteXNNPackDelegateCreateWithThreadpool');
+      ffi.NativeFunction<
+          ffi.Pointer<TfLiteDelegate> Function(ffi.Pointer<TfLiteXNNPackDelegateOptions>,
+              ffi.Pointer<TfLiteContext>)>>('TfLiteXNNPackDelegateCreateWithThreadpool');
   late final _TfLiteXNNPackDelegateCreateWithThreadpool =
       _TfLiteXNNPackDelegateCreateWithThreadpoolPtr.asFunction<
           ffi.Pointer<TfLiteDelegate> Function(
-              ffi.Pointer<TfLiteXNNPackDelegateOptions>,
-              ffi.Pointer<TfLiteContext>)>();
+              ffi.Pointer<TfLiteXNNPackDelegateOptions>, ffi.Pointer<TfLiteContext>)>();
 
   /// Returns the pthreadpool_t object used for parallelization in XNNPACK.
   /// Can return NULL if the XNNPack delegate is single-threaded.
@@ -1873,13 +1732,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteXNNPackDelegateGetThreadPoolPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Pointer<ffi.Void> Function(ffi.Pointer<TfLiteDelegate>)>>(
-      'TfLiteXNNPackDelegateGetThreadPool');
-  late final _TfLiteXNNPackDelegateGetThreadPool =
-      _TfLiteXNNPackDelegateGetThreadPoolPtr.asFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<TfLiteDelegate>)>();
+  late final _TfLiteXNNPackDelegateGetThreadPoolPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<TfLiteDelegate>)>>(
+          'TfLiteXNNPackDelegateGetThreadPool');
+  late final _TfLiteXNNPackDelegateGetThreadPool = _TfLiteXNNPackDelegateGetThreadPoolPtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<TfLiteDelegate>)>();
 
   /// Destroys a delegate created with `TfLiteXNNPackDelegateCreate` call.
   void TfLiteXNNPackDelegateDelete(
@@ -1890,33 +1747,29 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteXNNPackDelegateDeletePtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteDelegate>)>>(
-      'TfLiteXNNPackDelegateDelete');
-  late final _TfLiteXNNPackDelegateDelete = _TfLiteXNNPackDelegateDeletePtr
-      .asFunction<void Function(ffi.Pointer<TfLiteDelegate>)>();
+  late final _TfLiteXNNPackDelegateDeletePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteDelegate>)>>(
+          'TfLiteXNNPackDelegateDelete');
+  late final _TfLiteXNNPackDelegateDelete =
+      _TfLiteXNNPackDelegateDeletePtr.asFunction<void Function(ffi.Pointer<TfLiteDelegate>)>();
 
   /// Creates a new weights cache that can be shared with multiple delegate
   /// instances. Prefer TfLiteXNNPackDelegateWeightsCacheCreateWithSize which can
   /// reduce memory bandwidth.
-  ffi.Pointer<TfLiteXNNPackDelegateWeightsCache>
-      TfLiteXNNPackDelegateWeightsCacheCreate() {
+  ffi.Pointer<TfLiteXNNPackDelegateWeightsCache> TfLiteXNNPackDelegateWeightsCacheCreate() {
     return _TfLiteXNNPackDelegateWeightsCacheCreate();
   }
 
-  late final _TfLiteXNNPackDelegateWeightsCacheCreatePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TfLiteXNNPackDelegateWeightsCache>
-              Function()>>('TfLiteXNNPackDelegateWeightsCacheCreate');
-  late final _TfLiteXNNPackDelegateWeightsCacheCreate =
-      _TfLiteXNNPackDelegateWeightsCacheCreatePtr.asFunction<
-          ffi.Pointer<TfLiteXNNPackDelegateWeightsCache> Function()>();
+  late final _TfLiteXNNPackDelegateWeightsCacheCreatePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<TfLiteXNNPackDelegateWeightsCache> Function()>>(
+          'TfLiteXNNPackDelegateWeightsCacheCreate');
+  late final _TfLiteXNNPackDelegateWeightsCacheCreate = _TfLiteXNNPackDelegateWeightsCacheCreatePtr
+      .asFunction<ffi.Pointer<TfLiteXNNPackDelegateWeightsCache> Function()>();
 
   /// Creates a new weights cache with a specified initial size that can be shared
   /// with multiple delegate instances. The weights cache can hold up to size bytes
   /// without growing.
-  ffi.Pointer<TfLiteXNNPackDelegateWeightsCache>
-      TfLiteXNNPackDelegateWeightsCacheCreateWithSize(
+  ffi.Pointer<TfLiteXNNPackDelegateWeightsCache> TfLiteXNNPackDelegateWeightsCacheCreateWithSize(
     int size,
   ) {
     return _TfLiteXNNPackDelegateWeightsCacheCreateWithSize(
@@ -1925,9 +1778,8 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteXNNPackDelegateWeightsCacheCreateWithSizePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TfLiteXNNPackDelegateWeightsCache> Function(
-              ffi.Size)>>('TfLiteXNNPackDelegateWeightsCacheCreateWithSize');
+          ffi.NativeFunction<ffi.Pointer<TfLiteXNNPackDelegateWeightsCache> Function(ffi.Size)>>(
+      'TfLiteXNNPackDelegateWeightsCacheCreateWithSize');
   late final _TfLiteXNNPackDelegateWeightsCacheCreateWithSize =
       _TfLiteXNNPackDelegateWeightsCacheCreateWithSizePtr.asFunction<
           ffi.Pointer<TfLiteXNNPackDelegateWeightsCache> Function(int)>();
@@ -1947,9 +1799,7 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteXNNPackDelegateWeightsCacheFinalizeSoftPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Bool Function(
-                  ffi.Pointer<TfLiteXNNPackDelegateWeightsCache>)>>(
+          ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TfLiteXNNPackDelegateWeightsCache>)>>(
       'TfLiteXNNPackDelegateWeightsCacheFinalizeSoft');
   late final _TfLiteXNNPackDelegateWeightsCacheFinalizeSoft =
       _TfLiteXNNPackDelegateWeightsCacheFinalizeSoftPtr.asFunction<
@@ -1970,9 +1820,7 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteXNNPackDelegateWeightsCacheFinalizeHardPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Bool Function(
-                  ffi.Pointer<TfLiteXNNPackDelegateWeightsCache>)>>(
+          ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TfLiteXNNPackDelegateWeightsCache>)>>(
       'TfLiteXNNPackDelegateWeightsCacheFinalizeHard');
   late final _TfLiteXNNPackDelegateWeightsCacheFinalizeHard =
       _TfLiteXNNPackDelegateWeightsCacheFinalizeHardPtr.asFunction<
@@ -1989,13 +1837,10 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteXNNPackDelegateWeightsCacheDeletePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(
-                  ffi.Pointer<TfLiteXNNPackDelegateWeightsCache>)>>(
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteXNNPackDelegateWeightsCache>)>>(
       'TfLiteXNNPackDelegateWeightsCacheDelete');
-  late final _TfLiteXNNPackDelegateWeightsCacheDelete =
-      _TfLiteXNNPackDelegateWeightsCacheDeletePtr.asFunction<
-          void Function(ffi.Pointer<TfLiteXNNPackDelegateWeightsCache>)>();
+  late final _TfLiteXNNPackDelegateWeightsCacheDelete = _TfLiteXNNPackDelegateWeightsCacheDeletePtr
+      .asFunction<void Function(ffi.Pointer<TfLiteXNNPackDelegateWeightsCache>)>();
 
   /// Creates a new delegate instance that need to be destroyed with
   /// TfLiteGpuDelegateV2Delete when delegate is no longer used by TFLite.
@@ -2013,14 +1858,11 @@ class TensorFlowLiteBindings {
   }
 
   late final _TfLiteGpuDelegateV2CreatePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Pointer<TfLiteDelegate> Function(
-                  ffi.Pointer<TfLiteGpuDelegateOptionsV2>)>>(
-      'TfLiteGpuDelegateV2Create');
-  late final _TfLiteGpuDelegateV2Create =
-      _TfLiteGpuDelegateV2CreatePtr.asFunction<
+      ffi.NativeFunction<
           ffi.Pointer<TfLiteDelegate> Function(
-              ffi.Pointer<TfLiteGpuDelegateOptionsV2>)>();
+              ffi.Pointer<TfLiteGpuDelegateOptionsV2>)>>('TfLiteGpuDelegateV2Create');
+  late final _TfLiteGpuDelegateV2Create = _TfLiteGpuDelegateV2CreatePtr.asFunction<
+      ffi.Pointer<TfLiteDelegate> Function(ffi.Pointer<TfLiteGpuDelegateOptionsV2>)>();
 
   /// Destroys a delegate created with `TfLiteGpuDelegateV2Create` call.
   void TfLiteGpuDelegateV2Delete(
@@ -2031,11 +1873,11 @@ class TensorFlowLiteBindings {
     );
   }
 
-  late final _TfLiteGpuDelegateV2DeletePtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteDelegate>)>>(
-      'TfLiteGpuDelegateV2Delete');
-  late final _TfLiteGpuDelegateV2Delete = _TfLiteGpuDelegateV2DeletePtr
-      .asFunction<void Function(ffi.Pointer<TfLiteDelegate>)>();
+  late final _TfLiteGpuDelegateV2DeletePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteDelegate>)>>(
+          'TfLiteGpuDelegateV2Delete');
+  late final _TfLiteGpuDelegateV2Delete =
+      _TfLiteGpuDelegateV2DeletePtr.asFunction<void Function(ffi.Pointer<TfLiteDelegate>)>();
 
   /// Populates TfLiteGpuDelegateOptionsV2 as follows:
   /// is_precision_loss_allowed = false
@@ -2053,8 +1895,7 @@ class TensorFlowLiteBindings {
       _lookup<ffi.NativeFunction<TfLiteGpuDelegateOptionsV2 Function()>>(
           'TfLiteGpuDelegateOptionsV2Default');
   late final _TfLiteGpuDelegateOptionsV2Default =
-      _TfLiteGpuDelegateOptionsV2DefaultPtr.asFunction<
-          TfLiteGpuDelegateOptionsV2 Function()>();
+      _TfLiteGpuDelegateOptionsV2DefaultPtr.asFunction<TfLiteGpuDelegateOptionsV2 Function()>();
 }
 
 final class TfLiteModel extends ffi.Opaque {}
@@ -2075,8 +1916,8 @@ final class TfLiteDelegate extends ffi.Struct {
   /// delegated subgraphs of the original graph.
   external ffi.Pointer<
       ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<TfLiteContext> context,
-              ffi.Pointer<TfLiteDelegate> delegate)>> Prepare;
+          ffi.Int32 Function(
+              ffi.Pointer<TfLiteContext> context, ffi.Pointer<TfLiteDelegate> delegate)>> Prepare;
 
   /// Copy the data from delegate buffer handle into raw memory of the given
   /// 'tensor'. Note that the delegate is allowed to allocate the raw bytes as
@@ -2215,10 +2056,9 @@ final class TfLiteContext extends ffi.Struct {
   ///
   /// WARNING: This is an experimental interface that is subject to change.
   external ffi.Pointer<
-          ffi.NativeFunction<
-              ffi.Int32 Function(ffi.Pointer<TfLiteContext> context,
-                  ffi.Pointer<ffi.Pointer<TfLiteIntArray>> execution_plan)>>
-      GetExecutionPlan;
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<TfLiteContext> context,
+              ffi.Pointer<ffi.Pointer<TfLiteIntArray>> execution_plan)>> GetExecutionPlan;
 
   /// An array of tensors in the interpreter context (of length `tensors_size`)
   external ffi.Pointer<TfLiteTensor> tensors;
@@ -2230,44 +2070,41 @@ final class TfLiteContext extends ffi.Struct {
   /// NOTE: ResizeTensor takes ownership of newSize.
   external ffi.Pointer<
       ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<TfLiteContext>,
-              ffi.Pointer<TfLiteTensor>,
+          ffi.Int32 Function(ffi.Pointer<TfLiteContext>, ffi.Pointer<TfLiteTensor>,
               ffi.Pointer<TfLiteIntArray>)>> ResizeTensor;
 
   /// Request that an error be reported with format string msg.
   external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<TfLiteContext>, ffi.Pointer<ffi.Char>)>> ReportError;
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TfLiteContext>, ffi.Pointer<ffi.Char>)>>
+      ReportError;
 
   /// Add `tensors_to_add` tensors, preserving pre-existing Tensor entries.  If
   /// non-null, the value pointed to by `first_new_tensor_index` will be set to
   /// the index of the first new tensor.
   external ffi.Pointer<
           ffi.NativeFunction<
-              ffi.Int32 Function(
-                  ffi.Pointer<TfLiteContext>, ffi.Int, ffi.Pointer<ffi.Int>)>>
+              ffi.Int32 Function(ffi.Pointer<TfLiteContext>, ffi.Int, ffi.Pointer<ffi.Int>)>>
       AddTensors;
 
   /// Get a Tensor node by node_index.
   /// WARNING: This is an experimental interface that is subject to change.
   external ffi.Pointer<
-          ffi.NativeFunction<
-              ffi.Int32 Function(
-                  ffi.Pointer<TfLiteContext>,
-                  ffi.Int,
-                  ffi.Pointer<ffi.Pointer<TfLiteNode>>,
-                  ffi.Pointer<ffi.Pointer<TfLiteRegistration>>)>>
-      GetNodeAndRegistration;
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<TfLiteContext>,
+              ffi.Int,
+              ffi.Pointer<ffi.Pointer<TfLiteNode>>,
+              ffi.Pointer<ffi.Pointer<TfLiteRegistration>>)>> GetNodeAndRegistration;
 
   /// Replace ops with one or more stub delegate operations. This function
   /// does not take ownership of `nodes_to_replace`.
   external ffi.Pointer<
-          ffi.NativeFunction<
-              ffi.Int32 Function(ffi.Pointer<TfLiteContext>, TfLiteRegistration,
-                  ffi.Pointer<TfLiteIntArray>, ffi.Pointer<TfLiteDelegate>)>>
-      ReplaceNodeSubsetsWithDelegateKernels;
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<TfLiteContext>,
+              TfLiteRegistration,
+              ffi.Pointer<TfLiteIntArray>,
+              ffi.Pointer<TfLiteDelegate>)>> ReplaceNodeSubsetsWithDelegateKernels;
 
   /// Number of threads that are recommended to subsystems like gemmlowp and
   /// eigen.
@@ -2277,17 +2114,18 @@ final class TfLiteContext extends ffi.Struct {
   /// Access external contexts by type.
   /// WARNING: This is an experimental interface that is subject to change.
   external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Pointer<TfLiteExternalContext> Function(
-              ffi.Pointer<TfLiteContext>, ffi.Int32)>> GetExternalContext;
+          ffi.NativeFunction<
+              ffi.Pointer<TfLiteExternalContext> Function(ffi.Pointer<TfLiteContext>, ffi.Int32)>>
+      GetExternalContext;
 
   /// Set the value of a external context. Does not take ownership of the
   /// pointer.
   /// WARNING: This is an experimental interface that is subject to change.
   external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TfLiteContext>, ffi.Int32,
-              ffi.Pointer<TfLiteExternalContext>)>> SetExternalContext;
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<TfLiteContext>, ffi.Int32, ffi.Pointer<TfLiteExternalContext>)>>
+      SetExternalContext;
 
   /// Flag for allowing float16 precision for FP32 calculation.
   /// default: false.
@@ -2305,8 +2143,7 @@ final class TfLiteContext extends ffi.Struct {
   /// WARNING: This is an experimental interface that is subject to change.
   external ffi.Pointer<
           ffi.NativeFunction<
-              ffi.Pointer<ffi.Void> Function(
-                  ffi.Pointer<TfLiteContext> ctx, ffi.Size bytes)>>
+              ffi.Pointer<ffi.Void> Function(ffi.Pointer<TfLiteContext> ctx, ffi.Size bytes)>>
       AllocatePersistentBuffer;
 
   /// Allocate a buffer which will be deallocated right after invoke phase.
@@ -2326,17 +2163,17 @@ final class TfLiteContext extends ffi.Struct {
   /// GetScratchBuffer API can be used to fetch the address.
   /// WARNING: This is an experimental interface that is subject to change.
   external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<TfLiteContext> ctx, ffi.Size bytes,
-              ffi.Pointer<ffi.Int> buffer_idx)>> RequestScratchBufferInArena;
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<TfLiteContext> ctx, ffi.Size bytes, ffi.Pointer<ffi.Int> buffer_idx)>>
+      RequestScratchBufferInArena;
 
   /// Get the scratch buffer pointer.
   /// This method is only available in Eval stage.
   /// WARNING: This is an experimental interface that is subject to change.
   external ffi.Pointer<
           ffi.NativeFunction<
-              ffi.Pointer<ffi.Void> Function(
-                  ffi.Pointer<TfLiteContext> ctx, ffi.Int buffer_idx)>>
+              ffi.Pointer<ffi.Void> Function(ffi.Pointer<TfLiteContext> ctx, ffi.Int buffer_idx)>>
       GetScratchBuffer;
 
   /// Resize the memory pointer of the `tensor`. This method behaves the same as
@@ -2345,11 +2182,8 @@ final class TfLiteContext extends ffi.Struct {
   /// WARNING: This is an experimental interface that is subject to change.
   external ffi.Pointer<
       ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<TfLiteContext> ctx,
-              ffi.Pointer<TfLiteTensor> tensor,
-              ffi.Int dims,
-              ffi.Pointer<ffi.Int> shape)>> ResizeTensorExplicit;
+          ffi.Int32 Function(ffi.Pointer<TfLiteContext> ctx, ffi.Pointer<TfLiteTensor> tensor,
+              ffi.Int dims, ffi.Pointer<ffi.Int> shape)>> ResizeTensorExplicit;
 
   /// This method provides a preview of post-delegation partitioning. Each
   /// TfLiteDelegateParams in the referenced array corresponds to one instance of
@@ -2372,32 +2206,28 @@ final class TfLiteContext extends ffi.Struct {
   ///
   /// WARNING: This is an experimental interface that is subject to change.
   external ffi.Pointer<
-          ffi.NativeFunction<
-              ffi.Int32 Function(
-                  ffi.Pointer<TfLiteContext> context,
-                  ffi.Pointer<TfLiteIntArray> nodes_to_replace,
-                  ffi.Pointer<ffi.Pointer<TfLiteDelegateParams>>
-                      partition_params_array,
-                  ffi.Pointer<ffi.Int> num_partitions)>>
-      PreviewDelegatePartitioning;
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<TfLiteContext> context,
+              ffi.Pointer<TfLiteIntArray> nodes_to_replace,
+              ffi.Pointer<ffi.Pointer<TfLiteDelegateParams>> partition_params_array,
+              ffi.Pointer<ffi.Int> num_partitions)>> PreviewDelegatePartitioning;
 
   /// Returns a TfLiteTensor struct for a given index.
   /// WARNING: This is an experimental interface that is subject to change.
   /// WARNING: This method may not be available on all platforms.
   external ffi.Pointer<
-          ffi.NativeFunction<
-              ffi.Pointer<TfLiteTensor> Function(
-                  ffi.Pointer<TfLiteContext> context, ffi.Int tensor_idx)>>
-      GetTensor;
+      ffi.NativeFunction<
+          ffi.Pointer<TfLiteTensor> Function(
+              ffi.Pointer<TfLiteContext> context, ffi.Int tensor_idx)>> GetTensor;
 
   /// Returns a TfLiteEvalTensor struct for a given index.
   /// WARNING: This is an experimental interface that is subject to change.
   /// WARNING: This method may not be available on all platforms.
   external ffi.Pointer<
-          ffi.NativeFunction<
-              ffi.Pointer<TfLiteEvalTensor> Function(
-                  ffi.Pointer<TfLiteContext> context, ffi.Int tensor_idx)>>
-      GetEvalTensor;
+      ffi.NativeFunction<
+          ffi.Pointer<TfLiteEvalTensor> Function(
+              ffi.Pointer<TfLiteContext> context, ffi.Int tensor_idx)>> GetEvalTensor;
 
   /// Retrieves named metadata buffer from the TFLite model.
   /// Returns kTfLiteOk if metadata is successfully obtained from the flatbuffer
@@ -2758,9 +2588,9 @@ final class TfLiteRegistration extends ffi.Struct {
 
   /// The pointer `buffer` is the data previously returned by an init invocation.
   external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TfLiteContext> context,
-              ffi.Pointer<ffi.Void> buffer)>> free;
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<TfLiteContext> context, ffi.Pointer<ffi.Void> buffer)>>
+      free;
 
   /// prepare is called when the inputs this node depends on have been resized.
   /// context->ResizeTensor() can be called to request output tensors to be
@@ -2769,16 +2599,16 @@ final class TfLiteRegistration extends ffi.Struct {
   ///
   /// Returns kTfLiteOk on success.
   external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<TfLiteContext> context,
-              ffi.Pointer<TfLiteNode> node)>> prepare;
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<TfLiteContext> context, ffi.Pointer<TfLiteNode> node)>>
+      prepare;
 
   /// Execute the node (should read node->inputs and output to node->outputs).
   /// Returns kTfLiteOk on success.
   external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<TfLiteContext> context,
-              ffi.Pointer<TfLiteNode> node)>> invoke;
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<TfLiteContext> context, ffi.Pointer<TfLiteNode> node)>>
+      invoke;
 
   /// profiling_string is called during summarization of profiling information
   /// in order to group executions together. Providing a value here will cause a
@@ -2787,8 +2617,8 @@ final class TfLiteRegistration extends ffi.Struct {
   /// different calculations depending on their `user-data`.
   external ffi.Pointer<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<TfLiteContext> context,
-              ffi.Pointer<TfLiteNode> node)>> profiling_string;
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<TfLiteContext> context, ffi.Pointer<TfLiteNode> node)>> profiling_string;
 
   /// Builtin codes. If this kernel refers to a builtin this is the code
   /// of the builtin. This is so we can do marshaling to other frameworks like
@@ -2829,9 +2659,8 @@ final class TfLiteExternalContext extends ffi.Struct {
   @ffi.Int32()
   external int type;
 
-  external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<TfLiteContext> context)>> Refresh;
+  external ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<TfLiteContext> context)>>
+      Refresh;
 }
 
 /// The list of external context types known to TF Lite. This list exists solely
@@ -3137,24 +2966,24 @@ final class TfLiteRegistration_V1 extends ffi.Struct {
               ffi.Pointer<ffi.Char> buffer, ffi.Size length)>> init;
 
   external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TfLiteContext> context,
-              ffi.Pointer<ffi.Void> buffer)>> free;
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<TfLiteContext> context, ffi.Pointer<ffi.Void> buffer)>>
+      free;
+
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<TfLiteContext> context, ffi.Pointer<TfLiteNode> node)>>
+      prepare;
+
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<TfLiteContext> context, ffi.Pointer<TfLiteNode> node)>>
+      invoke;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<TfLiteContext> context,
-              ffi.Pointer<TfLiteNode> node)>> prepare;
-
-  external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<TfLiteContext> context,
-              ffi.Pointer<TfLiteNode> node)>> invoke;
-
-  external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<TfLiteContext> context,
-              ffi.Pointer<TfLiteNode> node)>> profiling_string;
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<TfLiteContext> context, ffi.Pointer<TfLiteNode> node)>> profiling_string;
 
   @ffi.Int32()
   external int builtin_code;

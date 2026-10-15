@@ -32,7 +32,8 @@ class InterpreterOptions {
   InterpreterOptions._(this._options);
 
   /// Creates a new options instance.
-  factory InterpreterOptions() => InterpreterOptions._(tfliteBinding.TfLiteInterpreterOptionsCreate());
+  factory InterpreterOptions() =>
+      InterpreterOptions._(tfliteBinding.TfLiteInterpreterOptionsCreate());
 
   /// Destroys the options instance.
   void delete() {
@@ -42,7 +43,8 @@ class InterpreterOptions {
   }
 
   /// Sets the number of CPU threads to use.
-  set threads(int threads) => tfliteBinding.TfLiteInterpreterOptionsSetNumThreads(_options, threads);
+  set threads(int threads) =>
+      tfliteBinding.TfLiteInterpreterOptionsSetNumThreads(_options, threads);
 
   /// TensorFlow version >= v2.2
   /// Set true to use NnApi Delegate for Android

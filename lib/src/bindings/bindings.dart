@@ -42,15 +42,18 @@ final DynamicLibrary _dylib = () {
     } catch (_) {
       // CocoaPods path: Flutter embeds the .dylib at
       // <app>.app/Contents/resources/libtensorflowlite_c-mac.dylib
-      return DynamicLibrary.open('${Directory(Platform.resolvedExecutable).parent.parent.path}/resources/libtensorflowlite_c-mac.dylib');
+      return DynamicLibrary.open(
+          '${Directory(Platform.resolvedExecutable).parent.parent.path}/resources/libtensorflowlite_c-mac.dylib');
     }
   }
 
   if (Platform.isLinux) {
-    return DynamicLibrary.open('${Directory(Platform.resolvedExecutable).parent.path}/blobs/libtensorflowlite_c-linux.so');
+    return DynamicLibrary.open(
+        '${Directory(Platform.resolvedExecutable).parent.path}/blobs/libtensorflowlite_c-linux.so');
   }
   if (Platform.isWindows) {
-    return DynamicLibrary.open('${Directory(Platform.resolvedExecutable).parent.path}/blobs/libtensorflowlite_c-win.dll');
+    return DynamicLibrary.open(
+        '${Directory(Platform.resolvedExecutable).parent.path}/blobs/libtensorflowlite_c-win.dll');
   }
 
   throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');

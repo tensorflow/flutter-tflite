@@ -52,9 +52,7 @@ extension ListShape on List {
     var reshapedList = flatten<dynamic>();
     for (var i = dims - 1; i > 0; i--) {
       var temp = [];
-      for (var start = 0;
-          start + shape[i] <= reshapedList.length;
-          start += shape[i]) {
+      for (var start = 0; start + shape[i] <= reshapedList.length; start += shape[i]) {
         temp.add(reshapedList.sublist(start, start + shape[i]));
       }
       reshapedList = temp;
@@ -102,10 +100,8 @@ extension ListShape on List {
           shape[2],
           (k) => List.generate(
             shape[3],
-            (l) => flatList[i * shape[1] * shape[2] * shape[3] +
-                j * shape[2] * shape[3] +
-                k * shape[3] +
-                l],
+            (l) => flatList[
+                i * shape[1] * shape[2] * shape[3] + j * shape[2] * shape[3] + k * shape[3] + l],
           ),
         ),
       ),

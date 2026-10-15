@@ -106,9 +106,7 @@ class IsolateInterpreter {
     var map = <int, Object>{};
     map[0] = output;
 
-    return runForMultipleInputs([
-      input
-    ], map);
+    return runForMultipleInputs([input], map);
   }
 
   /// Run TensorFlow model for multiple inputs and outputs.

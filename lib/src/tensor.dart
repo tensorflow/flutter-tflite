@@ -47,7 +47,8 @@ class Tensor {
       );
 
   /// Dimensions of the tensor.
-  List<int> get shape => List.generate(tfliteBinding.TfLiteTensorNumDims(_tensor), (i) => tfliteBinding.TfLiteTensorDim(_tensor, i));
+  List<int> get shape => List.generate(
+      tfliteBinding.TfLiteTensorNumDims(_tensor), (i) => tfliteBinding.TfLiteTensorDim(_tensor, i));
 
   /// Underlying data buffer as bytes.
   Uint8List get data {
@@ -158,7 +159,8 @@ class Tensor {
     final externalTypedData = ptr.asTypedList(size);
     externalTypedData.setRange(0, bytes.length, bytes);
     try {
-      checkState(tfliteBinding.TfLiteTensorCopyFromBuffer(_tensor, ptr.cast(), bytes.length) == TfLiteStatus.kTfLiteOk);
+      checkState(tfliteBinding.TfLiteTensorCopyFromBuffer(_tensor, ptr.cast(), bytes.length) ==
+          TfLiteStatus.kTfLiteOk);
     } catch (_) {
       rethrow;
     } finally {
@@ -171,7 +173,8 @@ class Tensor {
     final ptr = calloc<Uint8>(size);
     checkState(isNotNull(ptr), message: 'unallocated');
     final externalTypedData = ptr.asTypedList(size);
-    checkState(tfliteBinding.TfLiteTensorCopyToBuffer(_tensor, ptr.cast(), size) == TfLiteStatus.kTfLiteOk);
+    checkState(tfliteBinding.TfLiteTensorCopyToBuffer(_tensor, ptr.cast(), size) ==
+        TfLiteStatus.kTfLiteOk);
     // Clone the data, because once `free(ptr)`, `externalTypedData` will be
     // volatile
     final bytes = externalTypedData.sublist(0);
@@ -220,7 +223,8 @@ class Tensor {
       equal = false;
     }
     if (equal == false) {
-      throw ArgumentError('Output object shape mismatch, interpreter returned output of shape: ${obj.shape} while shape of output provided as argument in run is: ${dst.shape}');
+      throw ArgumentError(
+          'Output object shape mismatch, interpreter returned output of shape: ${obj.shape} while shape of output provided as argument in run is: ${dst.shape}');
     }
     for (var i = 0; i < obj.length; i++) {
       dst[i] = obj[i];
