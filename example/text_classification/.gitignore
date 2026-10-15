@@ -45,3 +45,5 @@ app.*.map.json
 
 # model files
 assets/models/**
+!assets/models/
+!assets/models/README.md

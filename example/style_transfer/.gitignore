@@ -45,3 +45,5 @@ app.*.map.json
 
 # ignore tf lite models
 assets/models/**
+!assets/models/
+!assets/models/README.md

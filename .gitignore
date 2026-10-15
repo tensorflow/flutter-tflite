@@ -84,6 +84,28 @@ example/object_detection_ssd_mobilenet/assets/models/ssd_mobilenet.tflite
 **/assets/models/!README
 **/assets/models/.gitkeep
 
+# Keep checked-in example assets visible to pub's package validation.
+!example/audio_classification/assets/models/
+!example/image_classification_mobilenet/assets/models/
+!example/live_object_detection_ssd_mobilenet/assets/models/
+!example/object_detection_ssd_mobilenet/assets/models/
+!example/reinforcement_learning/assets/models/
+!example/style_transfer/assets/models/
+!example/super_resolution_esrgan/assets/models/
+!example/text_classification/assets/models/
+!example/audio_classification/assets/models/README.md
+!example/audio_classification/assets/models/yamnet.tflite
+!example/audio_classification/assets/models/yamnet_label_list.txt
+!example/image_classification_mobilenet/assets/models/README.md
+!example/image_classification_mobilenet/assets/models/labels.txt
+!example/image_classification_mobilenet/assets/models/mobilenet_quant.tflite
+!example/live_object_detection_ssd_mobilenet/assets/models/README.md
+!example/object_detection_ssd_mobilenet/assets/models/README.md
+!example/reinforcement_learning/assets/models/README.md
+!example/style_transfer/assets/models/README.md
+!example/super_resolution_esrgan/assets/models/README.md
+!example/text_classification/assets/models/README.md
+
 # FVM Version Cache
 .fvm/
 .fvmrc
