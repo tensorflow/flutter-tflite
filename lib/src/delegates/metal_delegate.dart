@@ -31,6 +31,7 @@ class GpuDelegate implements Delegate {
 
   GpuDelegate._(this._delegate);
 
+  /// Creates a Metal delegate, optionally configured with [options].
   factory GpuDelegate({GpuDelegateOptions? options}) {
     if (options == null) {
       return GpuDelegate._(
@@ -57,6 +58,11 @@ class GpuDelegateOptions {
 
   GpuDelegateOptions._(this._options);
 
+  /// Creates options for configuring a Metal delegate.
+  ///
+  /// [allowPrecisionLoss] allows lower-precision calculations where supported.
+  /// [waitType] controls how the delegate waits for GPU work to complete.
+  /// [enableQuantization] enables quantized model support.
   factory GpuDelegateOptions({
     bool allowPrecisionLoss = false,
     int waitType = TFLGpuDelegateWaitType.TFLGpuDelegateWaitTypePassive,
@@ -72,6 +78,7 @@ class GpuDelegateOptions {
     return GpuDelegateOptions._(options);
   }
 
+  /// Releases the native options.
   void delete() {
     checkState(!_deleted, message: 'TfLiteGpuDelegate already deleted.');
     calloc.free(_options);

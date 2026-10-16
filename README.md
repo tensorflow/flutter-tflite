@@ -126,7 +126,7 @@ install(
 
 ## TFLite Flutter Helper Library
 
-The helper library has been deprecated. New development underway for a replacement at <https://github.com/google/flutter-mediapipe>. Current timeline is to have wide support by the end of August, 2023.
+The helper library has been deprecated. New development is underway for a replacement at [Google's Flutter MediaPipe project](https://github.com/google/flutter-mediapipe). The current timeline is to have wide support by the end of August, 2023.
 
 ## Import
 
@@ -174,7 +174,7 @@ Refer to the documentation for info on creating interpreter from buffer or file.
   
 - **For multiple inputs and outputs**
 
-    Use `void runForMultipleInputs(List<Object> inputs, Map<int, Object> outputs)`.
+    Use `runForMultipleInputs` with a list of inputs and a map from output indexes to output values.
 
     ```dart
     var input0 = [1.23];  

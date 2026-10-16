@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
+/// Quantization scale and zero point associated with a tensor.
 class QuantizationParams {
   final double _scale;
   final int _zeroPoint;
 
+  /// Creates quantization parameters with [scale] and [zeroPoint].
   QuantizationParams(this._scale, this._zeroPoint);
 
+  /// Scale used to map quantized values to real values.
   double get scale => _scale;
 
+  /// Zero point used to map quantized values to real values.
   int get zeroPoint => _zeroPoint;
 
+  /// Returns a string representation of these parameters.
   @override
   String toString() {
     return 'QuantizationParams{_scale: $_scale, _zeroPoint: $_zeroPoint}';

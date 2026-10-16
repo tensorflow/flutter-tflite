@@ -1,3 +1,7 @@
+## 0.12.9 (October 16, 2026)
+- Expanded public API documentation and added a package example.
+- Fixed half-precision float byte decoding and added a regression test.
+
 ## 0.12.8 (October 16, 2026)
 - Renamed the public Dart entrypoints and platform package files to use the `tflite_core` name.
 - Updated example imports, platform package references, and documentation to match the new package name.

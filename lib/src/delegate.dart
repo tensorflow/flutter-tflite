@@ -18,9 +18,9 @@ import 'dart:ffi';
 import 'package:tflite_core/src/bindings/tensorflow_lite_bindings_generated.dart';
 
 abstract class Delegate {
-  /// Get pointer to TfLiteDelegate
+  /// Native delegate pointer passed to interpreter options.
   Pointer<TfLiteDelegate> get base;
 
-  /// Destroys delegate instance
+  /// Releases the native delegate resources.
   void delete();
 }

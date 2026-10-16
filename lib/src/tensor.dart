@@ -30,10 +30,11 @@ import 'util/list_shape_extension.dart';
 
 export 'bindings/tensorflow_lite_bindings_generated.dart' show TfLiteType;
 
-/// TensorFlowLite tensor.
+/// A TensorFlow Lite input or output tensor.
 class Tensor {
   final Pointer<TfLiteTensor> _tensor;
 
+  /// Wraps the native tensor pointer owned by an [Interpreter].
   Tensor(this._tensor) {
     ArgumentError.checkNotNull(_tensor);
   }
@@ -56,7 +57,7 @@ class Tensor {
     return data.asTypedList(tfliteBinding.TfLiteTensorByteSize(_tensor)).asUnmodifiableView();
   }
 
-  /// Quantization Params associated with the model, [only Android]
+  /// Quantization parameters associated with this tensor.
   QuantizationParams get params {
     final ref = tfliteBinding.TfLiteTensorQuantizationParams(_tensor);
     return QuantizationParams(ref.scale, ref.zero_point);
@@ -74,22 +75,22 @@ class Tensor {
     externalTypedData.setRange(0, tensorByteSize, bytes);
   }
 
-  /// Returns number of dimensions
+  /// Returns the number of dimensions in this tensor's shape.
   int numDimensions() {
     return tfliteBinding.TfLiteTensorNumDims(_tensor);
   }
 
-  /// Returns the size, in bytes, of the tensor data.
+  /// Returns the size of the tensor data in bytes.
   int numBytes() {
     return tfliteBinding.TfLiteTensorByteSize(_tensor);
   }
 
-  /// Returns the number of elements in a flattened (1-D) view of the tensor.
+  /// Returns the number of elements in this tensor.
   int numElements() {
     return computeNumElements(shape);
   }
 
-  /// Returns the number of elements in a flattened (1-D) view of the tensor's shape.
+  /// Returns the product of the dimensions in [shape].
   static int computeNumElements(List<int> shape) {
     int n = 1;
     for (var i = 0; i < shape.length; i++) {
@@ -98,7 +99,7 @@ class Tensor {
     return n;
   }
 
-  /// Returns shape of an object as an int list
+  /// Returns the dimensions of a nested list or other object.
   static List<int> computeShapeOf(Object o) {
     int size = computeNumDimensions(o);
     List<int> dimensions = List.filled(size, 0, growable: false);
@@ -106,7 +107,7 @@ class Tensor {
     return dimensions;
   }
 
-  /// Returns the number of dimensions of a multi-dimensional array, otherwise 0.
+  /// Returns the number of dimensions in a nested list, or zero for other values.
   static int computeNumDimensions(Object? o) {
     if (o == null || o is! List) {
       return 0;
@@ -117,7 +118,7 @@ class Tensor {
     return 1 + computeNumDimensions(o.elementAt(0));
   }
 
-  /// Recursively populates the shape dimensions for a given (multi-dimensional) array)
+  /// Populates [shape] with the dimensions of the nested list [o], starting at [dim].
   static void fillShape(Object o, int dim, List<int>? shape) {
     if (shape == null || dim == shape.length) {
       return;
@@ -133,7 +134,7 @@ class Tensor {
     }
   }
 
-  /// Returns data type of given object
+  /// Returns the TensorFlow Lite data type corresponding to [o]'s leaf values.
   static int dataTypeOf(Object o) {
     while (o is List) {
       o = o.elementAt(0);
@@ -151,6 +152,7 @@ class Tensor {
     throw ArgumentError('DataType error: cannot resolve DataType of ${o.runtimeType}');
   }
 
+  /// Copies [src] into this tensor, converting values to its data type.
   void setTo(Object src) {
     Uint8List bytes = _convertObjectToBytes(src);
     int size = bytes.length;
@@ -168,6 +170,7 @@ class Tensor {
     }
   }
 
+  /// Copies this tensor's contents into [dst] and returns the copied value.
   Object copyTo(Object dst) {
     int size = tfliteBinding.TfLiteTensorByteSize(_tensor);
     final ptr = calloc<Uint8>(size);
@@ -231,6 +234,7 @@ class Tensor {
     }
   }
 
+  /// Returns the input shape when [input] differs from this tensor's shape.
   List<int>? getInputShapeIfDifferent(Object? input) {
     if (input == null) {
       return null;
@@ -247,35 +251,78 @@ class Tensor {
     return inputShape;
   }
 
+  /// Returns a string containing this tensor's metadata.
   @override
   String toString() {
     return 'Tensor{_tensor: $_tensor, name: $name, type: $type, shape: $shape, data: ${data.length}}';
   }
 }
 
+/// Data types supported by TensorFlow Lite tensors.
 enum TensorType {
+  /// No tensor data type is set.
   noType(TfLiteType.kTfLiteNoType),
+
+  /// 32-bit floating-point values.
   float32(TfLiteType.kTfLiteFloat32),
+
+  /// 32-bit signed integer values.
   int32(TfLiteType.kTfLiteInt32),
+
+  /// 8-bit unsigned integer values.
   uint8(TfLiteType.kTfLiteUInt8),
+
+  /// 64-bit signed integer values.
   int64(TfLiteType.kTfLiteInt64),
+
+  /// String values.
   string(TfLiteType.kTfLiteString),
+
+  /// Boolean values.
   boolean(TfLiteType.kTfLiteBool),
+
+  /// 16-bit signed integer values.
   int16(TfLiteType.kTfLiteInt16),
+
+  /// 64-bit complex values.
   complex64(TfLiteType.kTfLiteComplex64),
+
+  /// 8-bit signed integer values.
   int8(TfLiteType.kTfLiteInt8),
+
+  /// 16-bit floating-point values.
   float16(TfLiteType.kTfLiteFloat16),
+
+  /// 64-bit floating-point values.
   float64(TfLiteType.kTfLiteFloat64),
+
+  /// 128-bit complex values.
   complex128(TfLiteType.kTfLiteComplex128),
+
+  /// 64-bit unsigned integer values.
   uint64(TfLiteType.kTfLiteUInt64),
+
+  /// Resource handle values.
   resource(TfLiteType.kTfLiteResource),
+
+  /// Variant values.
   variant(TfLiteType.kTfLiteVariant),
+
+  /// 32-bit unsigned integer values.
   uint32(TfLiteType.kTfLiteUInt32),
+
+  /// 16-bit unsigned integer values.
   uint16(TfLiteType.kTfLiteUInt16),
+
+  /// 4-bit signed integer values.
   int4(TfLiteType.kTfLiteInt4);
 
+  /// Creates a tensor type from its TensorFlow Lite numeric value.
   const TensorType(this.value);
 
+  /// Returns the tensor type for the native [tfLiteValue].
+  ///
+  /// Returns [TensorType.noType] if the value is not recognized.
   static TensorType fromValue(int tfLiteValue) {
     switch (tfLiteValue) {
       case TfLiteType.kTfLiteFloat32:
@@ -319,8 +366,10 @@ enum TensorType {
     }
   }
 
+  /// The native TensorFlow Lite type value.
   final int value;
 
+  /// Returns the enum name.
   @override
   String toString() => name;
 }

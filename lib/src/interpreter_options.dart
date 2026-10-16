@@ -27,6 +27,7 @@ class InterpreterOptions {
   final Pointer<TfLiteInterpreterOptions> _options;
   bool _deleted = false;
 
+  /// Native options pointer used when creating an interpreter.
   Pointer<TfLiteInterpreterOptions> get base => _options;
 
   InterpreterOptions._(this._options);
@@ -46,8 +47,7 @@ class InterpreterOptions {
   set threads(int threads) =>
       tfliteBinding.TfLiteInterpreterOptionsSetNumThreads(_options, threads);
 
-  /// TensorFlow version >= v2.2
-  /// Set true to use NnApi Delegate for Android
+  /// Enables or disables the Android NNAPI delegate.
   set useNnApiForAndroid(bool useNnApi) {
     if (Platform.isAndroid) {
       tfliteBinding.TfLiteInterpreterOptionsSetUseNNAPI(
@@ -57,14 +57,14 @@ class InterpreterOptions {
     }
   }
 
-  /// Set true to use Metal Delegate for iOS
+  /// Adds the Metal GPU delegate on iOS when enabled.
   set useMetalDelegateForIOS(bool useMetal) {
     if (Platform.isIOS) {
       addDelegate(GpuDelegate());
     }
   }
 
-  /// Adds delegate to Interpreter Options
+  /// Adds [delegate] to the interpreter options.
   void addDelegate(Delegate delegate) {
     tfliteBinding.TfLiteInterpreterOptionsAddDelegate(_options, delegate.base);
   }

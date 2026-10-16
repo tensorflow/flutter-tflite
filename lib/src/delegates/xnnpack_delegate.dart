@@ -22,7 +22,7 @@ import 'package:tflite_core/src/bindings/tensorflow_lite_bindings_generated.dart
 
 import '../delegate.dart';
 
-/// XNNPack Delegate
+/// XNNPACK delegate for CPU inference.
 class XNNPackDelegate implements Delegate {
   Pointer<TfLiteDelegate> _delegate;
   bool _deleted = false;
@@ -32,6 +32,7 @@ class XNNPackDelegate implements Delegate {
 
   XNNPackDelegate._(this._delegate);
 
+  /// Creates an XNNPACK delegate, optionally configured with [options].
   factory XNNPackDelegate({XNNPackDelegateOptions? options}) {
     if (options == null) {
       return XNNPackDelegate._(
@@ -49,7 +50,7 @@ class XNNPackDelegate implements Delegate {
   }
 }
 
-/// XNNPackDelegate Options
+/// Options for configuring an XNNPACK delegate.
 class XNNPackDelegateOptions {
   Pointer<TfLiteXNNPackDelegateOptions> _options;
   bool _deleted = false;
@@ -58,6 +59,7 @@ class XNNPackDelegateOptions {
 
   XNNPackDelegateOptions._(this._options);
 
+  /// Creates XNNPACK options using [numThreads] CPU threads.
   factory XNNPackDelegateOptions({
     int numThreads = 1,
   }) {
@@ -67,6 +69,7 @@ class XNNPackDelegateOptions {
     return XNNPackDelegateOptions._(options);
   }
 
+  /// Releases the native options.
   void delete() {
     checkState(!_deleted, message: 'XNNPackDelegate already deleted.');
     calloc.free(_options);

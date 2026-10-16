@@ -16,7 +16,7 @@
 
 name: tflite_core
 description: TensorFlow Lite Flutter plugin provides an easy, flexible, and fast Dart API to integrate TFLite models in flutter apps across mobile and desktop platforms.
-version: 0.12.8
+version: 0.12.9
 homepage: https://github.com/kmmhanan/tflite-core
 repository: https://github.com/kmmhanan/tflite-core
 

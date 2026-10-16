@@ -19,7 +19,7 @@ import 'dart:isolate';
 
 import 'package:tflite_core/tflite_core.dart';
 
-/// `IsolateInterpreter` allows for the execution of TensorFlow models within an isolate.
+/// Runs TensorFlow Lite inference in a background isolate.
 class IsolateInterpreter {
   // Private constructor for the interpreter.
   IsolateInterpreter._({
@@ -28,6 +28,9 @@ class IsolateInterpreter {
   });
 
   // Factory method to create an instance of the IsolateInterpreter.
+  /// Starts a worker isolate for the native interpreter at [address].
+  ///
+  /// Optionally sets the isolate's [debugName].
   static Future<IsolateInterpreter> create({
     required int address,
     String debugName = 'TfLiteInterpreterIsolate',
@@ -42,7 +45,10 @@ class IsolateInterpreter {
     return interpreter;
   }
 
+  /// Native address of the interpreter used by this worker.
   final int address;
+
+  /// Name assigned to the worker isolate for debugging.
   final String debugName;
 
   final ReceivePort _receivePort = ReceivePort();
@@ -52,8 +58,12 @@ class IsolateInterpreter {
   // Controller to handle state changes.
   final StreamController<IsolateInterpreterState> _stateChanges = StreamController.broadcast();
   late final StreamSubscription _stateSubscription;
+
+  /// Stream of worker state changes.
   Stream<IsolateInterpreterState> get stateChanges => _stateChanges.stream;
   IsolateInterpreterState __state = IsolateInterpreterState.idle;
+
+  /// Current state of the worker isolate.
   IsolateInterpreterState get state => __state;
 
   // Setter to handle state changes.
@@ -101,7 +111,7 @@ class IsolateInterpreter {
     }
   }
 
-  /// Run TensorFlow model for single input and output.
+  /// Runs inference for a single [input] and writes the result to [output].
   Future<void> run(Object input, Object output) {
     var map = <int, Object>{};
     map[0] = output;
@@ -109,7 +119,7 @@ class IsolateInterpreter {
     return runForMultipleInputs([input], map);
   }
 
-  /// Run TensorFlow model for multiple inputs and outputs.
+  /// Runs inference for [inputs] and writes results to [outputs].
   Future<void> runForMultipleInputs(
     List<Object> inputs,
     Map<int, Object> outputs,
@@ -149,9 +159,12 @@ class IsolateInterpreter {
   }
 }
 
-// Represents the state of the IsolateInterpreter.
+/// Lifecycle state of an [IsolateInterpreter] worker.
 enum IsolateInterpreterState {
+  /// The worker is available to run inference.
   idle,
+
+  /// The worker is currently running inference.
   loading,
 }
 

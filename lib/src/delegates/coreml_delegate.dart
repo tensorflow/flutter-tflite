@@ -21,7 +21,7 @@ import 'package:tflite_core/src/bindings/bindings.dart';
 import 'package:tflite_core/src/bindings/tensorflow_lite_bindings_generated.dart';
 import 'package:tflite_core/tflite_core.dart';
 
-/// CoreMl Delegate
+/// Core ML delegate for accelerating inference on Apple platforms.
 class CoreMlDelegate implements Delegate {
   Pointer<TfLiteDelegate> _delegate;
   bool _deleted = false;
@@ -31,6 +31,7 @@ class CoreMlDelegate implements Delegate {
 
   CoreMlDelegate._(this._delegate);
 
+  /// Creates a Core ML delegate, optionally configured with [options].
   factory CoreMlDelegate({CoreMlDelegateOptions? options}) {
     final delegateOptions = options ?? CoreMlDelegateOptions();
 
@@ -47,7 +48,7 @@ class CoreMlDelegate implements Delegate {
   }
 }
 
-/// CoreMlDelegate Options
+/// Options for configuring a Core ML delegate.
 class CoreMlDelegateOptions {
   Pointer<TfLiteCoreMlDelegateOptions> _options;
   bool _deleted = false;
@@ -56,6 +57,13 @@ class CoreMlDelegateOptions {
 
   CoreMlDelegateOptions._(this._options);
 
+  /// Creates Core ML options.
+  ///
+  /// [enabledDevices] selects the device class used for inference.
+  /// [coremlVersion] selects a Core ML version, or zero for the default.
+  /// [maxDelegatedPartitions] limits delegated graph partitions, or zero for
+  /// the default.
+  /// [minNodesPerPartition] is the minimum number of nodes in a partition.
   factory CoreMlDelegateOptions({
     int enabledDevices =
         TfLiteCoreMlDelegateEnabledDevices.TfLiteCoreMlDelegateDevicesWithNeuralEngine,
@@ -74,6 +82,7 @@ class CoreMlDelegateOptions {
     return CoreMlDelegateOptions._(options);
   }
 
+  /// Releases the native options.
   void delete() {
     checkState(!_deleted, message: 'CoreMlDelegate already deleted.');
     calloc.free(_options);

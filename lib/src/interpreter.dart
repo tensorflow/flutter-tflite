@@ -41,6 +41,7 @@ class Interpreter {
   int? _inputTensorsCount;
   int? _outputTensorsCount;
 
+  /// Duration of the most recent native inference, in microseconds.
   int get lastNativeInferenceDurationMicroSeconds => _lastNativeInferenceDurationMicroSeconds;
 
   Interpreter._(this._interpreter) {
@@ -48,7 +49,7 @@ class Interpreter {
     allocateTensors();
   }
 
-  /// Creates interpreter from model
+  /// Creates an interpreter from a model.
   ///
   /// Throws [ArgumentError] is unsuccessful.
   factory Interpreter._create(Model model, {InterpreterOptions? options}) {
@@ -85,7 +86,7 @@ class Interpreter {
     return interpreter;
   }
 
-  /// Creates interpreter from a [buffer]
+  /// Creates an interpreter from a model [buffer].
   ///
   /// Throws [ArgumentError] if unsuccessful.
   ///
@@ -108,7 +109,7 @@ class Interpreter {
     return interpreter;
   }
 
-  /// Creates interpreter from a [assetName]
+  /// Creates an interpreter from a model bundled as a Flutter asset.
   ///
   /// Place your `.tflite` file in your assets folder.
   ///
@@ -122,14 +123,14 @@ class Interpreter {
     return Interpreter.fromBuffer(buffer, options: options);
   }
 
-  /// Get byte buffer
+  /// Loads an asset's bytes.
   static Future<Uint8List> _getBuffer(String assetFileName) async {
     ByteData rawAssetFile = await rootBundle.load(assetFileName);
     final rawBytes = rawAssetFile.buffer.asUint8List();
     return rawBytes;
   }
 
-  /// Creates interpreter from an address.
+  /// Creates an interpreter wrapper from a native interpreter [address].
   ///
   /// Typically used for passing interpreter between isolates.
   factory Interpreter.fromAddress(int address, {bool allocated = false, bool deleted = false}) {
@@ -159,14 +160,14 @@ class Interpreter {
     checkState(tfliteBinding.TfLiteInterpreterInvoke(_interpreter) == TfLiteStatus.kTfLiteOk);
   }
 
-  /// Run for single input and output
+  /// Runs inference with one [input] and copies the result into [output].
   void run(Object input, Object output) {
     var map = <int, Object>{};
     map[0] = output;
     runForMultipleInputs([input], map);
   }
 
-  /// Run for multiple inputs and outputs
+  /// Runs inference with [inputs] and copies results into [outputs].
   void runForMultipleInputs(List<Object> inputs, Map<int, Object> outputs) {
     if (outputs.isEmpty) {
       throw ArgumentError('Input error: Outputs should not be null or empty.');
@@ -178,7 +179,7 @@ class Interpreter {
     }
   }
 
-  /// Just run inference
+  /// Runs inference using [inputs] without copying results into output objects.
   void runInference(List<Object> inputs) {
     if (inputs.isEmpty) {
       throw ArgumentError('Input error: Inputs should not be null or empty.');
@@ -236,7 +237,9 @@ class Interpreter {
     return tensors;
   }
 
-  /// Resize input tensor for the given tensor index. `allocateTensors` must be called again afterward.
+  /// Resizes the input tensor at [tensorIndex] to [shape].
+  ///
+  /// Tensor allocation is invalidated and performed again before the next run.
   void resizeInputTensor(int tensorIndex, List<int> shape) {
     final dimensionSize = shape.length;
     final dimensions = calloc<Int>(dimensionSize);
@@ -251,7 +254,7 @@ class Interpreter {
     _allocated = false;
   }
 
-  /// Gets the input Tensor for the provided input index.
+  /// Returns the input tensor at [index].
   Tensor getInputTensor(int index) {
     _inputTensorsCount ??= tfliteBinding.TfLiteInterpreterGetInputTensorCount(_interpreter);
     if (index < 0 || index >= _inputTensorsCount!) {
@@ -265,7 +268,7 @@ class Interpreter {
     return inputTensor;
   }
 
-  /// Gets the output Tensor for the provided output index.
+  /// Returns the output tensor at [index].
   Tensor getOutputTensor(int index) {
     _outputTensorsCount ??= tfliteBinding.TfLiteInterpreterGetOutputTensorCount(_interpreter);
     if (index < 0 || index >= _outputTensorsCount!) {
@@ -279,7 +282,7 @@ class Interpreter {
     return outputTensor;
   }
 
-  /// Gets index of an input given the op name of the input.
+  /// Returns the index of the input tensor named [opName].
   int getInputIndex(String opName) {
     final inputTensors = getInputTensors();
     var inputTensorsIndex = <String, int>{};
@@ -294,7 +297,7 @@ class Interpreter {
     }
   }
 
-  /// Gets index of an output given the op name of the output.
+  /// Returns the index of the output tensor named [opName].
   int getOutputIndex(String opName) {
     final outputTensors = getOutputTensors();
     var outputTensorsIndex = <String, int>{};
@@ -309,17 +312,19 @@ class Interpreter {
     }
   }
 
-  // Resets all variable tensors to the defaul value
+  /// Resets all variable tensors to their initial values.
   void resetVariableTensors() {
     checkState(_deleted, message: 'Should not acces delegate after it has been closed.');
     tfliteBinding.TfLiteInterpreterResetVariableTensors(_interpreter);
   }
 
-  /// Returns the address to the interpreter
+  /// Native address of this interpreter, for use with [IsolateInterpreter].
   int get address => _interpreter.address;
 
+  /// Whether tensors have been allocated for inference.
   bool get isAllocated => _allocated;
 
+  /// Whether this interpreter has been closed.
   bool get isDeleted => _deleted;
 
   //TODO: (JAVA) void modifyGraphWithDelegate(Delegate delegate)

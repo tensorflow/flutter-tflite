@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
+/// Shape, reshape, and flatten operations for nested lists.
 extension ListShape on List {
-  /// Reshape list to a another [shape]
+  /// Reshapes this list to [shape].
   ///
-  /// [T] is the type of elements in list
+  /// [T] is the element type of the returned nested list.
   ///
-  /// Returns List<dynamic> if [shape.length] > 5
-  /// else returns list with exact type
+  /// Shapes with more than five dimensions return a dynamically typed list.
   ///
-  /// Throws [ArgumentError] if number of elements for [shape]
-  /// mismatch with current number of elements in list
+  /// Throws [ArgumentError] if the shape's element count does not match this
+  /// list's element count.
   List reshape<T>(List<int> shape) {
     var dims = shape.length;
     var numElements = 1;
@@ -136,7 +136,7 @@ extension ListShape on List {
     return reshapedList;
   }
 
-  /// Get shape of the list
+  /// Returns the dimensions of this nested list.
   List<int> get shape {
     if (isEmpty) {
       return [];
@@ -150,8 +150,9 @@ extension ListShape on List {
     return shape;
   }
 
-  /// Flatten this list, [T] is element type
-  /// if not specified List<dynamic> is returned
+  /// Returns the elements of this nested list in a one-dimensional list.
+  ///
+  /// [T] is the element type of the returned list.
   List<T> flatten<T>() {
     var flat = <T>[];
     forEach((e) {
@@ -166,7 +167,7 @@ extension ListShape on List {
     return flat;
   }
 
-  /// Get the total number of elements in list
+  /// Returns the total number of elements in this list.
   int get computeNumElements {
     var n = 1;
     for (var i = 0; i < shape.length; i++) {

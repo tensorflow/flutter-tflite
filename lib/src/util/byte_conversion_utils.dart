@@ -20,7 +20,9 @@ import 'dart:typed_data';
 
 import 'package:tflite_core/tflite_core.dart';
 
+/// An input value cannot be encoded using the requested tensor data type.
 class ByteConversionError extends ArgumentError {
+  /// Creates an error for [input] and the incompatible tensor type.
   ByteConversionError({
     required this.input,
     required this.tensorType,
@@ -28,11 +30,19 @@ class ByteConversionError extends ArgumentError {
           'The input element is ${input.runtimeType} while tensor data type is $tensorType',
         );
 
+  /// The value that could not be converted.
   final Object input;
+
+  /// The data type expected by the tensor.
   final TensorType tensorType;
 }
 
+/// Converts values between Dart objects and TensorFlow Lite tensor bytes.
 class ByteConversionUtils {
+  /// Encodes a supported value or nested list as tensor bytes.
+  ///
+  /// [tensorType] determines how numeric values are encoded. A [Uint8List] or
+  /// [ByteBuffer] is returned as bytes without numeric conversion.
   static Uint8List convertObjectToBytes(Object o, TensorType tensorType) {
     if (o is Uint8List) {
       return o;
@@ -152,7 +162,7 @@ class ByteConversionUtils {
     );
   }
 
-  /// Decodes a TensorFlow string to a List<String>
+  /// Decodes the TensorFlow Lite string tensor buffer into its strings.
   static List<String> decodeTFStrings(Uint8List bytes) {
     /// The decoded string
     List<String> decodedStrings = [];
@@ -178,6 +188,9 @@ class ByteConversionUtils {
     return decodedStrings;
   }
 
+  /// Decodes tensor [bytes] into an object with the given [shape].
+  ///
+  /// The returned numeric list type is selected from [tensorType].
   static Object convertBytesToObject(Uint8List bytes, TensorType tensorType, List<int> shape) {
     // stores flattened data
     List<dynamic> list = [];
@@ -225,6 +238,7 @@ class ByteConversionUtils {
     throw UnsupportedError("$tensorType is not Supported.");
   }
 
+  /// Encodes [value] as a little-endian IEEE 754 half-precision float.
   static Uint8List floatToFloat16Bytes(double value) {
     int float16 = _float32ToFloat16(value);
     final ByteData byteDataBuffer = ByteData(2)..setUint16(0, float16, Endian.little);
@@ -254,10 +268,12 @@ class ByteConversionUtils {
     return sign | (exponent << 10) | roundMantissa;
   }
 
+  /// Decodes two little-endian half-precision float bytes to a Dart [double].
   static double bytesToFloat32(Uint8List bytes) {
-    final ByteData byteDataBuffer = ByteData(2);
-    int float16 =
-        byteDataBuffer.buffer.asUint8List().buffer.asByteData().getUint16(0, Endian.little);
+    if (bytes.length != 2) {
+      throw ArgumentError.value(bytes.length, 'bytes.length', 'Expected exactly 2 bytes.');
+    }
+    final float16 = ByteData.sublistView(bytes).getUint16(0, Endian.little);
     return _float16ToFloat32(float16);
   }
 

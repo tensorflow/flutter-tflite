@@ -31,9 +31,8 @@ class GpuDelegateV2 implements Delegate {
 
   GpuDelegateV2._(this._delegate);
 
-  /// Creates [GpuDelegateV2] using the specified [options]
-  /// uses [GpuDelegateOptionsV2.defaultOptions()] if options not
-  /// specified.
+  /// Creates an Android GPU delegate using [options] when provided, or the
+  /// TensorFlow Lite defaults otherwise.
   factory GpuDelegateV2({GpuDelegateOptionsV2? options}) {
     if (options == null) {
       return GpuDelegateV2._(
@@ -42,6 +41,8 @@ class GpuDelegateV2 implements Delegate {
     }
     return GpuDelegateV2._(tfliteBindingGpu.TfLiteGpuDelegateV2Create(options.base));
   }
+
+  /// Releases the native delegate.
   @override
   void delete() {
     checkState(!_deleted, message: 'TfLiteGpuDelegateV2 already deleted.');
@@ -50,15 +51,16 @@ class GpuDelegateV2 implements Delegate {
   }
 }
 
-/// GPU delegate options for Android
+/// Options for configuring the Android GPU delegate.
 class GpuDelegateOptionsV2 {
   Pointer<TfLiteGpuDelegateOptionsV2> _options;
   bool _deleted = false;
 
+  /// Native options pointer used when creating the delegate.
   Pointer<TfLiteGpuDelegateOptionsV2> get base => _options;
   GpuDelegateOptionsV2._(this._options);
 
-  /// Creates GpuDelegateOptionsV2 with specified parameters
+  /// Creates GPU delegate options.
   ///
   /// [isPrecisionLossAllowed]
   /// When set to zero, computations are carried out in maximal possible
@@ -104,6 +106,11 @@ class GpuDelegateOptionsV2 {
   /// delegated to the GPU.
   /// This limits the maximum number of partitions to be delegated. By default,
   /// it's set to 1 in TfLiteGpuDelegateOptionsV2Default().
+  ///
+  /// [inferencePreference] controls the delegate's inference workload.
+  /// [inferencePriority1], [inferencePriority2], and [inferencePriority3]
+  /// specify ordered preferences for latency, precision, and memory use.
+  /// [experimentalFlags] selects optional GPU delegate features.
   factory GpuDelegateOptionsV2({
     bool isPrecisionLossAllowed = false,
     int inferencePreference =
@@ -129,6 +136,7 @@ class GpuDelegateOptionsV2 {
     return GpuDelegateOptionsV2._(options);
   }
 
+  /// Releases the native options.
   void delete() {
     checkState(!_deleted, message: 'TfLiteGpuDelegateV2 already deleted.');
     calloc.free(_options);

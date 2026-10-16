@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tflite_core/tflite_core.dart';
 
@@ -48,6 +50,10 @@ void main() {
             ByteConversionUtils.convertBytesToObject(bytes, TensorType.float16, [1]) as List;
         expect(object[0], closeTo(values[i], 0.001));
       }
+    });
+
+    test('bytesToFloat32 decodes little-endian float16 bytes', () {
+      expect(ByteConversionUtils.bytesToFloat32(Uint8List.fromList([0, 62])), 1.5);
     });
 
     test('TensorType.int64', () async {
