@@ -38,12 +38,18 @@ macos/
     │   └── TfliteFlutterPlugin.swift
     └── TensorFlowLiteCMac.xcframework/ # Built from the .dylib by rebuild script
         ├── Info.plist
-        ├── _CodeSignature/             # Ad-hoc signature (required by Xcode)
         └── macos-arm64_x86_64/
             └── TensorFlowLiteC.framework/
-                ├── Headers/            # TFLite C API headers (from src/tensorflow_lite/)
-                ├── Versions/A/TensorFlowLiteC  # The actual dylib binary
-                └── ...
+                ├── Headers/            # Symlink to Versions/Current/Headers
+                ├── Resources/         # Symlink to Versions/Current/Resources
+                ├── TensorFlowLiteC    # Symlink to the versioned dylib binary
+                └── Versions/
+                    ├── A/
+                    │   ├── Headers/
+                    │   ├── Resources/Info.plist
+                    │   ├── TensorFlowLiteC
+                    │   └── _CodeSignature/
+                    └── Current         # Symlink to A
 ```
 
 The xcframework is **not a separate download** — it is built directly from
@@ -78,7 +84,9 @@ The script does the following in order:
    (without this, dyld cannot find the library at app launch)
 5. Copies the TFLite C API headers from `src/tensorflow_lite/`
 6. Writes the required `Info.plist` files
-7. Creates the `Versions/` symlinks required by macOS framework layout
+7. Creates the standard macOS versioned framework layout. macOS requires
+   `Info.plist` at `Versions/Current/Resources/Info.plist`; a flat framework
+   or a root-level `Info.plist` is rejected by Xcode.
 8. **Ad-hoc signs** the binary and the bundle with `codesign --force --sign -`
 9. Prints the install name and signature for verification
 

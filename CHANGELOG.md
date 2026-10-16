@@ -1,3 +1,8 @@
+## 0.12.11 (October 16, 2026)
+- Restored the standard versioned macOS framework layout, with `Info.plist` under `Versions/A/Resources` as required by Xcode.
+- Moved the macOS framework `Info.plist` to the framework root; corrected to the required versioned location in 0.12.13.
+- Rebuilt the macOS framework using a flat layout without versioned symlinks.
+
 ## 0.12.10 (October 16, 2026)
 - Fixed iOS and macOS Swift Package Manager integration by exporting the `tflite-core` product required by Flutter's generated plugin package.
 

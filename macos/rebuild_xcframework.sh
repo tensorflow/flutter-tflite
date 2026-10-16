@@ -19,7 +19,6 @@ rm -rf "$XCFW"
 echo "→ Creating framework directory structure..."
 mkdir -p "$FW/Versions/A/Headers"
 mkdir -p "$FW/Versions/A/Resources"
-mkdir -p "$XCFW/_CodeSignature"
 
 echo "→ Copying dylib binary..."
 cp "$DYLIB" "$FW/Versions/A/TensorFlowLiteC"
@@ -38,12 +37,12 @@ otool -D "$FW/Versions/A/TensorFlowLiteC" | tail -1
 echo "→ Copying TFLite C API headers..."
 cp "$HEADERS_SRC/c_api.h"             "$FW/Versions/A/Headers/"
 cp "$HEADERS_SRC/c_api_experimental.h" "$FW/Versions/A/Headers/"
-cp "$HEADERS_SRC/c_api_types.h"       "$FW/Versions/A/Headers/"
-cp "$HEADERS_SRC/common.h"            "$FW/Versions/A/Headers/"
-cp "$HEADERS_SRC/builtin_ops.h"       "$FW/Versions/A/Headers/"
-cp "$HEADERS_SRC/delegate.h"          "$FW/Versions/A/Headers/"
-cp "$HEADERS_SRC/delegate_options.h"  "$FW/Versions/A/Headers/"
-cp "$HEADERS_SRC/xnnpack_delegate.h"  "$FW/Versions/A/Headers/"
+cp "$HEADERS_SRC/c_api_types.h"        "$FW/Versions/A/Headers/"
+cp "$HEADERS_SRC/common.h"             "$FW/Versions/A/Headers/"
+cp "$HEADERS_SRC/builtin_ops.h"        "$FW/Versions/A/Headers/"
+cp "$HEADERS_SRC/delegate.h"           "$FW/Versions/A/Headers/"
+cp "$HEADERS_SRC/delegate_options.h"   "$FW/Versions/A/Headers/"
+cp "$HEADERS_SRC/xnnpack_delegate.h"   "$FW/Versions/A/Headers/"
 
 echo "→ Writing framework Info.plist..."
 cat > "$FW/Versions/A/Resources/Info.plist" << 'PLIST'
@@ -67,11 +66,11 @@ cat > "$FW/Versions/A/Resources/Info.plist" << 'PLIST'
 </plist>
 PLIST
 
-echo "→ Creating Versions symlinks..."
-ln -sf A            "$FW/Versions/Current"
-ln -sf Versions/A/TensorFlowLiteC "$FW/TensorFlowLiteC"
-ln -sf Versions/A/Headers         "$FW/Headers"
-ln -sf Versions/A/Resources       "$FW/Resources"
+echo "→ Creating standard framework symlinks..."
+ln -s A "$FW/Versions/Current"
+ln -s Versions/Current/Headers "$FW/Headers"
+ln -s Versions/Current/Resources "$FW/Resources"
+ln -s Versions/Current/TensorFlowLiteC "$FW/TensorFlowLiteC"
 
 echo "→ Writing xcframework Info.plist..."
 cat > "$XCFW/Info.plist" << 'PLIST'
@@ -105,7 +104,7 @@ cat > "$XCFW/Info.plist" << 'PLIST'
 </plist>
 PLIST
 
-echo "→ Ad-hoc signing the framework binary first (inside Versions/A)..."
+echo "→ Ad-hoc signing the framework binary..."
 codesign --force --sign - "$FW/Versions/A/TensorFlowLiteC"
 
 echo "→ Ad-hoc signing the full framework bundle..."
