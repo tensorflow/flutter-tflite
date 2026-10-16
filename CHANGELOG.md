@@ -1,3 +1,6 @@
+## 0.12.10 (October 16, 2026)
+- Fixed iOS and macOS Swift Package Manager integration by exporting the `tflite-core` product required by Flutter's generated plugin package.
+
 ## 0.12.9 (October 16, 2026)
 - Expanded public API documentation and added a package example.
 - Fixed half-precision float byte decoding and added a regression test.

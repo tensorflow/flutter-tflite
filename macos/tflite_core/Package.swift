@@ -7,6 +7,7 @@ let package = Package(
         .macOS("10.15"),
     ],
     products: [
+        .library(name: "tflite-core", targets: ["tflite_core"]),
         .library(name: "tflite_core",  targets: ["tflite_core"]),
         .library(name: "tflite-flutter",  targets: ["tflite_core"]),
     ],

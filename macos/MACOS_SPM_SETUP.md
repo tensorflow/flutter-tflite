@@ -11,6 +11,10 @@ Flutter on macOS can link native libraries via either **CocoaPods** or **SPM**.
 This plugin supports both. The loading path is chosen automatically at runtime in
 `lib/src/bindings/bindings.dart`:
 
+The iOS and macOS SPM manifests export the `tflite-core` product expected by
+Flutter's generated plugin package. Keep this product name in sync with the
+plugin package name when updating either manifest.
+
 1. **SPM (primary)** — `DynamicLibrary.process()` is tried first. When Xcode links
    `TensorFlowLiteCMac.xcframework` via SPM, the framework is loaded by dyld at
    launch and all TFLite symbols are already in-process.

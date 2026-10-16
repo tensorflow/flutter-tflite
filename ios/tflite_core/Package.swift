@@ -7,6 +7,7 @@ let package = Package(
         .iOS("11.0"),
     ],
     products: [
+        .library(name: "tflite-core", targets: ["tflite_core"]),
         .library(name: "tflite_core",  targets: ["tflite_core"]),
         .library(name: "tflite-flutter",  targets: ["tflite_core"]),
     ],
