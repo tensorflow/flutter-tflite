@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import 'package:tflite_core/tflite_flutter.dart';
+import 'package:tflite_core/tflite_core.dart';
 
 class PolicyGradientAgent {
   final _boardSize = 8;

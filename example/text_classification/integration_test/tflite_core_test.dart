@@ -23,7 +23,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:tflite_core/tflite_flutter.dart' as tfl;
+import 'package:tflite_core/tflite_core.dart' as tfl;
 
 const dataFileName = 'permute_uint8.tflite';
 const missingFileName = 'missing.tflite';
@@ -34,7 +34,7 @@ const int64FileName = 'int64.bin';
 const multiInputFileName = 'multi_add.bin';
 const addFileName = 'add.bin';
 
-//flutter drive --driver=test_driver/integration_test.dart --target=integration_test/tflite_flutter_test.dart
+//flutter drive --driver=test_driver/integration_test.dart --target=integration_test/tflite_core_test.dart
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 

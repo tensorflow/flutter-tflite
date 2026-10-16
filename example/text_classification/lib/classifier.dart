@@ -18,8 +18,8 @@ import 'package:flutter/foundation.dart';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-// Import tflite_flutter
-import 'package:tflite_core/tflite_flutter.dart';
+// Import tflite_core
+import 'package:tflite_core/tflite_core.dart';
 
 class Classifier {
   // name of the model file

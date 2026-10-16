@@ -1,5 +1,5 @@
 name: tflite_flutter_plugin_example
-description: Demonstrates how to use the tflite_flutter_plugin plugin.
+description: Demonstrates how to use the tflite_core plugin.
 publish_to: "none"
 
 version: 1.0.0+1

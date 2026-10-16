@@ -17,7 +17,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:image_segmentation/helper/isolate_inference.dart';
-import 'package:tflite_core/tflite_flutter.dart';
+import 'package:tflite_core/tflite_core.dart';
 import 'dart:isolate';
 
 class ImageSegmentationHelper {

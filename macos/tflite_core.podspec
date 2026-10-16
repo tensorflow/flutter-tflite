@@ -1,9 +1,9 @@
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint tflite_flutter.podspec` to validate before publishing.
+# Run `pod lib lint tflite_core.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'tflite_flutter'
+  s.name             = 'tflite_core'
   s.version          = '0.0.1'
   s.summary          = 'A new Flutter plugin project.'
   s.description      = <<-DESC
@@ -15,7 +15,7 @@ A new Flutter plugin project.
 
   s.source           = { :path => '.' }
   #s.source           = { :http => 'https://github.com/CaptainDario/DaKanji-Dependencies/releases/download/v3.0.0/libtensorflowlite_c-mac.dylib.zip' }
-    s.source_files     = 'tflite_flutter/Sources/**/*'
+    s.source_files     = 'tflite_core/Sources/**/*'
   s.dependency 'FlutterMacOS'
 
   s.platform = :osx, '10.11'

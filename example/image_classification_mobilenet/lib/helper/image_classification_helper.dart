@@ -21,7 +21,7 @@ import 'dart:isolate';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';
-import 'package:tflite_core/tflite_flutter.dart';
+import 'package:tflite_core/tflite_core.dart';
 
 import 'isolate_inference.dart';
 

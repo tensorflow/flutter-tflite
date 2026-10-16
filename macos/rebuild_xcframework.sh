@@ -9,7 +9,7 @@ set -e
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DYLIB="$REPO_ROOT/macos/libtensorflowlite_c-mac.dylib"
-XCFW="$REPO_ROOT/macos/tflite_flutter/TensorFlowLiteCMac.xcframework"
+XCFW="$REPO_ROOT/macos/tflite_core/TensorFlowLiteCMac.xcframework"
 FW="$XCFW/macos-arm64_x86_64/TensorFlowLiteC.framework"
 HEADERS_SRC="$REPO_ROOT/src/tensorflow_lite"
 
@@ -118,5 +118,5 @@ echo ""
 echo "✓ Done! TensorFlowLiteCMac.xcframework rebuilt and signed."
 echo ""
 echo "Next steps:"
-echo "  git add macos/tflite_flutter/TensorFlowLiteCMac.xcframework"
+echo "  git add macos/tflite_core/TensorFlowLiteCMac.xcframework"
 echo "  git commit -m 'rebuild: regenerate and sign TensorFlowLiteC macOS xcframework'"

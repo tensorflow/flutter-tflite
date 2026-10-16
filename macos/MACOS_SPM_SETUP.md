@@ -1,4 +1,4 @@
-# macOS SPM Setup for tflite_flutter
+# macOS SPM Setup for tflite_core
 
 This document explains how the macOS Swift Package Manager (SPM) integration works,
 what files are involved, and what to do if something breaks.
@@ -27,8 +27,8 @@ This plugin supports both. The loading path is chosen automatically at runtime i
 macos/
 ├── libtensorflowlite_c-mac.dylib       # Source binary (arm64 + x86_64 fat dylib)
 ├── rebuild_xcframework.sh              # Script to rebuild + sign the xcframework
-├── tflite_flutter.podspec              # CocoaPods spec (vendors the .dylib above)
-└── tflite_flutter/
+├── tflite_core.podspec                 # CocoaPods spec (vendors the .dylib above)
+└── tflite_core/
     ├── Package.swift                   # SPM manifest — points to xcframework below
     ├── Sources/
     │   └── TfliteFlutterPlugin.swift
@@ -81,7 +81,7 @@ The script does the following in order:
 Then commit the result:
 
 ```bash
-git add macos/tflite_flutter/TensorFlowLiteCMac.xcframework
+git add macos/tflite_core/TensorFlowLiteCMac.xcframework
 git commit -m "rebuild: regenerate and sign TensorFlowLiteC macOS xcframework"
 ```
 
@@ -137,7 +137,7 @@ macOS-specific solution.
 
 ## CocoaPods users
 
-The `tflite_flutter.podspec` vendors `libtensorflowlite_c-mac.dylib` directly.
+The `tflite_core.podspec` vendors `libtensorflowlite_c-mac.dylib` directly.
 CocoaPods embeds it at `<App>.app/Contents/resources/libtensorflowlite_c-mac.dylib`,
 which is where the Dart fallback path in `bindings.dart` looks for it.
 

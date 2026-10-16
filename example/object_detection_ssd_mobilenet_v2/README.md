@@ -9,7 +9,7 @@ A object detection example following [this](https://www.tensorflow.org/lite/exam
 
 ## Overview
 
-This application is a simple demonstration of the [tflite_flutter](https://pub.dev/packages/tflite_flutter) package.
+This application is a simple demonstration of the [tflite_core](https://pub.dev/packages/tflite_core) package.
 
 After taking a photo or choosing an image from your gallery, the app takes a short period of time before displaying the image with the detected objects on the screen.
 

@@ -1,3 +1,7 @@
+## 0.12.8 (October 16, 2026)
+- Renamed the public Dart entrypoints and platform package files to use the `tflite_core` name.
+- Updated example imports, platform package references, and documentation to match the new package name.
+
 ## 0.12.7 (October 16, 2026)
 - Example references updated.
 
@@ -41,7 +45,7 @@
 * Various bug fixes
 
 ## 0.10.0 (May 22, 2023)
-* Use ffi for binding to iOS dependencies. Use the ios/tflite_flutter.podspec file to specify tensorflow lite library version. Dependencies are automatically downloaded without user intervention (no need for releases/download folder)
+* Use ffi for binding to iOS dependencies. Use the ios/tflite_core.podspec file to specify tensorflow lite library version. Dependencies are automatically downloaded without user intervention (no need for releases/download folder)
 * Use ffi for binding with Android dependencies. Use the android/build.gradle file to specify tensorflow lite library version. Dependencies are automatically downloaded without user intervention (no need for releases/download folder)
 * Use ffigen to generate the binding code in dart
 * Enable delegates in text_classification example

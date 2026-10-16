@@ -2,13 +2,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "tflite_flutter",
+    name: "tflite_core",
     platforms: [
         .iOS("11.0"),
     ],
     products: [
-        .library(name: "tflite_flutter",  targets: ["tflite_flutter"]),
-        .library(name: "tflite-flutter",  targets: ["tflite_flutter"]),
+        .library(name: "tflite_core",  targets: ["tflite_core"]),
+        .library(name: "tflite-flutter",  targets: ["tflite_core"]),
     ],
     targets: [
         .binaryTarget(
@@ -17,7 +17,7 @@ let package = Package(
             checksum: "3b527a7be16aa02f0900deb40d1561df839fdce96cf2d1aaa80388b5c28e2ac3"
         ),
         .target(
-            name: "tflite_flutter",
+            name: "tflite_core",
             dependencies: ["TensorFlowLiteC"],
             path: "Sources",
             publicHeadersPath: "."

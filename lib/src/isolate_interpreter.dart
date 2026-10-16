@@ -17,7 +17,7 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import 'package:tflite_core/tflite_flutter.dart';
+import 'package:tflite_core/tflite_core.dart';
 
 /// `IsolateInterpreter` allows for the execution of TensorFlow models within an isolate.
 class IsolateInterpreter {

@@ -18,7 +18,7 @@ import 'dart:collection';
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
-import 'package:tflite_core/tflite_flutter.dart';
+import 'package:tflite_core/tflite_core.dart';
 
 import 'feature.dart';
 import 'feature_convert.dart';

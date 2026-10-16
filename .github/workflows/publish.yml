@@ -1,4 +1,5 @@
 name: Publish to pub.dev
+run-name: ${{ github.ref_name }}
 
 on:
   push:
@@ -18,8 +19,11 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          fetch-depth: 0
 
       - name: Verify release tag
+        id: version
         shell: bash
         run: |
           package_version=$(sed -n 's/^version: *//p' pubspec.yaml | tr -d "\"'")
@@ -27,31 +31,79 @@ jobs:
             echo "Release tag '$GITHUB_REF_NAME' must match pubspec.yaml version 'v$package_version'."
             exit 1
           fi
+          version_gt() {
+            local candidate="${1%%+*}"
+            local previous="${2%%+*}"
+            local candidate_prerelease=""
+            local previous_prerelease=""
+            if [[ "$candidate" == *-* ]]; then
+              candidate_prerelease="${candidate#*-}"
+              candidate="${candidate%%-*}"
+            fi
+            if [[ "$previous" == *-* ]]; then
+              previous_prerelease="${previous#*-}"
+              previous="${previous%%-*}"
+            fi
+            local candidate_major candidate_minor candidate_patch
+            local previous_major previous_minor previous_patch
+            IFS=. read -r candidate_major candidate_minor candidate_patch <<< "$candidate"
+            IFS=. read -r previous_major previous_minor previous_patch <<< "$previous"
+            if ((10#$candidate_major != 10#$previous_major)); then
+              ((10#$candidate_major > 10#$previous_major))
+              return
+            fi
+            if ((10#$candidate_minor != 10#$previous_minor)); then
+              ((10#$candidate_minor > 10#$previous_minor))
+              return
+            fi
+            if ((10#$candidate_patch != 10#$previous_patch)); then
+              ((10#$candidate_patch > 10#$previous_patch))
+              return
+            fi
+            [[ -n "$previous_prerelease" && -z "$candidate_prerelease" ]]
+          }
+          latest_version=$(git tag --list 'v[0-9]*' --sort=-version:refname | grep -Fxv "$GITHUB_REF_NAME" | head -n 1 | sed 's/^v//')
+          if [[ -n "$latest_version" ]]; then
+            if ! version_gt "$package_version" "$latest_version"; then
+              echo "Skipping publish: '$package_version' is not newer than the latest release '$latest_version'."
+              echo "publish=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          echo "publish=true" >> "$GITHUB_OUTPUT"
 
       - uses: subosito/flutter-action@48cafc24713cca54bbe03cdc3a423187d413aafa
+        if: steps.version.outputs.publish == 'true'
         with:
           channel: stable
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-
 
       - uses: dart-lang/setup-dart@23b5a66dd43e5c8366051dd2dde53e89fa2ef1ea
+        if: steps.version.outputs.publish == 'true'
         with:
           problem-matcher: false
 
       - name: Install dependencies
+        if: steps.version.outputs.publish == 'true'
         run: flutter pub get
 
       - name: Verify formatting
+        if: steps.version.outputs.publish == 'true'
         run: dart format --output=none --set-exit-if-changed lib test
 
       - name: Analyze
+        if: steps.version.outputs.publish == 'true'
         run: flutter analyze lib test
 
       - name: Test
+        if: steps.version.outputs.publish == 'true'
         run: flutter test
 
       - name: Validate package
+        if: steps.version.outputs.publish == 'true'
         run: flutter pub publish --dry-run
 
       - name: Publish to pub.dev
+        if: steps.version.outputs.publish == 'true'
         run: flutter pub publish --force

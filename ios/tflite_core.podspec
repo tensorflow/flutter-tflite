@@ -1,9 +1,9 @@
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint tflite_flutter.podspec` to validate before publishing.
+# Run `pod lib lint tflite_core.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'tflite_flutter'
+  s.name             = 'tflite_core'
   s.version          = '0.0.1'
   s.summary          = 'TensorFlow Lite plugin for Flutter apps.'
   s.description      = <<-DESC
@@ -18,7 +18,7 @@ TensorFlow Lite plugin for Flutter apps.
   # paths, so Classes contains a forwarder C file that relatively imports
   # `../src/*` so that the C sources can be shared among all target platforms.
   s.source           = { :path => '.' }
-  s.source_files     = 'tflite_flutter/Sources/**/*'
+  s.source_files     = 'tflite_core/Sources/**/*'
   
   s.dependency 'Flutter'
   

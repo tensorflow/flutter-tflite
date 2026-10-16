@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tflite_core/tflite_flutter_platform_interface.dart';
-import 'package:tflite_core/tflite_flutter_method_channel.dart';
+import 'package:tflite_core/tflite_core_platform_interface.dart';
+import 'package:tflite_core/tflite_core_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 // ── Mock ───────────────────────────────────────────────────────────────────

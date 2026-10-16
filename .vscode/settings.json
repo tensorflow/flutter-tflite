@@ -9,6 +9,7 @@
         "dyld",
         "esrgan",
         "ffigen",
+        "FMWK",
         "Garg",
         "initialising",
         "iphonesimulator",
@@ -20,6 +21,7 @@
         "logits",
         "mobilenet",
         "NNAPI",
+        "otool",
         "podspec",
         "probs",
         "pthreadpool",
@@ -36,6 +38,9 @@
         "tflite",
         "TFLM",
         "xcconfig",
-        "xcframework"
+        "xcframework",
+        "XCFW",
+        "XFWK",
+        "xnnpack"
     ]
 }

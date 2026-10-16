@@ -1,6 +1,6 @@
  <p align="center">
     <br>
-    <img src="https://github.com/am15h/tflite_flutter_plugin/raw/update_readme/docs/tflite_flutter_cover.png"/>
+    <img src="doc/tflite_core_cover.png"/>
     </br>
 </p>
 <p align="center">
@@ -13,7 +13,7 @@
      <img src="https://img.shields.io/pub/v/tflite_core.svg"
        alt="Pub Package" />
    </a>
-    <a href="https://pub.dev/documentation/tflite_core/latest/tflite_flutter/tflite_flutter-library.html">
+    <a href="https://pub.dev/documentation/tflite_core/latest/tflite_core/tflite_core-library.html">
         <img alt="Docs" src="https://readthedocs.org/projects/hubdb/badge/?version=latest">
     </a>
     <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"></a>
@@ -23,17 +23,13 @@
 
 ## Announcement
 
-Update: 26 April, 2023
+Update: 16 October, 2026
 
-This repo is a TensorFlow managed fork of the [tflite_flutter_plugin](https://github.com/am15h/tflite_flutter_plugin) project by the amazing Amish Garg. The goal of this project is to support our Flutter community in creating machine-learning backed apps with the TensorFlow Lite framework.
+Originally created by PaulTR as [tflite_flutter_plugin](https://github.com/am15h/tflite_flutter_plugin), the project later continued as `tflite_flutter` and is now `tflite_core`, maintained by [KmmHanan](https://github.com/kmmhanan). The goal remains to support the Flutter community in creating machine-learning-backed apps with TensorFlow Lite.
 
-This project is currently a work-in-progress as we update it to create a working plugin that meets the latest and greatest Flutter and TensorFlow Lite standards. That said, *pull requests and contributions are more than welcome* and will be reviewed by TensorFlow or Flutter team members. We thank you for your understanding as we make progress on this update.
+The project continues to evolve to meet current Flutter and TensorFlow Lite standards. Pull requests and contributions are welcome.
 
 Feel free to reach out to us by posting in the issues or discussion areas.
-
-Thanks!
-
-- PaulTR
 
 ## Overview
 
@@ -135,7 +131,7 @@ The helper library has been deprecated. New development underway for a replaceme
 ## Import
 
 ```dart
-import 'package:tflite_core/tflite_flutter.dart';
+import 'package:tflite_core/tflite_core.dart';
 ```
 
 ## Usage instructions

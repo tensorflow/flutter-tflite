@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_core/tflite_core.dart';
 
 class ObjectDetection {
   static const String _modelPath = 'assets/custom_ssd_mobilenet_v2.tflite';

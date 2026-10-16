@@ -20,7 +20,7 @@ import 'dart:io';
 import 'package:quiver/check.dart';
 import 'package:tflite_core/src/bindings/bindings.dart';
 import 'package:tflite_core/src/bindings/tensorflow_lite_bindings_generated.dart';
-import 'package:tflite_core/tflite_flutter.dart';
+import 'package:tflite_core/tflite_core.dart';
 
 /// TensorFlowLite interpreter options.
 class InterpreterOptions {
